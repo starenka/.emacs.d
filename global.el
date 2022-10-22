@@ -29,10 +29,7 @@
 ;; ;; evaluate defun        C-M-x
 
 ;; " ;; don't fuck w/ my scratches
-  browse-url-browser-function 'w3m-browse-url
 )
-
-;;(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 
 (setq-default
  bidi-display-reordering nil  ;; should speedup long lines rendering https://emacs.stackexchange.com/a/603
@@ -223,6 +220,11 @@
 ;;     ;; load rainbow mode
 ;;     (rainbow-mode t)))
 
+(use-package w3m
+  :ensure t
+  :config
+  (setq browse-url-browser-function 'w3m-browse-url)
+  (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t))
 
 (use-package xkcd :ensure t)
 
