@@ -70,11 +70,10 @@
 (load-user-file "lsp.el")
 (load-user-file "pythons.el")
 (load-user-file "lisp.el")
-;;(load-user-file "3rdparty/luablock.el")
+
+(load-user-file "debug.el")
 
 (load-user-file "visage.el")
 (load-user-file "keys.el")
-(load-user-file "debug.el")
-
 
 (sta:epic-split)
