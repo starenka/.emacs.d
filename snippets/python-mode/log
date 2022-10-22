@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: log
+# key: llog
+# --
+
+log = logging.getLogger(${1:__name__})

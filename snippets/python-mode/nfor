@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: nested list comprehension
+# key: nfor
+# --
+
+[[{${1:one}} for ${1} in {${2:inner}}] for ${2} in ${outer}]

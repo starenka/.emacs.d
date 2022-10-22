@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: patch side effect
+# key: pase
+# --
+with patch.object(${obj}, \'${attr}\') as mocked:
+    mocked.side_effect = $0

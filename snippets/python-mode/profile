@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: inject @profile decorator
+# key: prof
+# --
+
+import line_profiler; profile = line_profiler.LineProfiler()

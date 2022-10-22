@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: called by
+# key: cby
+# --
+
+import inspect
+curframe = inspect.currentframe()
+calframe = inspect.getouterframes(curframe, 2)
+print  'called by:', calframe[1][3]

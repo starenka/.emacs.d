@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: SCRIPT_DIR
+# key: sdir
+# --
+
+#$0 = os.path.dirname(os.path.abspath(__file__))
+$0 = Path(__file__).resolve().parent

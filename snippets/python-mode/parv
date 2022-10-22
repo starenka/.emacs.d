@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: patch return value
+# key: parv
+# --
+with patch.object(${obj}, \'${attr}\') as mocked:
+    mocked.return_value = $0

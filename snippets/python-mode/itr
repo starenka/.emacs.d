@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: inject pdb session
+# key: itr
+# --
+
+__import__('ipdb').set_trace()

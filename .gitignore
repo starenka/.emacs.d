@@ -1,0 +1,16 @@
+\#*\#
+.\#*
+.emacs.desktop*
+.lsp-session*
+auto-save-list/*
+backups/*
+bookmarks
+games/*
+el-get/*
+elpa/*
+projectile-bookmarks.eld
+projectile.cache
+straight/*
+transient/*
+undo/*
+xkcd/*

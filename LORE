@@ -1,0 +1,39 @@
+- helm-ag
+    - just js files `-G\.js$ expt`
+
+##mark
+set mark-> C-p & C-n (C-f)
+
+##keys
+
+jump to bookmark        `f8`
+list bookmarks          `f9`
+mark paragraph          `M-h`
+mark whole buffer       `C-x h`
+set bookmark            `f7`
+transpose chars         `C-t`
+transpose lines         `C-x C-t`
+transpose words         `M-t`
+prev cursor position    `C-u C-spc`
+last edit               `C-M r`
+copy block              `M-w`
+
+##find-name-dired
+
+toggle                  `t`
+find                    `A`
+replace                 `Q`
+
+##misc
+
+killring search       `C-x y`
+
+##How to add a prefix to every line? (such as # or //)
+
+Move to the beginning of first line you want.
+Press 【Ctrl+Space】 (set-mark-command) to mark cursor position.
+Move cursor to the beginning of the last line.
+Then call string-rectangle 【Ctrl+x r t】
+Then type what you want to insert, then Enter ↵.
+
+        

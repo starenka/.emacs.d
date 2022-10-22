@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# contributor: starenka starenka0@gmail.com
+# name: pprint
+# key: pprint
+# --
+import pprint; pprint.pprint(${obj})$0
