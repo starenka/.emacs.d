@@ -1,5 +1,6 @@
 \#*\#
 .\#*
+.cache
 .emacs.desktop*
 .lsp-session*
 auto-save-list/*
