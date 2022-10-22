@@ -1,4 +1,5 @@
 (use-package monokai-theme :ensure t)
+(use-package seoul256-theme :ensure t)
 
 (set-face-attribute 'default nil
                     :family "DejaVu Sans Mono"
