@@ -147,18 +147,24 @@
   :config
   (global-smartscan-mode 1))
 
-;; lisp AC
-(use-package ac-slime :ensure t)
-
 (use-package dot-mode
   :ensure t
   :init
   (add-hook 'find-file-hooks 'dot-mode-on))
 
+(use-package direx :ensure t)
+
 ;; camel, snake, etc 
 (use-package string-inflection :ensure t)
 
-(use-package direx :ensure t)
+;; lisp AC
+(use-package ac-slime :ensure t)
+
+(use-package lua-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+  (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
 
 (use-package markdown-mode
   :ensure t
