@@ -5,8 +5,8 @@
                          ("melpa-stable" . "https://stable.melpa.org/packages/"))
       package-archive-priorities
       '(("melpa-stable" . 10)
-        ("gnu"     . 5)
-        ("melpa"   . 1)))
+        ("melpa" . 5)
+        ("gnu" . 1)))
                           
 (package-initialize)
 
