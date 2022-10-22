@@ -141,6 +141,8 @@
 
 (winner-mode t)
 
+(use-package helpful :ensure t)
+
 ;; find symbol at point
 (use-package smartscan
   :ensure t
