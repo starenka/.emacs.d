@@ -37,8 +37,8 @@
                                            "Redis"
                                            "ElasticSearch"
                                            "PostgreSQL")
-   dash-docs-enable-debugging            nil))
+   helm-dash-enable-debugging            nil))
+
 
 (use-package helm-ag :ensure t)
 (use-package helm-rg :ensure t)
-
