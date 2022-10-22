@@ -1,5 +1,6 @@
 \#*\#
 .\#*
+old.tar.bz2
 .cache
 .emacs.desktop*
 .lsp-session*
@@ -8,10 +9,12 @@ backups/*
 bookmarks
 games/*
 el-get/*
+eln-cache/*
 elpa/*
 projectile-bookmarks.eld
 projectile.cache
 straight/*
 transient/*
+tramp*
 undo/*
 xkcd/*
