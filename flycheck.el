@@ -24,14 +24,14 @@
     python-mypy
     python-pyright))
   :hook
-  ((css-mode . flycheck-mode)
-   (emacs-lisp-mode . flycheck-mode)
+  ((emacs-lisp-mode . flycheck-mode)
+   (python-mode-hook . flycheck-mode)
    (sh-mode . flycheck-mode)
    (lua-mode-hook . flycheck-mode)
-   (dockerfile-mode . flycheck-mode)
    (yaml-mode . flycheck-mode)
-   (python-mode-hook . flycheck-mode)
-   (ansible-mode . flycheck-mode)))
+   (ansible-mode . flycheck-mode)
+   (dockerfile-mode . flycheck-mode)
+   (css-mode . flycheck-mode)))
 
 
 (eval-after-load 'flymake '(require 'flymake-cursor))
