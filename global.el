@@ -194,6 +194,13 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.service$" . systemd-mode)))
 
+(use-package poly-ansible
+  :ensure t
+  :config
+  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
+
+(use-package dockerfile-mode :ensure t)
+
 ;; epub
 (use-package nov
   :ensure t
