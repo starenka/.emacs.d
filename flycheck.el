@@ -26,7 +26,7 @@
   :hook
   ((css-mode . flycheck-mode)
    (emacs-lisp-mode . flycheck-mode)
-   (sh-mode-hook . flycheck-mode)
+   (sh-mode . flycheck-mode)
    (lua-mode-hook . flycheck-mode)
    (dockerfile-mode . flycheck-mode)
    (yaml-mode . flycheck-mode)
