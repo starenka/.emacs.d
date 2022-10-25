@@ -19,3 +19,5 @@
   (projectile-mode)
   (helm-projectile-on)
   (defconst projectile-mode-line-lighter " P"))
+
+(use-package projectile-ripgrep :ensure t)
