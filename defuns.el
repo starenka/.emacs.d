@@ -405,3 +405,9 @@ buffer is not visiting a file."
       (progn
         (multi-vterm-project)
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
+
+(defun sta:direx-project-or-direx ()
+  (interactive)
+  (require 'projectile)
+  (message projectile-project-root)
+  (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))

@@ -100,8 +100,7 @@
 (define-key global-map [f9] 'bookmark-bmenu-list)
 
 ;; dired/direx
-;;(global-set-key (kbd "C-x d") 'direx:jump-to-directory)
-(global-set-key (kbd "C-x d") 'direx-project:jump-to-project-root)
+(global-set-key (kbd "C-x d") 'sta:direx-project-or-direx)
 (global-set-key (kbd "C-x D") 'dired)
 ;; (add-hook 'direx-mode-hook
 ;;          (lambda () (local-set-key [(shift return)] #'direx:expand-item-recursively)))
