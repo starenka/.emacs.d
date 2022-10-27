@@ -386,3 +386,22 @@ buffer is not visiting a file."
   "Byte-compile all your dotfiles."
   (interactive)
   (byte-recompile-directory user-emacs-directory 0))
+
+
+(defun sta:activate-venv-in-project-vterm (venv)
+  (require 'multi-vterm)
+  (switch-to-buffer (multi-vterm-project-get-buffer-name))
+  (vterm--goto-line -1)
+  (vterm-send-string  (format "workon %s" venv))
+  (vterm-send-return)
+  (vterm-send-C-l))
+
+
+(defun sta:spawn-vterm-and-activate-venv-if-py-project ()
+  (require 'projectile)
+  (require 'multi-vterm)
+  (require 'pyvenv)
+  (if (and pyvenv-virtual-env-name (locate-dominating-file (projectile-project-root) ".flake8"))
+      (progn
+        (multi-vterm-project)
+        (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))

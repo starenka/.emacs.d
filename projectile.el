@@ -1,5 +1,6 @@
 (defun projectile-after-switch-project-hook ()
-  (direx:jump-to-directory))
+  (direx:jump-to-directory)
+  (sta:spawn-vterm-and-activate-venv-if-py-project))
 
 (use-package helm-projectile :ensure t)
 
