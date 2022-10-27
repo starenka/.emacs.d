@@ -1,10 +1,8 @@
-(use-package py-autopep8
-  :ensure t
-  :config
-  (setq py-autopep8-options '("--max-line-length=120"
-                              "--ignore=E123,E133,E226,E241,E242,E251,E221"
-                              "--pep8-passes=5000"))
-  :hook ((python-mode-hook) . py-autopep8-mode))
+(defun lsp-py-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-organize-imports t t)
+  (add-hook 'before-save-hook #'lsp-format-buffer t t))
+
+(add-hook 'python-mode-hook 'lsp-py-install-save-hooks)
 
 (use-package pyvenv
   :ensure t
