@@ -29,7 +29,7 @@
   initial-scratch-message ";; evaluate & print      C-j
 ;; evaluate defun        C-M-x
 
-;; " ;; don't fuck w/ my scratches
+" ;; don't fuck w/ my scratches
 )
 
 (setq-default
