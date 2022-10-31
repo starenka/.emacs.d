@@ -13,7 +13,7 @@
 
 (setq
   inhibit-startup-message t ;; Don't show the startup screen
-  ring-bell-function 'ignore ;; turn of hells bells
+  ring-bell-function 'ignore ;; turn off hells & bells
   column-number-mode t ;; Display line and column numbers
   backup-directory-alist '(("." . "~/.emacs.d/backups")) ;; Make sure all backup files only live in one place
   bookmark-save-flag 1 ;; save bmarks

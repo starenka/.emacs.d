@@ -2,6 +2,7 @@
   (direx:jump-to-directory)
   (sta:spawn-vterm-and-activate-venv-if-py-project))
 
+
 (use-package helm-projectile :ensure t)
 
 (use-package projectile
