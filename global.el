@@ -169,6 +169,11 @@
 ;; lisp AC
 (use-package ac-slime :ensure t)
 
+(use-package mini-frame
+  :ensure t
+  :config
+  (mini-frame-mode +1))
+
 (use-package lua-mode
   :ensure t
   :config
