@@ -247,6 +247,4 @@
 (use-package esup
   :ensure :pin melpa
   :config
-  (setq
-   ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
-   esup-depth 0))
+  (setq esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
