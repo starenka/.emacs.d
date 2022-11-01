@@ -41,7 +41,7 @@
   (save-window-excursion
     (async-shell-command (format "vivaldi '%s' > /dev/null; echo 'awful.screen.focused().tags[4]:view_only()' | awesome-client" url))))
 
-t(defun sta:firefox (url)
+(defun sta:firefox (url)
   (save-window-excursion
     (async-shell-command (format "firefox '%s' > /dev/null; echo 'awful.screen.focused().tags[3]:view_only()' | awesome-client" url))))
 
