@@ -13,6 +13,10 @@
                     :foreground "black"
                     :background "goldenrod1")
 
+(set-face-attribute 'deadgrep-match-face nil
+                    :foreground "black"
+                    :background "goldenrod1")
+
 ;;(set-face-attribute 'helm-source-header nil
 ;;                    :background "#272822"
 ;;                    :foreground "goldenrod1"
