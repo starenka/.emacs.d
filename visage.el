@@ -1,5 +1,22 @@
-(use-package monokai-theme :ensure t)
+(use-package solarized-theme :ensure t)
 (use-package seoul256-theme :ensure t)
+
+;: @FIXME custom-face sets faces globally, not for just particular theme :/
+(use-package monokai-theme
+  :ensure t
+  :pin melpa
+  :custom-face
+  (mode-line-buffer-id ((nil :foreground "goldenrod1")))
+  (deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
+  (selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1"))))
+
+(use-package nano-theme
+  :ensure t
+  :custom-face
+  (mode-line-buffer-id ((nil :foreground "black")))
+  (deadgrep-match-face ((nil :foreground "black" :background "#b4eeb4")))
+  (selectrum-current-candidate ((nil foreground "black" :background "#b4eeb4"))))
+
 
 (set-face-attribute 'default nil
                     :family "DejaVu Sans Mono"
@@ -9,7 +26,6 @@
 
 (copy-face 'default 'fixed-pitch)
 
-(set-face-attribute 'mode-line-buffer-id nil :foreground "goldenrod1")
 
 ;;(set-face-attribute 'helm-source-header nil
 ;;                    :background "#272822"
