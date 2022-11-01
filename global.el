@@ -243,3 +243,10 @@
   (setq zone-programs [zone-pgm-jitter zone-pgm-putz-with-case zone-pgm-whack-chars zone-pgm-rotate zone-pgm-rotate-LR-lockstep zone-pgm-rotate-RL-lockstep zone-pgm-rotate-LR-variable zone-pgm-rotate-RL-variable zone-pgm-drip zone-pgm-drip-fretfully zone-pgm-five-oclock-swan-dive zone-pgm-rat-race zone-pgm-paragraph-spaz zone-pgm-random-life])
   (zone-when-idle 120)
 )
+
+(use-package esup
+  :ensure :pin melpa
+  :config
+  (setq
+   ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
+   esup-depth 0))
