@@ -1,4 +1,5 @@
 ;; packaging
+
 (require 'package)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
@@ -34,9 +35,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; pin pkg
-(add-to-list 'package-pinned-packages '(py-autopep8 . "melpa") t)
-
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
@@ -63,6 +61,7 @@
 (load-user-file "term.el")
 
 (load-user-file "helm.el")
+;;(load-user-file "selectrum.el")
 (load-user-file "projectile.el")
 (load-user-file "flycheck.el")
 (load-user-file "magit.el")
