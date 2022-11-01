@@ -433,3 +433,25 @@ buffer is not visiting a file."
    (selectrum-read "Search kill ring: "
                    (mapcar 'identity kill-ring))))
 
+
+(defun sta:deadgrep-file-type ()
+  "Prompt the user for a new file type, then restart the search."
+  (interactive)
+  (let ((new-file-type
+         (deadgrep--read-file-type deadgrep--initial-filename)))
+    (setq deadgrep--file-type (cons 'type new-file-type)))
+  (rename-buffer
+   (deadgrep--buffer-name deadgrep--search-term default-directory) t)
+  (deadgrep-restart))
+
+
+
+(defun sta:deadgrep-term ()
+  "Prompt the user for a new search term, then restart the search."
+  (interactive)
+  (let ((new-search-term
+         (deadgrep--read-search-term)))
+    (setq deadgrep--search-term new-search-term))
+  (rename-buffer
+   (deadgrep--buffer-name deadgrep--search-term default-directory) t)
+  (deadgrep-restart))
