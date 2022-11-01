@@ -215,6 +215,19 @@
 
 (use-package dockerfile-mode :ensure t)
 
+(use-package dash-docs
+  :ensure t
+  :config
+  (setq
+   dash-docs-enable-debugging            t
+   dash-docs-browser-func                'eww  ;; browse-url, eww
+   dash-docs-common-docsets              '("Python 3"
+                                           "Django"
+                                           "Bash"
+                                           "Redis"
+                                           "ElasticSearch"
+                                           "PostgreSQL")))
+
 ;; epub
 (use-package nov
   :ensure t

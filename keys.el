@@ -73,7 +73,7 @@
 (global-set-key [C-f1] 'sta:copy-buffer-file-name-as-kill)
 (global-set-key (kbd "C-q .") 'sta:copy-buffer-file-name-as-kill)
 
-;; (global-set-key (kbd "C-q d") 'helm-dash-at-point)
+(global-set-key (kbd "C-q d") 'sta:dash-docs-search-str)
 
 ;; package upgrades
 ;l(global-set-key (kbd "C-q p") 'spu-package-upgrade)
