@@ -289,7 +289,7 @@ buffer is not visiting a file."
   (interactive)
   (if (projectile-project-p) ;; detect if current buffer is in a project
       (projectile-find-file)
-    (find-files (if (buffer-file-name)
+    (find-file (if (buffer-file-name)
                     (file-name-directory (buffer-file-name))
                   "/"
                   ))))
