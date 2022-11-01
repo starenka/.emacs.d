@@ -10,7 +10,10 @@
   (selectrum-prescient-mode +1)
   ;; to save your command history on disk, so the sorting gets more
   ;; intelligent over time
-  (prescient-persist-mode +1))
+  (prescient-persist-mode +1)
+  :custom-face
+  (selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1"))))
+
 
 ;;(use-package orderless
 ;;  :ensure t
