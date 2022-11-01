@@ -4,6 +4,7 @@
 
 (global-set-key (kbd "C-q f") 'sta:find-files-dwim)
 (global-set-key (kbd "<f5>") #'deadgrep)
+(global-set-key [?\s-s] #'deadgrep)
 
 ;; move buffers between windows
 (global-set-key (kbd "<M-S-up>")     'buf-move-up)
@@ -91,7 +92,7 @@
 ;;(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; run current file
-(global-set-key "\C-x." 'sta:run-current-file)
+;;(global-set-key "\C-x." 'sta:run-current-file)
 
 ;; boomkarks
 ;;(define-key global-map [f8] 'bookmark-jump)
@@ -116,7 +117,6 @@
 (global-set-key (kbd "C-q a") 'sta:ascii-translit-region)
 (global-set-key (kbd "C-q b") 'sta:show-http-response-in-browser)
 (global-set-key (kbd "C-q s") 'sta:go-to-scratch-buffer)
-(global-set-key (kbd "C-q r") #'deadgrep)
 (global-set-key (kbd "C-q l") 'sta:region-to-browser)
 
 (global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)
