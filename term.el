@@ -5,7 +5,10 @@
    vterm-max-scrollback 30000)
 )
 
-(use-package multi-vterm :ensure t)
+(use-package multi-vterm
+  :ensure t
+  :config
+  (setq multi-vterm-dedicated-window-height-percent 32))
 
 (add-hook 'term-mode-hook (lambda ()
                             (setq term-buffer-maximum-size 50000)
