@@ -3,6 +3,7 @@
 ;; [C-x] r C-h C-h to show all keys starting with [C-x]
 
 (global-set-key (kbd "C-q f") 'sta:find-files-dwim)
+(global-set-key (kbd "<f5>") #'deadgrep)
 
 ;; move buffers between windows
 (global-set-key (kbd "<M-S-up>")     'buf-move-up)
@@ -115,6 +116,7 @@
 (global-set-key (kbd "C-q a") 'sta:ascii-translit-region)
 (global-set-key (kbd "C-q b") 'sta:show-http-response-in-browser)
 (global-set-key (kbd "C-q s") 'sta:go-to-scratch-buffer)
+;;(global-set-key (kbd "C-q r") 'projectile-ripgrep)
 (global-set-key (kbd "C-q l") 'sta:region-to-browser)
 
 (global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)

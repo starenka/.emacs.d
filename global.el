@@ -103,6 +103,7 @@
 (use-package duplicate-thing :ensure t)
 (use-package ag :ensure t)
 (use-package rg :ensure t)
+(use-package deadgrep :ensure t :pin melpa)
 
 ;; @FIXME (use-package dired-details+ :ensure t)
 ;; @FIXME (use-package hl-line+ :ensure t)
