@@ -116,7 +116,7 @@
 (global-set-key (kbd "C-q a") 'sta:ascii-translit-region)
 (global-set-key (kbd "C-q b") 'sta:show-http-response-in-browser)
 (global-set-key (kbd "C-q s") 'sta:go-to-scratch-buffer)
-;;(global-set-key (kbd "C-q r") 'projectile-ripgrep)
+(global-set-key (kbd "C-q r") #'deadgrep)
 (global-set-key (kbd "C-q l") 'sta:region-to-browser)
 
 (global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)
@@ -135,9 +135,6 @@
 
 ;;(global-set-key (kbd "C-c b ,") 'goto-last-change)
 ;;(global-set-key (kbd "C-c b .") 'goto-last-change-reverse)
-
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (define-key vterm-mode-map [prior] 'scroll-down-command)
 (define-key vterm-mode-map [S-prior] 'scroll-down-command)

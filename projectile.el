@@ -1,7 +1,7 @@
 (defun projectile-after-switch-project-hook ()
-  (delete-other-windows)
-  (split-window-vertically (floor (* 0.68 (window-height))))
-  (split-window-right (floor (* 0.5 (window-width))))
+  ;;(delete-other-windows)
+  ;;(split-window-vertically (floor (* 0.68 (window-height))))
+  ;;(split-window-right (floor (* 0.5 (window-width))))
   (sta:direx-project-or-direx)
   (sta:spawn-vterm-and-activate-venv-if-py-project))
 
@@ -9,10 +9,16 @@
 
 (use-package projectile
   :ensure t
+  :init
+  (projectile-mode +1)
+  ;;(helm-projectile-on)
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map))
   :config
-  (setq ;;projectile-completion-system  'helm
-        projectile-enable-caching      t
-        helm-projectile-fuzzy-match    nil
+  (setq   projectile-enable-caching      t
+        ;;projectile-completion-system  'helm
+        ;;helm-projectile-fuzzy-match    nil
         projectile-switch-project-action 'projectile-after-switch-project-hook
         projectile-git-submodule-command "" ;; don't recursce on submodules
         projectile-globally-ignored-files
@@ -20,8 +26,6 @@
                   ".class"
                   "~")
                 projectile-globally-ignored-files))
-  (projectile-mode)
-  ;;(helm-projectile-on)
   (defconst projectile-mode-line-lighter " P"))
 
 (use-package projectile-ripgrep :ensure t)
