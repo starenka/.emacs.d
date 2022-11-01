@@ -9,6 +9,10 @@
 
 (copy-face 'default 'fixed-pitch)
 
+(set-face-attribute 'selectrum-current-candidate nil
+                    :foreground "black"
+                    :background "goldenrod1")
+
 ;;(set-face-attribute 'helm-source-header nil
 ;;                    :background "#272822"
 ;;                    :foreground "goldenrod1"
