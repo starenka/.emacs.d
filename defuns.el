@@ -420,3 +420,10 @@ buffer is not visiting a file."
   (interactive)
   (require 'projectile)
   (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
+
+
+(defun sta:selectrum-yank-pop ()
+  (interactive)
+  (insert
+   (selectrum-read "Search kill ring: "
+                   (mapcar 'identity kill-ring))))

@@ -117,7 +117,7 @@
 (global-set-key (kbd "C-q s") 'sta:go-to-scratch-buffer)
 (global-set-key (kbd "C-q l") 'sta:region-to-browser)
 
-;;(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
+(global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)
 ;;(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
 ;;(global-set-key "\M-\C-y"      'helm-show-kill-ring)
 
