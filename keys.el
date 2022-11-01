@@ -119,35 +119,6 @@
 
 (global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)
 ;;(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
-;;(global-set-key "\M-\C-y"      'helm-show-kill-ring)
-
-;; perl shorts
-(add-hook 'cperl-mode-hook
-  (lambda ()
-    (local-set-key "\C-ch" 'perl-insert-header)))
-
-; Outline-minor-mode key map
-(define-prefix-command 'cm-map nil "Outline-")
-; HIDE
-(define-key cm-map "q" 'hide-sublevels)    ; Hide everything but the top-level heaings
-(define-key cm-map "t" 'hide-body)         ; Hide everything but headings (all bod lines)
-(define-key cm-map "o" 'hide-other)        ; Hide other branches
-(define-key cm-map "c" 'hide-entry)        ; Hide this entry's body
-(define-key cm-map "l" 'hide-leaves)       ; Hide body lines in this entry and subentries
-(define-key cm-map "d" 'hide-subtree)      ; Hide everything in this entry and subentries
-; SHOW
-(define-key cm-map "a" 'show-all)          ; Show (expand) everything
-(define-key cm-map "e" 'show-entry)        ; Show this heading's body
-(define-key cm-map "i" 'show-children)     ; Show this heading's immediate child sb-headings
-(define-key cm-map "k" 'show-branches)     ; Show all sub-headings under this headng
-(define-key cm-map "s" 'show-subtree)      ; Show (expand) everything in this headng & below
-; MOVE
-(define-key cm-map "u" 'outline-up-heading)                ; Up
-(define-key cm-map "n" 'outline-next-visible-heading)      ; Next
-(define-key cm-map "p" 'outline-previous-visible-heading)  ; Previous
-(define-key cm-map "f" 'outline-forward-same-level)        ; Forward - same level
-(define-key cm-map "b" 'outline-backward-same-level)       ; Backward - same level
-(global-set-key "\M-o" cm-map)
 
 (global-unset-key "\C-xc") ;; helm is hogging C-x-x
 (global-set-key "\C-xc"  'magit-status) ;; magit status
