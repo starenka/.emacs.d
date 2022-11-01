@@ -1,5 +1,6 @@
 (defun projectile-after-switch-project-hook ()
   (direx:jump-to-directory)
+  (split-window-vertically (floor (* 0.68 (window-height))))
   (sta:spawn-vterm-and-activate-venv-if-py-project))
 
 
