@@ -5,12 +5,12 @@
   (sta:direx-project-or-direx)
   (sta:spawn-vterm-and-activate-venv-if-py-project))
 
-(use-package helm-projectile :ensure t)
+;;(use-package helm-projectile :ensure t)
 
 (use-package projectile
   :ensure t
   :config
-  (setq projectile-completion-system  'helm
+  (setq ;;projectile-completion-system  'helm
         projectile-enable-caching      t
         helm-projectile-fuzzy-match    nil
         projectile-switch-project-action 'projectile-after-switch-project-hook
@@ -21,7 +21,7 @@
                   "~")
                 projectile-globally-ignored-files))
   (projectile-mode)
-  (helm-projectile-on)
+  ;;(helm-projectile-on)
   (defconst projectile-mode-line-lighter " P"))
 
 (use-package projectile-ripgrep :ensure t)

@@ -2,7 +2,7 @@
 ;; C-h c <key> to get the name
 ;; [C-x] r C-h C-h to show all keys starting with [C-x]
 
-(global-set-key (kbd "C-q f") 'sta:helm-find-files-dwim)
+(global-set-key (kbd "C-q f") 'sta:find-files-dwim)
 
 ;; move buffers between windows
 (global-set-key (kbd "<M-S-up>")     'buf-move-up)
@@ -73,7 +73,7 @@
 (global-set-key [C-f1] 'sta:copy-buffer-file-name-as-kill)
 (global-set-key (kbd "C-q .") 'sta:copy-buffer-file-name-as-kill)
 
-(global-set-key (kbd "C-q d") 'helm-dash-at-point)
+;; (global-set-key (kbd "C-q d") 'helm-dash-at-point)
 
 ;; package upgrades
 ;l(global-set-key (kbd "C-q p") 'spu-package-upgrade)
@@ -117,9 +117,9 @@
 (global-set-key (kbd "C-q s") 'sta:go-to-scratch-buffer)
 (global-set-key (kbd "C-q l") 'sta:region-to-browser)
 
-(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
-(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
-(global-set-key "\M-\C-y"      'helm-show-kill-ring)
+;;(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
+;;(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
+;;(global-set-key "\M-\C-y"      'helm-show-kill-ring)
 
 ;; perl shorts
 (add-hook 'cperl-mode-hook

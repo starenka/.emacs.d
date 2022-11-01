@@ -284,6 +284,16 @@ buffer is not visiting a file."
                        "/"
                        ))))
 
+(defun sta:find-files-dwim ()
+  "Invoke projectile file search / search in buffer dir if available, else /"
+  (interactive)
+  (if (projectile-project-p) ;; detect if current buffer is in a project
+      (projectile-find-file)
+    (find-files (if (buffer-file-name)
+                    (file-name-directory (buffer-file-name))
+                  "/"
+                  ))))
+
 (defun move-line-up ()
   "Move up the current line."
   (interactive)
