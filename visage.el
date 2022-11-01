@@ -17,6 +17,9 @@
                     :foreground "black"
                     :background "goldenrod1")
 
+(set-face-attribute 'mode-line-buffer-id nil
+                    :foreground "goldenrod1")
+
 ;;(set-face-attribute 'helm-source-header nil
 ;;                    :background "#272822"
 ;;                    :foreground "goldenrod1"
