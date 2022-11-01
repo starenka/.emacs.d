@@ -67,10 +67,19 @@
   (setq global-hl-line-mode nil)
   (global-nlinum-mode t))
 
-(use-package idle-highlight-mode
-  :ensure t
-  :config (setq idle-highlight-idle-time .3)
-  :hook ((prog-mode text-mode) . idle-highlight-mode))
+;;(use-package idle-highlight-mode
+;;  :ensure t
+;;  :config (setq idle-highlight-idle-time .3)
+;;  :hook ((prog-mode text-mode) . idle-highlight-mode))
+
+;; hl line on idle
+(use-package hl-line+
+  :straight '(hl-line+
+              :type git
+              :host github
+              :repo "starenka/hl-line-")
+  :config
+  (toggle-hl-line-when-idle 1))
 
 (use-package tramp
   :config
@@ -254,7 +263,7 @@
                        zone-pgm-rat-race
                        zone-pgm-paragraph-spaz
                        zone-pgm-random-life])
-  (zone-when-idle 120)
+  (zone-when-idle 300)
 )
 
 ;; startup time profiler
