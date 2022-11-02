@@ -107,9 +107,7 @@
   :ensure t
   :pin melpa
   :bind (:map deadgrep-mode-map
-              ("t" . sta:deadgrep-file-type))
-  :custom-face
-  (deadgrep-match-face ((nil :foreground "black" :background "goldenrod1"))))
+              ("t" . sta:deadgrep-file-type)))
 
 
 ;; @FIXME (use-package dired-details+ :ensure t)
