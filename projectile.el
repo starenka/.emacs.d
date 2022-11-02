@@ -26,6 +26,7 @@
                   ".class"
                   "~")
                 projectile-globally-ignored-files))
-  (defconst projectile-mode-line-lighter " P"))
+  (defconst projectile-mode-line-lighter " P")
+  (define-key projectile-command-map (kbd "s s") #'deadgrep))
 
 (use-package projectile-ripgrep :ensure t)
