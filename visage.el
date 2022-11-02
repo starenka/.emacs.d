@@ -1,21 +1,26 @@
 (use-package solarized-theme :ensure t)
 (use-package seoul256-theme :ensure t)
-
-;: @FIXME custom-face sets faces globally, not for just particular theme :/
-(use-package monokai-theme
-  :ensure t
-  :pin melpa
-  :custom-face
-  (mode-line-buffer-id ((nil :foreground "goldenrod1")))
-  (deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
-  (selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1"))))
+(use-package nimbus-theme :ensure t)
+(use-package leuven-theme :ensure t)
 
 (use-package nano-theme
   :ensure t
-  :custom-face
-  (mode-line-buffer-id ((nil :foreground "black")))
-  (deadgrep-match-face ((nil :foreground "black" :background "#b4eeb4")))
-  (selectrum-current-candidate ((nil foreground "black" :background "#b4eeb4"))))
+  :config
+  (custom-theme-set-faces
+   'nano
+   '(mode-line-buffer-id ((nil :foreground "black")))
+   '(deadgrep-match-face ((nil :foreground "black" :background "#b4eeb4")))
+   '(selectrum-current-candidate ((nil foreground "black" :background "#b4eeb4")))))
+
+(use-package monokai-theme
+  :ensure t
+  :pin melpa
+  :config
+  (custom-theme-set-faces
+   'monokai
+   '(mode-line-buffer-id ((nil :foreground "goldenrod1")))
+   '(deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
+   '(selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1")))))
 
 
 (set-face-attribute 'default nil
