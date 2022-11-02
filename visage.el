@@ -2,7 +2,13 @@
 (use-package seoul256-theme :ensure t)
 (use-package nimbus-theme :ensure t)
 (use-package leuven-theme :ensure t)
-(use-package twilight-bright-theme :ensure t)
+
+(use-package twilight-bright-theme
+  :ensure t
+  :config
+  (custom-theme-set-faces
+   'twilight-bright
+   '(deadgrep-match-face ((nil :foreground "black" :background "#e3f4ff")))))
 
 (use-package nano-theme
   :ensure t
@@ -22,6 +28,9 @@
    '(mode-line-buffer-id ((nil :foreground "goldenrod1")))
    '(deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
    '(selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1")))))
+
+(load-theme 'twilight-bright t)
+;;(load-theme 'monokai t)
 
 
 (set-face-attribute 'default nil
