@@ -2,6 +2,7 @@
 (use-package seoul256-theme :ensure t)
 (use-package nimbus-theme :ensure t)
 (use-package leuven-theme :ensure t)
+(use-package twilight-bright-theme :ensure t)
 
 (use-package nano-theme
   :ensure t
