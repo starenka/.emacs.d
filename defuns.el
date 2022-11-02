@@ -278,7 +278,7 @@ buffer is not visiting a file."
   "Invoke projectile file search / helm search in buffer dir if available, else /"
   (interactive)
   (if (projectile-project-p) ;; detect if current buffer is in a project
-      (projectile-find-file-dwim-other-window)
+      (projectile-find-file-other-window)
     (helm-find-files-1 (if (buffer-file-name)
                          (file-name-directory (buffer-file-name))
                        "/"
