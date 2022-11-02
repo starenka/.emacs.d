@@ -1,5 +1,5 @@
 (defun lsp-py-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-organize-imports t t)
+  ;;(add-hook 'before-save-hook #'lsp-organize-imports t t)
   (add-hook 'before-save-hook #'lsp-format-buffer t t))
 
 (add-hook 'python-mode-hook 'lsp-py-install-save-hooks)
