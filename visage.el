@@ -7,7 +7,7 @@
   :ensure t
   :config
   (custom-theme-set-faces
-   'nano
+   'nano-light
    '(mode-line-buffer-id ((nil :foreground "black")))
    '(deadgrep-match-face ((nil :foreground "black" :background "#b4eeb4")))
    '(selectrum-current-candidate ((nil foreground "black" :background "#b4eeb4")))))
