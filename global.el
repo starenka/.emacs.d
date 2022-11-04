@@ -169,7 +169,7 @@
 (use-package dot-mode
   :ensure t
   :init
-  (add-hook 'find-file-hooks 'dot-mode-on))
+  (add-hook 'find-file-hook 'dot-mode-on))
 
 (use-package direx :ensure t)
 
