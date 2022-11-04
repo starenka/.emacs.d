@@ -102,7 +102,11 @@
 (use-package buffer-move :ensure t)
 (use-package duplicate-thing :ensure t)
 (use-package ag :ensure t)
-(use-package rg :ensure t)
+(use-package rg
+  :ensure t
+  :config
+  (advice-add 'deadgrep--arguments :filter-return #'sta:deadgrep--include-args))
+
 (use-package deadgrep
   :ensure t
   :pin melpa

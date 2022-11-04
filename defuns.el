@@ -442,3 +442,9 @@ buffer is not visiting a file."
   (rename-buffer
    (deadgrep--buffer-name deadgrep--search-term default-directory) t)
   (deadgrep-restart))
+
+;; https://github.com/Wilfred/deadgrep/issues/24#issuecomment-942290197
+(defun sta:deadgrep--include-args (rg-args)
+  ;;(push "--hidden" rg-args) ;; consider hidden folders/files
+  ;;(push "--hidden" rg-args) ;; consider hidden folders/files
+  (push "--multiline" rg-args))
