@@ -17,7 +17,7 @@
   ;;:defer
   :config
   (load-theme 'twilight-bright t)
-  (company-quickhelp-color-background "white")
+  (setq company-quickhelp-color-background "white")
   ;; (set-face-attribute 'deadgrep-match-face nil :foreground "#cf7900" :background "#fdf9f2")
   (set-face-attribute 'hl-line nil :foreground "black" :background "#e3f4ff"))
 
