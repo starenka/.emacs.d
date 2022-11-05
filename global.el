@@ -83,6 +83,8 @@
   :config
   (toggle-hl-line-when-idle 1))
 
+;; @FIXME (use-package dired-details+ :ensure t)
+
 (use-package tramp
   :config
   (setq tramp-default-method "ssh"))
@@ -107,11 +109,12 @@
               ("t" . sta:deadgrep-file-type)))
 
 
-;; @FIXME (use-package dired-details+ :ensure t)
-;; @FIXME (use-package hl-line+ :ensure t)
-
 (use-package direx
   :ensure t
+  ;;:straight '(direx
+  ;;            :type git
+  ;;            :host github
+  ;;            :repo "starenka/direx")
   :config
   (add-hook 'direx:direx-mode-hook (lambda ()
                             (nlinum-mode -1)
