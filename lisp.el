@@ -1,11 +1,9 @@
 (use-package lisp-mode
   :commands emacs-lisp-mode
-  :config
-  (add-to-list 'completion-styles 'initials t)
+    :config
   (setq
    inferior-lisp-program "/usr/bin/sbcl"
-   slime-contribs '(slime-fancy)
-   tab-always-indent 'complete)
+   slime-contribs '(slime-fancy))
   (add-hook 'slime-mode-hook 'set-up-slime-ac)
   (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
   (eval-after-load "auto-complete"
@@ -18,3 +16,4 @@
 ;;(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
 ;;(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
 ;;(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+
