@@ -124,6 +124,11 @@
 (define-key company-active-map (kbd "<tab>") 'company-select-next)
 (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
+(global-set-key (kbd "C-q v t") 'git-timemachine)
+(global-set-key (kbd "C-q v l") 'magit-log-buffer-file)
+(global-set-key (kbd "C-q v s") 'magit-status)
+(global-set-key (kbd "C-q v b") 'git-timemachine-blame)
+
 ;; helpful
 ;; Note that the built-in `describe-function' includes both functions
 ;; and macros. `helpful-function' is functions only, so we provide
