@@ -1,10 +1,15 @@
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'slime-repl-mode))
-
-(setq inferior-lisp-program "/usr/bin/sbcl")
-(setq slime-contribs '(slime-fancy))
+(use-package lisp-mode
+  :commands emacs-lisp-mode
+  :config
+  (add-to-list 'completion-styles 'initials t)
+  (setq
+   inferior-lisp-program "/usr/bin/sbcl"
+   slime-contribs '(slime-fancy)
+   tab-always-indent 'complete)
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+  (eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'slime-repl-mode)))
 
 ;;(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 ;;(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
