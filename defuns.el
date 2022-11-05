@@ -288,7 +288,7 @@ buffer is not visiting a file."
   "Invoke projectile file search / search in buffer dir if available, else /"
   (interactive)
   (if (projectile-project-p) ;; detect if current buffer is in a project
-      (projectile-find-file-other-window)
+      (projectile-find-file)
     (find-file-other-window (if (buffer-file-name)
                     (file-name-directory (buffer-file-name))
                   "/"
