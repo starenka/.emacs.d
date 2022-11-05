@@ -13,6 +13,11 @@
   (prescient-persist-mode +1))
 
 
+(use-package company-prescient
+  :ensure t
+  :config
+  (company-prescient-mode +1))
+
 ;;(use-package orderless
 ;;  :ensure t
 ;;  :custom
