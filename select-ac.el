@@ -15,12 +15,13 @@
 (use-package selectrum-prescient
   :ensure t
   :config
+  ;; applied in order until one matches
+  (setq prescient-filter-method '(literal regexp initialism fuzzy)))
   ;; to make sorting and filtering more intelligent
   (selectrum-prescient-mode +1)
   ;; to save your command history on disk, so the sorting gets more
   ;; intelligent over time
-  (prescient-persist-mode +1))
-
+  (prescient-persist-mode +1)
 
 ;;(use-package orderless
 ;;  :ensure t
