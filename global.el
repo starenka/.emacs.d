@@ -90,16 +90,6 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
-
-(use-package company
-  :ensure t
-  :config
-  (setq
-   company-minimum-prefix-length 1
-   company-idle-delay 0.0 ;; default is 0.2
-   company-selection-wrap-around t)
-  (global-company-mode t))
-
 (use-package vlf-setup :ensure vlf)
 (use-package goto-chg :ensure t)
 (use-package buffer-move :ensure t)
