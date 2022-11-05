@@ -164,8 +164,6 @@
   :init
   (add-hook 'find-file-hook 'dot-mode-on))
 
-(use-package direx :ensure t)
-
 ;; camel, snake, etc 
 (use-package string-inflection :ensure t)
 
