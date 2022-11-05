@@ -97,7 +97,8 @@
   (setq
    company-minimum-prefix-length 1
    company-idle-delay 0.0 ;; default is 0.2
-   company-selection-wrap-around t))
+   company-selection-wrap-around t)
+  (global-company-mode t))
 
 (use-package vlf-setup :ensure vlf)
 (use-package goto-chg :ensure t)
