@@ -2,6 +2,7 @@
 ;; C-h c <key> to get the name
 ;; [C-x] r C-h C-h to show all keys starting with [C-x]
 
+(global-set-key (kbd "C-q d") 'devdocs-lookup)
 (global-set-key (kbd "C-q f") 'sta:find-files-dwim)
 (global-set-key (kbd "<f5>") #'deadgrep)
 (global-set-key [?\s-s] #'deadgrep)

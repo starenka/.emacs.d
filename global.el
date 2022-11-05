@@ -186,6 +186,8 @@
 ;;  :config
 ;;  (mini-frame-mode +1))
 
+(use-package devdocs :ensure t )
+
 (use-package lua-mode
   :ensure t
   :config

@@ -3,6 +3,20 @@
   (add-hook 'before-save-hook #'lsp-format-buffer t t))
 
 (add-hook 'python-mode-hook 'lsp-py-install-save-hooks)
+(add-hook 'python-mode-hook (lambda ()
+                              (setq-local devdocs-current-docs '(
+                                                                 "bash"
+                                                                 "django~3.2"
+                                                                 ;;"elisp"
+                                                                 ;;"html"
+                                                                 "http"
+                                                                 ;;"javascript"
+                                                                 ;;"lua~5.4"
+                                                                 "postgresql~15"
+                                                                 ;;"python~3.9"
+                                                                 "python~3.10"
+                                                                 ;;"python~3.11"
+                                                                 "redis"))))
 
 (use-package pyvenv
   :ensure t
