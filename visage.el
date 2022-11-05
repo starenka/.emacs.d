@@ -15,11 +15,10 @@
 (use-package twilight-bright-theme
   :ensure t
   :config
-  (custom-theme-set-faces
-   'twilight-bright
-   '(deadgrep-match-face ((nil :foreground "black" :background "#e3f4ff"))))
-  (load-theme 'twilight-bright t))
+  (load-theme 'twilight-bright t)
+  (set-face-attribute 'hl-line nil :foreground "black" :background "#e3f4ff"))
 
+;; this wont work :(
 (custom-theme-set-faces
    'twilight-bright
    '(deadgrep-match-face ((nil :foreground "black" :background "#e3f4ff"))))
