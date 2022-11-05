@@ -13,7 +13,7 @@
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map))
   :config
-  (setq   projectile-enable-caching      t
+  (setq projectile-enable-caching        t
         projectile-switch-project-action 'projectile-after-switch-project-hook
         projectile-git-submodule-command "" ;; don't recursce on submodules
         projectile-globally-ignored-files
