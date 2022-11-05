@@ -16,6 +16,7 @@
   :ensure t
   :config
   (load-theme 'twilight-bright t)
+  ;; (set-face-attribute 'deadgrep-match-face nil :foreground "#cf7900" :background "#fdf9f2")
   (set-face-attribute 'hl-line nil :foreground "black" :background "#e3f4ff"))
 
 ;; this wont work :(
