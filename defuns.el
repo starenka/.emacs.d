@@ -422,11 +422,6 @@ buffer is not visiting a file."
   (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
 
 
-(defun sta:dash-docs-search-str (string)
-     (interactive "sSearch docs: ")
-     (dash-docs-search string))
-
-
 (defun sta:selectrum-yank-pop ()
   (interactive)
   (insert
