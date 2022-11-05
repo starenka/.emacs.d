@@ -62,7 +62,6 @@
 (load-user-file "global.el")
 (load-user-file "term.el")
 
-;;(load-user-file "helm.el")
 (load-user-file "selectrum.el")
 (load-user-file "projectile.el")
 (load-user-file "flycheck.el")

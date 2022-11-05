@@ -102,9 +102,7 @@
 (global-set-key (kbd "C-q l") 'sta:region-to-browser)
 
 (global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)
-;;(global-set-key (kbd "C-x y")  'helm-show-kill-ring)
 
-(global-unset-key "\C-xc") ;; helm is hogging C-x-x
 (global-set-key "\C-xc"  'magit-status) ;; magit status
 
 ;; edit files as root

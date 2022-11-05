@@ -5,20 +5,15 @@
   (sta:direx-project-or-direx)
   (sta:spawn-vterm-and-activate-venv-if-py-project))
 
-;;(use-package helm-projectile :ensure t)
-
 (use-package projectile
   :ensure t
   :init
   (projectile-mode +1)
-  ;;(helm-projectile-on)
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map))
   :config
   (setq   projectile-enable-caching      t
-        ;;projectile-completion-system  'helm
-        ;;helm-projectile-fuzzy-match    nil
         projectile-switch-project-action 'projectile-after-switch-project-hook
         projectile-git-submodule-command "" ;; don't recursce on submodules
         projectile-globally-ignored-files
