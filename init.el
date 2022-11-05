@@ -66,7 +66,6 @@
 (load-user-file "selectrum.el")
 (load-user-file "projectile.el")
 (load-user-file "flycheck.el")
-(load-user-file "magit.el")
 
 (load-user-file "lsp.el")
 (load-user-file "pythons.el")

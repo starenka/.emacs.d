@@ -179,6 +179,14 @@
 ;; lisp AC
 (use-package ac-slime :ensure t)
 
+(use-package magit
+  :ensure t
+  :config
+ ;;(setq magit-diff-auto-show 't) ; dont show diffs on comit and such
+  )
+
+(use-package git-timemachine :ensure t)
+
 ;;(use-package mini-frame
 ;;  :ensure t
 ;;  :config
