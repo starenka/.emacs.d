@@ -7,6 +7,7 @@
 ;;(desktop-save-mode 1) ;; save on exit
 (global-auto-revert-mode t) ;; sync buffers on disk change
 (set-default 'fill-column 90) ;; Line-wrapping
+(windmove-default-keybindings) ;;navigate between windows w/ shift+arrows
 
 ;;(initial-buffer-choice "~/TODO")
 ;;(display-battery-mode t) ;; Show battery stats
@@ -30,6 +31,7 @@
 ;; evaluate defun        C-M-x
 
 " ;; don't fuck w/ my scratches
+  windmove-wrap-around t
 )
 
 (setq-default

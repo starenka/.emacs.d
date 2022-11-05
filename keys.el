@@ -12,8 +12,6 @@
 (global-set-key (kbd "<M-S-left>")   'buf-move-left)
 (global-set-key (kbd "<M-S-right>")  'buf-move-right)
 
-(global-set-key (kbd "<C-x-B>")  'buffer-menu)
-
 ;; prev/next buffer kb
 (global-set-key (kbd "<C-x-left>")    'previous-buffer)
 (global-set-key (kbd "<C-x-right>")   'next-buffer)
@@ -25,15 +23,8 @@
 ;; move lines
 (global-set-key [(meta up)]  'move-line-up)
 (global-set-key [(meta down)]  'move-line-down)
-(global-set-key [(meta super up)]  'move-text-up)
-(global-set-key [(meta super down)]  'move-text-down)
 
 ;;(global-set-key (kbd "C-i") 'sta:delete-line-no-kill)
-
-(global-unset-key "\M-.")
-(global-set-key (kbd "M-.") 'avy-goto-word-1)
-(global-unset-key "\M-,")
-(global-set-key (kbd "M-,") 'avy-goto-char-2)
 
 ;; shell
 (global-set-key "\C-x/"  'sta:get-term)
@@ -67,10 +58,6 @@
 ;; comment-dwim
 (global-set-key [?\C-=] 'comment-dwim)
 
-;;navigate between windows w/ shift+arrows
-(windmove-default-keybindings)
-(setq windmove-wrap-around t)
-
 ;; show file name
 (global-set-key [C-f1] 'sta:copy-buffer-file-name-as-kill)
 (global-set-key (kbd "C-q .") 'sta:copy-buffer-file-name-as-kill)
@@ -78,18 +65,13 @@
 (global-set-key (kbd "C-q d") 'sta:dash-docs-search-str)
 
 ;; package upgrades
-;l(global-set-key (kbd "C-q p") 'spu-package-upgrade)
 (global-set-key (kbd "C-q p") 'list-packages)
  ;;multiple cursors
-(global-set-key (kbd "C-q m") 'mc/edit-lines)
+;;(global-set-key (kbd "C-q m") 'mc/edit-lines)
 
 ;; indent shorcuts
 (global-set-key (kbd "C->") 'increase-left-margin)
 (global-set-key (kbd "C-<") 'decrease-left-margin)
-
-
-;; ace jump
-;;(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; run current file
 ;;(global-set-key "\C-x." 'sta:run-current-file)
