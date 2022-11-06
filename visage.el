@@ -4,6 +4,12 @@
                     :weight 'normal
                     :width 'normal)
 
+(set-face-attribute 'variable-pitch nil
+                    :family "DejaVu Sans Book"
+                    :height 85
+                    :weight 'normal
+                    :width 'normal)
+
 (copy-face 'default 'fixed-pitch)
 
 ;;(use-package solarized-theme :ensure t)
