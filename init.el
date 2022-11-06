@@ -54,8 +54,7 @@
 
 ;; store customized vars in separate file
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file 'noerror)
-;;(setq custom-file null-device)
+;;(load custom-file 'noerror)
 
 
 (load-user-file "defuns.el")
