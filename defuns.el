@@ -1,3 +1,5 @@
+;; window pimp funcs
+
 (defun sta:two-col-split ()
   "spawn left window and set its width"
   (interactive)
@@ -6,6 +8,7 @@
   (other-window 1))
 
 (defun sta:direx-split ()
+  "[x|direx]"
   (interactive)
   (direx:jump-to-directory)
   (sta:two-col-split))
@@ -28,6 +31,51 @@
   (sta:get-term)
   (other-window 2))
 
+;; browser funcs
+
+(defun sta:vivaldi (url)
+  "opens url in vivaldi and switches to coresponding awesome tag"
+  (save-window-excursion
+    (async-shell-command (format "vivaldi '%s' > /dev/null; echo 'awful.screen.focused().tags[4]:view_only()' | awesome-client" url))))
+
+(defun sta:firefox (url)
+  "opens url in firefox and switches to coresponding awesome tag"
+  (save-window-excursion
+    (async-shell-command (format "firefox '%s' > /dev/null; echo 'awful.screen.focused().tags[3]:view_only()' | awesome-client" url))))
+
+(defun sta:google (string)
+  "googles phrase and switches to coresponding awesome tag"
+  (interactive "sGoogle for: ")
+  (sta:vivaldi (format "https://www.google.com/search?q=%s" string)))
+
+(defun sta:translate (from to string)
+  "sends str to google translate and switches to coresponding awesome tag"
+  (sta:vivaldi (format "http://translate.google.com/#%s/%s/%s" from to string)))
+
+(defun sta:translate-to-en (string)
+   "translates to english via GT and switches to coresponding awesome tag"
+  (interactive "scs->en: ")
+  (sta:translate "cs" "en" string))
+
+(defun sta:show-http-response-in-browser ()
+  "Sends RESTclient response in browser"
+  (interactive)
+  (let ((fname "/tmp/emacs_http_response.html")
+        (buffname "*HTTP Response*"))
+    (if (not (get-buffer buffname))
+        (message (format "No %s buffer found, sorry." buffname))
+        (switch-to-buffer buffname)
+        (write-file fname)
+        (kill-buffer)
+      (sta:firefox fname))))
+
+(defun sta:region-to-browser (start end)
+  "Sends region to browser"
+  (interactive "r")
+  (sta:firefox (buffer-substring start end)))
+
+;; unsorted stuff
+
 (defun sta:kill-start-of-line ()
   "kill from point to start of line"
   (interactive)
@@ -35,30 +83,19 @@
 
 (defun sta:kill-line-no-kr ()
   "kill line but dont use kill ring"
+  (interactive)
   (delete-region (point) (line-end-position)))
 
-(defun sta:vivaldi (url)
-  (save-window-excursion
-    (async-shell-command (format "vivaldi '%s' > /dev/null; echo 'awful.screen.focused().tags[4]:view_only()' | awesome-client" url))))
-
-(defun sta:firefox (url)
-  (save-window-excursion
-    (async-shell-command (format "firefox '%s' > /dev/null; echo 'awful.screen.focused().tags[3]:view_only()' | awesome-client" url))))
-
-(defun sta:google (string)
-  "runs sta:vivaldi w/ googled phrase and switches desktop"
-  (interactive "sGoogle for: ")
-  (sta:vivaldi (format "https://www.google.com/search?q=%s" string)))
-
-(defun sta:translate (from to string)
-  (sta:vivaldi (format "http://translate.google.com/#%s/%s/%s" from to string)))
-
-(defun sta:translate-to-en (string)
-  (interactive "scs->en: ")
-  (sta:translate "cs" "en" string))
+(defun sta:delete-line-no-kill ()
+  "Delete line w/out kill"
+  (interactive)
+  (delete-region
+   (point)
+   (save-excursion (move-end-of-line 1) (point)))
+ (delete-char 1))
 
 (defun sta:last-term-buffer (l)
-  "Return most recently used term buffer."
+  "Return most recently used term buffer"
   (when l
     (if (eq 'vterm-mode (with-current-buffer (car l) major-mode))
         (car l) (sta:last-term-buffer (cdr l)))))
@@ -83,32 +120,26 @@ buffer read-only, so I suggest setting kill-read-only-ok to t."
   (toggle-read-only 0))
 
 (defun sta:ido-switch-bookmark ()
+  "Jumps to bookmark"
   (interactive)
   (bookmark-jump
    (ido-completing-read "Jump to bookmark: " (bookmark-all-names))))
 
 (defun sta:ido-delete-bookmark ()
+  "Deletes boomkmark"
   (interactive)
   (bookmark-delete
    (ido-completing-read "Delete bookmark: " (bookmark-all-names))))
 
-
 (defun sta:projectile-bookmark-set (name)
+  "Sets bookmark"
   (interactive (list
                 (read-string (format "Bookmark name (%s): " (concat (projectile-project-name) "/"))
                              (concat (projectile-project-name) "/") nil (thing-at-point 'name))))
   (bookmark-set name))
 
-;; Ctrl-K with no kill
-(defun sta:delete-line-no-kill ()
-  "Delete line w/out kill"
-  (interactive)
-  (delete-region
-   (point)
-   (save-excursion (move-end-of-line 1) (point)))
- (delete-char 1))
-
 ;; (defun sta:direx:create-file ()
+;;   "creates file in direx at point"
 ;;   (interactive)
 ;;   (let* ((item (direx:item-at-point!))
 ;;          (file (direx:item-tree item))
@@ -121,7 +152,6 @@ buffer read-only, so I suggest setting kill-read-only-ok to t."
 ;;     (find-file fname)
 ;;     (direx:item-refresh-parent item)
 ;;     (direx:move-to-item-name-part item)))
-
 
 (defun sta:sudo-edit (&optional arg)
   "Edit currently visited file as root.
@@ -136,33 +166,19 @@ buffer is not visiting a file."
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))) ;;su::2
 
 (defun sta:reformat-xml ()
+  "Reformats xml, good for oneliners"
   (interactive)
   (save-excursion
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
-(defun sta:show-http-response-in-browser ()
-  (interactive)
-  (let ((fname "/tmp/emacs_http_response.html")
-        (buffname "*HTTP Response*"))
-    (if (not (get-buffer buffname))
-        (message (format "No %s buffer found, sorry." buffname))
-        (switch-to-buffer buffname)
-        (write-file fname)
-        (kill-buffer)
-      (sta:firefox fname))))
-
-(defun sta:region-to-browser (start end)
-  (interactive "r")
-  (sta:firefox (buffer-substring start end)))
-
 (defun sta:go-to-scratch-buffer ()
+  "Switches to scratch"
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-
 (defun sta:ascii-translit-region (start end)
-  "ASCIIfy region"
+  "ASCIIfies region"
   (interactive "r")
   (shell-command-on-region start end
                            "iconv -t ASCII//TRANSLIT"
@@ -201,7 +217,7 @@ buffer is not visiting a file."
   (indent-according-to-mode))
 
 (defun sta:diff-last-two-kills ()
-  "Write the last two kills to temporary files and diff them."
+  "Write the last two kills to temporary files and diff 'em."
   (interactive)
   (let ((old "/tmp/old-kill") (new "/tmp/new-kill"))
     (with-temp-file new
@@ -222,8 +238,7 @@ buffer is not visiting a file."
    "."))
 
 (defun sta:copy-buffer-file-name-as-kill (choice)
-  "Copyies the buffer file stuffs to the kill-ring."
-  
+  "Copyies the buffer file name/path/python path/directory etc to the kill-ring."
   (interactive "cKill (p) python path, (i) python import, (f) file path, (n) file name, (d) directory, (b) buffer name, (m) buffer mmode")
   (let ((new-kill-string)
         (name (if (eq major-mode 'dired-mode)
@@ -249,7 +264,7 @@ buffer is not visiting a file."
       (kill-new new-kill-string))))
 
 (defun sta:zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
+    "Choose zoneprg for `zone'."
     (interactive
      (list
       (completing-read
@@ -258,24 +273,14 @@ buffer is not visiting a file."
     (let ((zone-programs (list (intern pgm))))
       (zone)))
 
-(defun spacemacs//helm-hide-minibuffer-maybe ()
-  "Hide minibuffer in Helm session if we use the header line as input field."
-  (when (with-helm-buffer helm-echo-input-in-header-line)
-    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-      (overlay-put ov 'window (selected-window))
-      (overlay-put ov 'face
-                   (let ((bg-color (face-background 'default nil)))
-                     `(:background ,bg-color :foreground ,bg-color)))
-      (setq-local cursor-type nil))))
-
 ;; https://emacsredux.com/blog/2013/06/25/boost-performance-by-leveraging-byte-compilation/
 (defun er-byte-compile-init-dir ()
   "Byte-compile all your dotfiles."
   (interactive)
   (byte-recompile-directory user-emacs-directory 0))
 
-
 (defun sta:activate-venv-in-project-vterm (venv)
+  "Activates project virtualenv in term"
   (require 'multi-vterm)
   (switch-to-buffer (multi-vterm-project-get-buffer-name))
   (vterm--goto-line -1)
@@ -283,8 +288,8 @@ buffer is not visiting a file."
   (vterm-send-return)
   (vterm-send-C-l))
 
-
 (defun sta:spawn-vterm-and-activate-venv-if-py-project ()
+  "If pyvenv-virtual-env-name is set (.dir-locals f.e.) and it 'is a python project', spawn term with virtualenv"
   (require 'projectile)
   (require 'multi-vterm)
   (require 'pyvenv)
@@ -294,19 +299,20 @@ buffer is not visiting a file."
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
 
 (defun sta:direx-project-or-direx ()
+  "Open direx in project root or file dir"
   (interactive)
   (require 'projectile)
   (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
 
-
 (defun sta:selectrum-yank-pop ()
+  "Copies item from killring"
   (interactive)
   (insert
    (selectrum-read "Search kill ring: "
                    (mapcar 'identity kill-ring))))
 
 (defun sta:deadgrep-file-type ()
-  "Prompt the user for a new file type, then restart the search."
+  "Prompt the user for a new file type, then restart the search in deadgrep"
   (interactive)
   (let ((new-file-type
          (deadgrep--read-file-type deadgrep--initial-filename)))
@@ -317,10 +323,12 @@ buffer is not visiting a file."
 
 ;; https://github.com/Wilfred/deadgrep/issues/24#issuecomment-942290197
 (defun sta:deadgrep--include-args (rg-args)
+  "Adds flags to rigrep"
   ;;(push "--hidden" rg-args) ;; consider hidden folders/files
   (push "--multiline" rg-args))
 
 (defun sta:mastering-emacs ()
+  "Open the bible"
   (interactive)
   (find-file-other-window "/data/bookz-tutorial/mastering-emacs-v4.epub")
   (text-scale-set 2))
