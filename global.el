@@ -53,9 +53,6 @@
 ;;(setq whitespace-style '(face lines-tail))
 ;;(add-hook 'prog-mode-hook 'whitespace-mode)
 
-;; chmod+x files w/ shebang
-;; (add-hook 'after-save-hook 'sta:make-script-executable)
-
 ;; show matching parens
 (use-package paren-face
   :ensure t

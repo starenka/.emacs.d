@@ -23,8 +23,8 @@
 (global-set-key (kbd "<s-SPC>") 'just-one-space)
 
 ;; move lines
-(global-set-key [(meta up)]  'move-line-up)
-(global-set-key [(meta down)]  'move-line-down)
+(global-set-key [(meta up)]  'sta:move-line-up)
+(global-set-key [(meta down)]  'sta:move-line-down)
 
 ;;(global-set-key (kbd "C-i") 'sta:delete-line-no-kill)
 
@@ -72,9 +72,6 @@
 ;; indent shorcuts
 (global-set-key (kbd "C->") 'increase-left-margin)
 (global-set-key (kbd "C-<") 'decrease-left-margin)
-
-;; run current file
-;;(global-set-key "\C-x." 'sta:run-current-file)
 
 ;; boomkarks
 ;;(define-key global-map [f8] 'bookmark-jump)

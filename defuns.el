@@ -72,11 +72,6 @@ none exists, or if the current buffer is already a term."
         (multi-vterm)
       (switch-to-buffer b))))
 
-(defun sta:show-file-name ()
-  "Show the full path file name in the minibuffer."
-  (interactive)
-  (message (buffer-file-name)))
-
 (defun sta:copy-line (&optional arg)
   "Do a kill-line but copy rather than kill.  This function directly calls
 kill-line, so see documentation of kill-line for how to use it including prefix
@@ -87,57 +82,10 @@ buffer read-only, so I suggest setting kill-read-only-ok to t."
   (kill-line arg)
   (toggle-read-only 0))
 
-
-(defun sta:make-script-executable ()
-  "If file starts with a shebang, make `buffer-file-name' executable"
-  (save-excursion
-    (save-restriction
-      (widen)
-      (goto-char (point-min))
-      (when (and (looking-at "^#!")
-                 (not (file-executable-p buffer-file-name)))
-        (set-file-modes buffer-file-name
-                        (logior (file-modes buffer-file-name) #o100))
-        (message (concat "Made " buffer-file-name " executable"))))))
-
-(defun sta:run-current-file ()
-  "Runs current file"
-  (interactive)
-  (let* (
-         (suffs
-          `(
-            ("py" . "python")
-            ("lua" . "lua")
-            ("pl" . "perl")
-            ("rb" . "ruby")
-            ("js" . "node")
-            ("sh" . "bash")
-            ("php" . "php")
-            )
-          )
-         (file-name (buffer-file-name))
-         (suff (file-name-extension file-name))
-         (executable (cdr (assoc suff suffs)))
-         (cmd (concat executable " \""   file-name "\""))
-         )
-    (when (buffer-modified-p)
-      (when (y-or-n-p "Buffer modified. Do you want to save first?")
-        (save-buffer)))
-
-    (if (string-equal suff "el") ; special case for emacs lisp
-        (load (file-name-sans-extension file-name))
-      (if executable
-          (progn
-            (message "Running…")
-            (shell-command cmd "*sta:run-current-file output*" ))
-        (message "No recognized program file suffix for this file.")))))
-
-
 (defun sta:ido-switch-bookmark ()
   (interactive)
   (bookmark-jump
    (ido-completing-read "Jump to bookmark: " (bookmark-all-names))))
-
 
 (defun sta:ido-delete-bookmark ()
   (interactive)
@@ -151,51 +99,14 @@ buffer read-only, so I suggest setting kill-read-only-ok to t."
                              (concat (projectile-project-name) "/") nil (thing-at-point 'name))))
   (bookmark-set name))
 
-
-(defun sta:python-insert-header ()
-  "insert python file header at the start of buffer"
-  (interactive)
-  (beginning-of-buffer)
-  (insert "# coding=utf-8
-"))
-
-(defun sta:python-insert-header-full ()
-  "insert python file header at the start of buffer"
-  (interactive)
-  (beginning-of-buffer)
-  (insert "#!/usr/bin/env python
-# coding=utf-8
-
-"))
-
-(defun sta:python-insert-gettext ()
-  "insert python gettext shortcut"
-  (interactive)
-  (insert "_(u'')")
-  (left-char 2))
-
-
-(defun sta:python-annotate-junk ()
-  (interactive)
-  ;;(highlight-lines-matching-regexp "import i?pdb")
-  (highlight-lines-matching-regexp "i?pdb.set_trace()")
-  ;;(highlight-lines-matching-regexp "^p?print(?")
-  (highlight-lines-matching-regexp "assert False"))
-
-(defun sta:nowplaying ()
-  (concat "♫ "
-          (shell-command-to-string
-           "export PYTHONIOENCODING=UTF-8; /home/starenka/bin/sta:nowplaying")))
-
 ;; Ctrl-K with no kill
 (defun sta:delete-line-no-kill ()
+  "Delete line w/out kill"
   (interactive)
   (delete-region
    (point)
    (save-excursion (move-end-of-line 1) (point)))
- (delete-char 1)
-)
-
+ (delete-char 1))
 
 ;; (defun sta:direx:create-file ()
 ;;   (interactive)
@@ -224,13 +135,11 @@ buffer is not visiting a file."
                          (ido-read-file-name "Find file(as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name)))) ;;su::2
 
-
 (defun sta:reformat-xml ()
   (interactive)
   (save-excursion
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
-
 
 (defun sta:show-http-response-in-browser ()
   (interactive)
@@ -243,11 +152,9 @@ buffer is not visiting a file."
         (kill-buffer)
       (sta:firefox fname))))
 
-
 (defun sta:region-to-browser (start end)
   (interactive "r")
   (sta:firefox (buffer-substring start end)))
-
 
 (defun sta:go-to-scratch-buffer ()
   (interactive)
@@ -261,28 +168,12 @@ buffer is not visiting a file."
                            "iconv -t ASCII//TRANSLIT"
                            (current-buffer) t))
 
-
 (defun sta:snakecase-translit-region (start end)
   "Makes region snake_case"
   (interactive "r")
   (downcase-region start end)
   (sta:ascii-translit-region start end)
   (subst-char-in-region start end ?\s (string-to-char "_")))
-
-
-(defun sta:autopyvenv ()
-  (pyvenv-activate (format "%s/.env" (projectile-project-root))))
-
-
-(defun sta:helm-find-files-dwim ()
-  "Invoke projectile file search / helm search in buffer dir if available, else /"
-  (interactive)
-  (if (projectile-project-p) ;; detect if current buffer is in a project
-      (projectile-find-file-other-window)
-    (helm-find-files-1 (if (buffer-file-name)
-                         (file-name-directory (buffer-file-name))
-                       "/"
-                       ))))
 
 (defun sta:find-files-dwim ()
   "Invoke projectile file search / search in buffer dir if available, else /"
@@ -294,14 +185,14 @@ buffer is not visiting a file."
                   "/"
                   ))))
 
-(defun move-line-up ()
+(defun sta:move-line-up ()
   "Move up the current line."
   (interactive)
   (transpose-lines 1)
   (forward-line -2)
   (indent-according-to-mode))
 
-(defun move-line-down ()
+(defun sta:move-line-down ()
   "Move down the current line."
   (interactive)
   (forward-line 1)
@@ -309,8 +200,7 @@ buffer is not visiting a file."
   (forward-line -1)
   (indent-according-to-mode))
 
-
-(defun diff-last-two-kills ()
+(defun sta:diff-last-two-kills ()
   "Write the last two kills to temporary files and diff them."
   (interactive)
   (let ((old "/tmp/old-kill") (new "/tmp/new-kill"))
@@ -320,20 +210,8 @@ buffer is not visiting a file."
       (insert (current-kill 1 t)))
     (diff old new "-u" t)))
 
-
-(defun sta:fpath-to-clipboard ()
-  "Put the current file name on the clipboard"
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (when filename
-      (let ((x-select-enable-clipboard t)) (kill-new filename))
-      (message filename))))
-
-
-
 (cl-defun sta:get-file-python-path (fpath &optional (dominating-file ".flake8"))
+  "Construts file python import path based on .flake8 file position"
   (string-join
    (split-string
     (file-name-sans-extension
@@ -370,8 +248,7 @@ buffer is not visiting a file."
       (message "\"%s\" killed" new-kill-string)
       (kill-new new-kill-string))))
 
-
-(defun zone-choose (pgm)
+(defun sta:zone-choose (pgm)
     "Choose a PGM to run for `zone'."
     (interactive
      (list
