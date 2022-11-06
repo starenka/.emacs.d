@@ -139,7 +139,8 @@
   :ensure t
   :config
   ;; Prevent undo tree files from polluting conf dir
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
+        undo-tree-visualizer-timestamps t)
   (global-undo-tree-mode))
 
 ;; show help while pressing part of the chord f.e M-q
