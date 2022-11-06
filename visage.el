@@ -5,8 +5,8 @@
                     :width 'normal)
 
 (set-face-attribute 'variable-pitch nil
-                    :family "DejaVu Sans Book"
-                    :height 85
+                    :family "Noto Sans"
+                    :height 90
                     :weight 'normal
                     :width 'normal)
 
