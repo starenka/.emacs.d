@@ -191,14 +191,6 @@
   :config
   (setq avy-all-windows t))
 
-(use-package flyspell-correct
-  :ensure t
-  :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
-
-(dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode t))))
-
 (use-package lua-mode
   :ensure t
   :config

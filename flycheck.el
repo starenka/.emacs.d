@@ -35,6 +35,14 @@
   (add-hook 'python-mode-hook 'flycheck-mode)
   )
 
-
-
 (eval-after-load 'flymake '(require 'flymake-cursor))
+
+(use-package flyspell-correct
+  :ensure t
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode t))))
+
+
