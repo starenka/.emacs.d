@@ -25,11 +25,12 @@
 (use-package monokai-theme
   :ensure t
   :pin melpa
-  :defer
-  :custom-face
-  (mode-line-buffer-id ((nil :foreground "goldenrod1")))
-  (deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
-  (selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1")))
+  :defer t
   :config
+  (custom-theme-set-faces
+   'monokai
+   '(mode-line-buffer-id ((nil :foreground "goldenrod1")))
+   '(deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
+   '(selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1"))))
   (load-theme 'monokai t))
 
