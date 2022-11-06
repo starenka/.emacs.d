@@ -106,7 +106,7 @@ none exists, or if the current buffer is already a term."
   (interactive)
   (let ((b (sta:last-term-buffer (buffer-list))))
     (if (or (not b) (eq 'vterm-mode major-mode))
-        (multi-vterm)
+        (multi-vterm-project)
       (switch-to-buffer b))))
 
 (defun sta:copy-line (&optional arg)
