@@ -90,9 +90,15 @@
 (put 'upcase-region 'disabled nil)
 
 (use-package vlf-setup :ensure vlf)
-(use-package goto-chg :ensure t)
+(use-package goto-chg
+  :ensure t
+  :bind ("C-M-r" . goto-last-change))
+
 (use-package buffer-move :ensure t)
-(use-package duplicate-thing :ensure t)
+(use-package duplicate-thing
+  :ensure t
+  :bind ("C-S-d" . duplicate-thing))
+
 (use-package ag :ensure t)
 (use-package rg
   :ensure t
@@ -128,6 +134,7 @@
 ;; yasnippets everywhere
 (use-package yasnippet
   :ensure t
+  :bind ("M-s" . yas-expand)
   :config
   (setq yas-prompt-functions '(yas/ido-prompt))
   (yas-global-mode 1))
@@ -152,7 +159,14 @@
 
 (winner-mode t)
 
-(use-package helpful :ensure t)
+(use-package helpful
+  :ensure t
+  :bind (("C-h f"   . helpful-callable)
+         ("C-h v"   . helpful-variable)
+         ("C-h k"   . helpful-key)
+         ("C-c C-d" . helpful-at-point)
+         ("C-h F"   . helpful-function)
+         ("C-h C"   . helpful-command)))
 
 ;; find symbol at point
 (use-package smartscan
@@ -166,28 +180,39 @@
   (add-hook 'find-file-hook 'dot-mode-on))
 
 ;; camel, snake, etc 
-(use-package string-inflection :ensure t)
+(use-package string-inflection
+  :ensure t
+  :bind ("C-q u" . string-inflection-cycle))
 
 ;; lisp AC
 (use-package ac-slime :ensure t)
 
 (use-package magit
   :ensure t
-  :config
- ;;(setq magit-diff-auto-show 't) ; dont show diffs on comit and such
-  )
+  :bind (("C-x c" . magit-status)
+         ("C-q v l" . magit-log-buffer-file)
+         ("C-q v s" . magit-status)))
+  ;;:config
+  ;;(setq magit-diff-auto-show 't) ; dont show diffs on comit and such
 
-(use-package git-timemachine :ensure t)
+
+(use-package git-timemachine
+  :ensure t
+  :bind (("C-q v t" . git-timemachine)
+         ("C-q v b" . git-timemachine-blame)))
 
 ;;(use-package mini-frame
 ;;  :ensure t
 ;;  :config
 ;;  (mini-frame-mode +1))
 
-(use-package devdocs :ensure t )
+(use-package devdocs
+  :ensure t
+  :bind ("C-q d" . 'devdocs-lookup))
 
 (use-package avy
   :ensure t
+  :bind ("s-." . avy-goto-char-2)
   :config
   (setq avy-all-windows t))
 

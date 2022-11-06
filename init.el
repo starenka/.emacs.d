@@ -56,6 +56,8 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
+;; my "prefix"
+(global-unset-key (kbd "C-q"))
 
 (load-user-file "defuns.el")
 (load-user-file "global.el")
