@@ -12,6 +12,7 @@ games/*
 el-get/*
 eln-cache/*
 elpa/*
+nov-places
 projectile-bookmarks.eld
 projectile.cache
 straight/*
