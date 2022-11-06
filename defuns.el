@@ -445,5 +445,5 @@ buffer is not visiting a file."
 
 (defun sta:mastering-emacs ()
   (interactive)
-  (find-file-other-window "/data/bookz-tutorial/mastering-emacs-v4.epub"))
-
+  (find-file-other-window "/data/bookz-tutorial/mastering-emacs-v4.epub")
+  (text-scale-set 2))
