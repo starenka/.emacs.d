@@ -13,9 +13,9 @@
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map))
   :config
-        projectile-switch-project-action 'projectile-after-switch-project-hook
+  (setq projectile-switch-project-action 'projectile-after-switch-project-hook
         projectile-git-submodule-command "" ;; don't recursce on submodules
-        (setq ;;projectile-enable-caching t ;; wont recognize new files sometimes
+        ;;projectile-enable-caching t ;; wont recognize new files sometimes
         projectile-globally-ignored-files
         (append '(".pyc"
                   ".class"
