@@ -191,8 +191,7 @@
 (use-package avy
   :ensure t
   :config
-  (setq avy-all-windows t)
-  (global-set-key (kbd "s-.") 'avy-goto-char-2))
+  (setq avy-all-windows t))
 
 (use-package lua-mode
   :ensure t
