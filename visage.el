@@ -15,27 +15,21 @@
 (use-package twilight-bright-theme
   :ensure t
   ;;:defer
+  :custom-face
+  (hl-line ((nil :foreground "black" :background "#e3f4ff")))
+  (deadgrep-match-face ((nil :foreground "#cf7900" :background "#fdf9f2")))
   :config
   (load-theme 'twilight-bright t)
-  (setq company-quickhelp-color-background "white")
-  ;; (set-face-attribute 'deadgrep-match-face nil :foreground "#cf7900" :background "#fdf9f2")
-  (set-face-attribute 'hl-line nil :foreground "black" :background "#e3f4ff"))
-
-;; this wont work :(
-(custom-theme-set-faces
-   'twilight-bright
-   '(deadgrep-match-face ((nil :foreground "black" :background "#e3f4ff"))))
-;;(set-face-attribute 'deadgrep-match-face nil :foreground "black" :background "#e3f4ff") ;; https://www.reddit.com/r/emacs/comments/4v7tcj/comment/d5wyu1r/?utm_source=reddit&utm_medium=web2x&context=3
+  (setq company-quickhelp-color-background "white"))
 
 (use-package monokai-theme
   :ensure t
   :pin melpa
   :defer
+  :custom-face
+  (mode-line-buffer-id ((nil :foreground "goldenrod1")))
+  (deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
+  (selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1")))
   :config
-  (custom-theme-set-faces
-   'monokai
-   '(mode-line-buffer-id ((nil :foreground "goldenrod1")))
-   '(deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
-   '(selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1"))))
   (load-theme 'monokai t))
 
