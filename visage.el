@@ -24,6 +24,7 @@
   :custom-face
   (hl-line ((nil :foreground "black" :background "#e3f4ff")))
   (deadgrep-match-face ((nil :foreground "#cf7900" :background "#fdf9f2")))
+  (web-mode-current-column-highlight-face ((nil :background "#e3f4ff")))
   :config
   (load-theme 'twilight-bright t)
   (setq company-quickhelp-color-background "white"))
