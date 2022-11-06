@@ -4,13 +4,17 @@
                     :weight 'normal
                     :width 'normal)
 
-(set-face-attribute 'variable-pitch nil
-                    :family "Noto Sans"
-                    :height 90
+(set-face-attribute 'fixed-pitch nil
+                    :family "DejaVu Sans Mono"
+                    :height 1.0 ;; relative to default
                     :weight 'normal
                     :width 'normal)
 
-(copy-face 'default 'fixed-pitch)
+(set-face-attribute 'variable-pitch nil
+                    :family "Noto Sans"
+                    :height 1.0 ;; relative to default
+                    :weight 'normal
+                    :width 'normal)
 
 ;;(use-package solarized-theme :ensure t)
 ;;(use-package seoul256-theme :ensure t)
