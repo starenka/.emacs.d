@@ -6,6 +6,7 @@
 (global-set-key (kbd "C-q f") 'sta:find-files-dwim)
 (global-set-key (kbd "<f5>") #'deadgrep)
 (global-set-key [?\s-s] #'deadgrep)
+(global-set-key (kbd "s-.") 'avy-goto-char-2)
 
 ;; move buffers between windows
 (global-set-key (kbd "<M-S-up>")     'buf-move-up)

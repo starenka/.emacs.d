@@ -188,6 +188,12 @@
 
 (use-package devdocs :ensure t )
 
+(use-package avy
+  :ensure t
+  :config
+  (setq avy-all-windows t)
+  (global-set-key (kbd "s-.") 'avy-goto-char-2))
+
 (use-package lua-mode
   :ensure t
   :config
