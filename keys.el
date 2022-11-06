@@ -154,3 +154,5 @@
 ;; don't find this very useful, but it's frequently useful to only
 ;; look at interactive functions.
 (global-set-key (kbd "C-h C") #'helpful-command)
+
+(global-set-key (kbd "C-h C-b") 'sta:mastering-emacs)

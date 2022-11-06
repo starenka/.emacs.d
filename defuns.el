@@ -441,5 +441,9 @@ buffer is not visiting a file."
 ;; https://github.com/Wilfred/deadgrep/issues/24#issuecomment-942290197
 (defun sta:deadgrep--include-args (rg-args)
   ;;(push "--hidden" rg-args) ;; consider hidden folders/files
-  ;;(push "--hidden" rg-args) ;; consider hidden folders/files
   (push "--multiline" rg-args))
+
+(defun sta:mastering-emacs ()
+  (interactive)
+  (find-file-other-window "/data/bookz-tutorial/mastering-emacs-v4.epub"))
+
