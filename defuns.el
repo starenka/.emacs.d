@@ -327,6 +327,32 @@ buffer is not visiting a file."
   ;;(push "--hidden" rg-args) ;; consider hidden folders/files
   (push "--multiline" rg-args))
 
+(defun sta:magit-get-github-web-repo-url (&optional remote-name)
+  "Gets github repo web url"
+
+  (let* ((remote-name (or remote-name
+                          (magit-get "branch" "main" "remote")
+                          (magit-get "branch" "master" "remote")))
+         (remote-url (magit-get "remote" remote-name "url")))
+    (when (string-match-p "github\.com" remote-url)
+      (format "https://github.com/%s"
+              (string-trim-right (nth 1 (split-string remote-url ":")) "\.git")))))
+
+(defun sta:goto-github-issues ()
+  "spawn browser with repo gh issues"
+  (interactive)
+  (sta:vivaldi (format "%s/issues" (sta:magit-get-github-web-repo-url))))
+
+(defun sta:goto-github-prs ()
+  "spawn browser with repo gh prs"
+  (interactive)
+  (sta:vivaldi (format "%s/pulls" (sta:magit-get-github-web-repo-url))))
+
+(defun sta:goto-github-org ()
+  "spawn browser with repo gh org"
+  (interactive)
+  (sta:vivaldi (string-join (butlast (split-string (sta:magit-get-github-web-repo-url) "/" )) "/")))
+
 (defun sta:mastering-emacs ()
   "Open the bible"
   (interactive)
