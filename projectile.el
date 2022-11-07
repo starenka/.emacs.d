@@ -3,6 +3,7 @@
   ;;(split-window-vertically (floor (* 0.68 (window-height))))
   ;;(split-window-right (floor (* 0.5 (window-width))))
   (sta:direx-project-or-direx)
+  (magit-status)
   (sta:spawn-vterm-and-activate-venv-if-py-project))
 
 (use-package projectile
