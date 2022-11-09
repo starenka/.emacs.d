@@ -191,7 +191,11 @@
   :ensure t
   :bind (("C-x c" . magit-status)
          ("C-q v l" . magit-log-buffer-file)
-         ("C-q v s" . magit-status)))
+         ("C-q v s" . magit-status)
+         ("C-q v i" . sta:goto-github-issues)
+         ("C-q v p" . sta:goto-github-p)
+         ("C-q v o" . sta:goto-github-org))
+  )
   ;;:config
   ;;(setq magit-diff-auto-show 't) ; dont show diffs on comit and such
 
