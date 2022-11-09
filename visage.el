@@ -55,6 +55,6 @@
 
 (defvar sta:theme-dark 'monokai)
 (defvar sta:theme-light 'twilight-bright)
-(defvar sta:theme-default sta:theme-light)
+(defvar sta:theme-default sta:theme-dark)
 
 (sta:toggle-theme)
