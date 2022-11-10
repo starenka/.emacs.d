@@ -225,7 +225,7 @@
 
 (use-package ace-window
   :ensure t
-  :bind ("s-j" . ace-window))
+  :bind ("s-j" . ace-select-window))
 
 (use-package lua-mode
   :ensure t

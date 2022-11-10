@@ -5,7 +5,7 @@
   (sta:direx-project-or-direx)
   (magit-status)
   (sta:spawn-vterm-and-activate-venv-if-py-project)
-  (ace-window))
+  (ace-select-window))
 
 (use-package projectile
   :ensure t

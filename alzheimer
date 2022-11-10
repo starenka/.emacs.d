@@ -2,7 +2,7 @@ zap-to-char
 %
 zap-up-to-char
 %
-ace-window
+ace-select-window
 %
 sta:selectrum-yank-pop
 %        
