@@ -293,7 +293,8 @@ buffer is not visiting a file."
   (require 'projectile)
   (require 'multi-vterm)
   (require 'pyvenv)
-  (if (and pyvenv-virtual-env-name (locate-dominating-file (projectile-project-root) ".flake8"))
+
+  (if (and (alist-get 'pyvenv-workon file-local-variables-alist) pyvenv-virtual-env-name)
       (progn
         (multi-vterm-project)
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
