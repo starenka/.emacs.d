@@ -192,8 +192,9 @@
   :bind (("C-x c" . magit-status)
          ("C-q v l" . magit-log-buffer-file)
          ("C-q v s" . magit-status)
+         ("C-q v r" . sta:goto-github-repo)
          ("C-q v i" . sta:goto-github-issues)
-         ("C-q v p" . sta:goto-github-p)
+         ("C-q v p" . sta:goto-github-prs)
          ("C-q v o" . sta:goto-github-org))
   )
   ;;:config

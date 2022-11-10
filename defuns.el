@@ -338,6 +338,11 @@ buffer is not visiting a file."
       (format "https://github.com/%s"
               (string-trim-right (nth 1 (split-string remote-url ":")) "\.git")))))
 
+(defun sta:goto-github-repo ()
+  "spawn browser with repo gh issues"
+  (interactive)
+  (sta:vivaldi (sta:magit-get-github-web-repo-url)))
+
 (defun sta:goto-github-issues ()
   "spawn browser with repo gh issues"
   (interactive)
