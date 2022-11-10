@@ -339,7 +339,7 @@ buffer is not visiting a file."
               (string-trim-right (nth 1 (split-string remote-url ":")) "\.git")))))
 
 (defun sta:goto-github-repo ()
-  "spawn browser with repo gh issues"
+  "spawn browser with gh repo"
   (interactive)
   (sta:vivaldi (sta:magit-get-github-web-repo-url)))
 
