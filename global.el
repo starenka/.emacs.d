@@ -27,11 +27,11 @@
   auto-window-vscroll nil ;; https://emacs.stackexchange.com/a/28746
   tab-stop-list (number-sequence 4 200 4)
   indent-line-function 'insert-tab
-  initial-scratch-message ";; evaluate & print      C-j
-;; evaluate defun        C-M-x
-
-" ;; don't fuck w/ my scratches
+  initial-scratch-message
   windmove-wrap-around t
+  (concat ";; evaluate & print      C-j
+           ;; evaluate defun        C-M-x"
+           ) ;; don't fuck w/ my scratches
 )
 
 (setq-default
