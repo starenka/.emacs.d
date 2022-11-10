@@ -364,3 +364,14 @@ buffer is not visiting a file."
   (interactive)
   (find-file-other-window "/data/bookz-tutorial/mastering-emacs-v4.epub")
   (text-scale-set 2))
+
+(defun sta:callable-help (callable)
+  "returns brief callable info"
+  (format "%s [%s]\n\n%s"
+          callable
+          (help-fns--key-bindings 'callable)
+          (documentation (intern callable) 'variable-documentation)))
+
+(defun sta:alzheimer ()
+  (interactive)
+  (popup-tip (sta:callable-help (cookie (expand-file-name "alzheimer" user-init-dir)))))
