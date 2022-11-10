@@ -373,5 +373,6 @@ buffer is not visiting a file."
           (documentation (intern callable) 'variable-documentation)))
 
 (defun sta:alzheimer ()
+  "print random function w/ keybindings and docs"
   (interactive)
   (popup-tip (sta:callable-help (cookie (expand-file-name "alzheimer" user-init-dir)))))
