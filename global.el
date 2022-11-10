@@ -221,6 +221,10 @@
   :config
   (setq avy-all-windows t))
 
+(use-package ace-window
+  :ensure t
+  :bind ("s-j" . ace-window))
+
 (use-package lua-mode
   :ensure t
   :config
