@@ -213,7 +213,9 @@
 
 (use-package devdocs
   :ensure t
-  :bind ("C-q d" . 'devdocs-lookup))
+  :bind ("C-q d" . 'devdocs-lookup)
+  :config
+  (add-hook 'devdocs-mode-hook (lambda () (text-scale-set 2))))
 
 (use-package avy
   :ensure t
