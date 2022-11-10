@@ -4,7 +4,8 @@
   ;;(split-window-right (floor (* 0.5 (window-width))))
   (sta:direx-project-or-direx)
   (magit-status)
-  (sta:spawn-vterm-and-activate-venv-if-py-project))
+  (sta:spawn-vterm-and-activate-venv-if-py-project)
+  (ace-window))
 
 (use-package projectile
   :ensure t
