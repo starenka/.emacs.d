@@ -1,6 +1,6 @@
 (use-package lisp-mode
   :commands emacs-lisp-mode
-    :config
+  :config
   (setq
    inferior-lisp-program "/usr/bin/sbcl"
    slime-contribs '(slime-fancy))
