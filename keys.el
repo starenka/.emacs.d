@@ -105,8 +105,6 @@
 (define-key company-active-map (kbd "<tab>") 'company-select-next)
 (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
-(global-set-key (kbd "C-h C-b") 'sta:mastering-emacs)
-
 (global-set-key (kbd "M-z") 'zap-to-char)
 (global-set-key (kbd "M-a") 'zap-up-to-char)
 

@@ -363,12 +363,17 @@ buffer is not visiting a file."
   (interactive)
   (sta:vivaldi (string-join (butlast (split-string (sta:magit-get-github-web-repo-url) "/" )) "/")))
 
-(defun sta:mastering-emacs ()
+(defun sta:lore-mastering-emacs ()
   "Open the bible"
   (interactive)
   (find-file-other-window "/data/bookz-tutorial/mastering-emacs-v4.epub")
   (text-scale-set 2))
 
+(defun sta:lore-elisp ()
+  "Open the bible"
+  (interactive)
+  (find-file-other-window "/data/bookz-tutorial/An Introduction to Programming in Emacs Li - GNU.pdf")
+  (text-scale-set 2))
 
 (defun sta:get-random-line-from-file (path)
   "gets random line from file"
