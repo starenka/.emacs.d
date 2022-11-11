@@ -186,6 +186,11 @@
 ;; lisp AC
 (use-package ac-slime :ensure t)
 
+(use-package info-colors
+  :ensure t
+  :config
+  (add-hook 'Info-selection-hook 'info-colors-fontify-node))
+
 (use-package magit
   :ensure t
   :bind (("C-x c" . magit-status)
