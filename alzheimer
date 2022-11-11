@@ -7,3 +7,5 @@ git-timemachine
 xref-find-definitions
 sta:goto-github-issues
 shell-command-on-region
+shell-command
+just-one-space
