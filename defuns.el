@@ -387,9 +387,10 @@ buffer is not visiting a file."
 
 (defun sta:callable-help (callable)
   "returns brief callable info"
-  (format "%s [%s]\n\n%s"
+  (format "%s\n%s\n\n%s"
           callable
-          (help-fns--key-bindings 'callable)
+          (format "== %s ==" (with-output-to-string
+            (help-fns--key-bindings 'callable)))
           (documentation (intern callable) 'variable-documentation)))
 
 (defun sta:alzheimer ()
