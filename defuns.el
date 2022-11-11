@@ -365,6 +365,22 @@ buffer is not visiting a file."
   (find-file-other-window "/data/bookz-tutorial/mastering-emacs-v4.epub")
   (text-scale-set 2))
 
+
+(defun sta:get-random-line-from-file (path)
+  "gets random line from file"
+  (with-temp-buffer
+    (insert-file-contents path)
+    (nth 1 (sta:shuffle-list (split-string (buffer-string) "\n" t)))))
+
+(defun sta:shuffle-list (list)
+  "inplace list shuffle"
+  (dolist (i (reverse (number-sequence 1 (1- (length list)))))
+    (let ((j (random (1+ i)))
+	  (tmp (elt list i)))
+      (setf (elt list i) (elt list j))
+      (setf (elt list j) tmp)))
+  list)
+
 (defun sta:callable-help (callable)
   "returns brief callable info"
   (format "%s [%s]\n\n%s"
@@ -375,4 +391,5 @@ buffer is not visiting a file."
 (defun sta:alzheimer ()
   "print random function w/ keybindings and docs"
   (interactive)
-  (popup-tip (sta:callable-help (cookie (expand-file-name "alzheimer" user-init-dir)))))
+  (popup-tip (sta:callable-help (sta:get-random-line-from-file (expand-file-name "alzheimer" user-init-dir)))))
+
