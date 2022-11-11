@@ -111,7 +111,6 @@
   :bind (:map deadgrep-mode-map
               ("t" . sta:deadgrep-file-type)))
 
-
 (use-package direx
   :ensure t
   ;;:straight '(direx
@@ -226,6 +225,18 @@
 (use-package ace-window
   :ensure t
   :bind ("s-j" . ace-select-window))
+
+;; emacs 28.1+
+;; (use-package elisp-autofmt
+;;   :commands (elisp-autofmt-mode)
+;;   :hook (emacs-lisp-mode . elisp-autofmt-mode)
+
+;;   :straight
+;;   (elisp-autofmt
+;;     :files (:defaults "elisp-autofmt")
+;;     :host nil
+;;     :type git
+;;     :repo "https://codeberg.org/ideasman42/emacs-elisp-autofmt.git"))
 
 (use-package lua-mode
   :ensure t
