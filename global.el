@@ -314,6 +314,25 @@
   (setq browse-url-browser-function 'w3m-browse-url)
   (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t))
 
+(use-package pdf-tools
+  :ensure t
+  :pin melpa
+  :init
+  (setq
+   pdf-info-epdfinfo-program "/usr/bin/epdfinfo" ;; apt install elpa-pdf-tools-server
+   pdf-view-incompatible-modes (nlinum-mode))
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :hook
+  ((pdf-view-mode-hook . pdf-view-fit-height-to-window)
+   (pdf-view-mode-hook . pdf-links-minor-mode)
+   (pdf-view-mode-hook . pdf-annot-minor-mode)
+   (pdf-view-mode-hook . pdf-view-auto-slice-minor-mode)
+   (pdf-view-mode-hook . (lambda ()
+                           (when (eq
+                                  (frame-parameter nil 'background-mode)
+                                  'dark)
+                             (pdf-view-midnight-minor-mode))))))
+
 (use-package xkcd :ensure t)
 
 ;; screensaver
