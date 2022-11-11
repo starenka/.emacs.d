@@ -28,6 +28,11 @@
   tab-stop-list (number-sequence 4 200 4)
   indent-line-function 'insert-tab
   windmove-wrap-around t
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  tab-always-indent 'complete
+  ;; TAB cycle if there are only few candidates
+  completion-cycle-threshold 3
   initial-scratch-message
   (concat ";; evaluate & print      C-j\n"
           ";; evaluate defun        C-M-x\n\n"
