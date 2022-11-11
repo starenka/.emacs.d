@@ -321,8 +321,7 @@
                        zone-pgm-rat-race
                        zone-pgm-paragraph-spaz
                        zone-pgm-random-life])
-  (zone-when-idle 300)
-)
+  (zone-when-idle 300))
 
 ;; startup time profiler
 (use-package esup
