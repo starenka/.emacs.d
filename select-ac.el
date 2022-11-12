@@ -6,7 +6,7 @@
   (corfu-auto t)                 ;; Enable auto completion
   (corfu-separator ?\s)          ;; Orderless field separator
   ;;(corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  (corfu-quit-no-match t)      ;; quit if there is no match
   (corfu-preview-current t)      ;; Disable current candidate preview
   ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
@@ -44,39 +44,40 @@
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
 
-(use-package selectrum
+(use-package vertico
+  :init
+  (vertico-mode)
+  (setq vertico-cycle t)) ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
   :ensure t
-  :config
-  (selectrum-mode +1))
+  :init
+  (savehist-mode))
 
-(use-package selectrum-prescient
-  :ensure t
-  :config
-  ;; applied in order until one matches
-  (setq prescient-filter-method '(literal regexp initialism fuzzy)))
-  ;; to make sorting and filtering more intelligent
-  (selectrum-prescient-mode +1)
-  ;; to save your command history on disk, so the sorting gets more
-  ;; intelligent over time
-  (prescient-persist-mode +1)
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-;; (use-package company
-;;   :ensure t
-;;   :config
-;;   (setq
-;;    company-minimum-prefix-length 1
-;;    company-idle-delay 0.0 ;; default is 0.2
-;;    company-selection-wrap-around t)
-;;   (global-company-mode t))
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
 
-;; (use-package company-prescient
-;;   :ensure t
-;;   :config
-;;   (company-prescient-mode +1))
-
-;; (use-package company-quickhelp
-;;   :ensure t
-;;   :config
-;;   (company-quickhelp-mode t)
-;;   (setq company-quickhelp-delay 2))
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))

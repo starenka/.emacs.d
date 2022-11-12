@@ -31,8 +31,7 @@
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   tab-always-indent 'complete
-  ;; TAB cycle if there are only few candidates
-  completion-cycle-threshold 3
+  completion-cycle-threshold 3 ;; TAB cycle if there are only few candidates
   initial-scratch-message
   (concat ";; evaluate & print      C-j\n"
           ";; evaluate defun        C-M-x\n\n"
