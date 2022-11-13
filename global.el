@@ -247,37 +247,35 @@
 
 (use-package lua-mode
   :ensure t
+  :mode ("\\.lua$" . lua-mode)
   :config
-  (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
   (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
 
 (use-package markdown-mode
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-  (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+  :mode (("\\.text\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)
+         ("\\.md\\'" . markdown-mode)))
 
 (use-package es-mode
   :ensure t
+  :mode (("\\.elastic$" . es-mode)
+         ("\\.es$" . es-mode))
   :config
-  (add-hook 'es-mode-hook (lambda () (company-mode)))
-  (add-to-list 'auto-mode-alist '("\\.elastic$" . es-mode))
-  (add-to-list 'auto-mode-alist '("\\.es$" . es-mode)))
+  (add-hook 'es-mode-hook (lambda () (company-mode))))
 
 (use-package restclient
   :ensure t
+  :mode (("\\.rest$" . restclient-mode)
+         ("\\.http$" . restclient-mode))
   :config
-  (add-to-list 'auto-mode-alist '("\\.rest$" . restclient-mode))
-  (add-to-list 'auto-mode-alist '("\\.http$" . restclient-mode))
   (add-hook 'restclient-mode-hook (lambda ()
-              (setq indent-tabs-mode t
+              (setq-local indent-tabs-mode t
                     tab-width 2))))
 
 (use-package systemd
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.service$" . systemd-mode)))
+  :mode ("\\.service$" . systemd-mode))
 
 (use-package poly-ansible
   :ensure t
@@ -289,19 +287,17 @@
 ;; epub
 (use-package nov
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+  :mode ("\\.epub\\'" . nov-mode))
 
 (use-package web-mode ;; https://web-mode.org
   :ensure t
+  :mode ("\\.html?\\'" . web-mode)
   :config
   (setq web-mode-markup-indent-offset 2
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2
         web-mode-enable-current-column-highlight t
-        web-mode-engines-alist '(("django" . "\\.html\\'"))
-        )
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
+        web-mode-engines-alist '(("django" . "\\.html\\'"))))
 
 ;; (add-hook 'css-mode-hook
 ;;   (lambda () (rainbow-mode t)))
