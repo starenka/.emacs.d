@@ -257,6 +257,16 @@
          ("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode)))
 
+(use-package rst
+  :ensure t
+  :mode (("\\.txt\\'" . rst-mode)
+         ("\\.rst\\'" . rst-mode)
+         ("\\.rest\\'" . rst-mode)))
+
+(use-package adoc-mode
+  :ensure t
+  :mode ("\\.adoc\\'" . rst-mode))
+
 (use-package es-mode
   :ensure t
   :mode (("\\.elastic$" . es-mode)
