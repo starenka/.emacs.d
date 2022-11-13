@@ -66,6 +66,7 @@
 (load-user-file "select-ac.el")
 (load-user-file "projectile.el")
 (load-user-file "flycheck.el")
+(load-user-file "proced.el")
 
 (load-user-file "lsp.el")
 (load-user-file "pythons.el")
