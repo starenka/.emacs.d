@@ -12,6 +12,7 @@
   (require 'seq)
 
   (defun ar/quick-kill-process ()
+    "kills process"
     (interactive)
     (let* ((pid-width 5)
            (comm-width 25)
