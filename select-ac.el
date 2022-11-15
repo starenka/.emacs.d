@@ -40,3 +40,8 @@
   :config
   (company-quickhelp-mode t)
   (setq company-quickhelp-delay 2))
+
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
