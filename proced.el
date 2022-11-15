@@ -48,5 +48,4 @@
       (when (y-or-n-p (format "Kill? %s" prompt-title))
         (if (eq (signal-process (map-elt selection 'pid) 9) 0)
             (message "killed: %s" prompt-title)
-          (message "error: could not kill %s" prompt-title)))))
-  :bind ("C-q k" . ar/quick-kill-process))
+          (message "error: could not kill %s" prompt-title))))))

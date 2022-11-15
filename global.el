@@ -156,6 +156,8 @@
    which-key-idle-secondary-delay 0.05)
   (which-key-mode))
 
+(use-package hydra :commands defhydra :ensure t)
+
 (winner-mode t)
 
 (use-package helpful
@@ -179,9 +181,7 @@
   (add-hook 'find-file-hook 'dot-mode-on))
 
 ;; camel, snake, etc 
-(use-package string-inflection
-  :ensure t
-  :bind ("C-q u" . string-inflection-cycle))
+(use-package string-inflection :ensure t)
 
 ;; lisp AC
 (use-package ac-slime :ensure t)
@@ -193,22 +193,11 @@
 
 (use-package magit
   :ensure t
-  :bind (("C-x c" . magit-status)
-         ("C-q v l" . magit-log-buffer-file)
-         ("C-q v s" . magit-status)
-         ("C-q v r" . sta:goto-github-repo)
-         ("C-q v i" . sta:goto-github-issues)
-         ("C-q v p" . sta:goto-github-prs)
-         ("C-q v o" . sta:goto-github-org))
-  )
+  :bind ("C-x c" . magit-status))
   ;;:config
   ;;(setq magit-diff-auto-show 't) ; dont show diffs on comit and such
 
-
-(use-package git-timemachine
-  :ensure t
-  :bind (("C-q v t" . git-timemachine)
-         ("C-q v b" . git-timemachine-blame)))
+(use-package git-timemachine :ensure t)
 
 ;;(use-package mini-frame
 ;;  :ensure t
@@ -217,7 +206,6 @@
 
 (use-package devdocs
   :ensure t
-  :bind ("C-q d" . 'devdocs-lookup)
   :config
   (add-hook 'devdocs-mode-hook (lambda () (text-scale-set 2))))
 

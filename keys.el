@@ -1,7 +1,42 @@
 ;; C-h c <key> to get the name
 ;; [C-x] r C-h C-h to show all keys starting with [C-x]
 
-(global-set-key (kbd "C-q f") 'sta:find-files-dwim)
+
+(defhydra sta ()
+  "
+^String^                ^Utils^            ^VCS^                 ^GitHub            ^Odds & ends
+^^^^^^^^----------------------------------------------------------------------------------------
+_a_: ascii region      _c_ calc            _v b_: blame          _v i_: gh issues   _f_: find files
+_t_: snakecase region  _d_ docs lookup     _v t_: timemachine    _v o_: gh org      _s_: goto *scratch*
+_u_: string inflection _p_ list packages   _v s_: status         _v p_: gh prs      _b_: restlient resp in browser
+_g_: google            _._ copy file name  _v l_: file log:      _v r_: gh repo     ^ ^
+_l_: google region     _k_ kill process    ^ ^                   ^ ^                ^ ^
+
+"
+  ("." sta:copy-buffer-file-name-as-kill)
+  ("a" sta:ascii-translit-region)
+  ("b" sta:show-http-response-in-browser)
+  ("c" quick-calc)
+  ("d" devdocs-lookup)
+  ("f" sta:find-files-dwim)
+  ("g" sta:google)
+  ("k" ar/quick-kill-process)
+  ("l" sta:region-to-browser)
+  ("p" list-packages)
+  ("s" sta:go-to-scratch-buffer)
+  ("t" sta:snakecase-translit-region)
+  ("u" string-inflection-cycle)
+  ("v b"  git-timemachine-blame)
+  ("v i"  sta:goto-github-issues)
+  ("v l"  magit-log-buffer-file)
+  ("v o"  sta:goto-github-org)
+  ("v p"  sta:goto-github-prs)
+  ("v r"  sta:goto-github-repo)
+  ("v s"  magit-status)
+  ("v t"  git-timemachine))
+(global-set-key (kbd "s-q") 'sta/body)
+(global-set-key (kbd "C-q") 'sta/body)
+
 (global-set-key (kbd "<f5>") #'deadgrep)
 (global-set-key [?\s-s] #'deadgrep)
 
@@ -31,14 +66,8 @@
 ;; split windows (one|one + term)
 (global-set-key "\C-xw"  'sta:epic-split)
 
-;; google things
-(global-set-key (kbd "C-q g")  'sta:google)
-
 ;; translate things
 (global-set-key "\C-xt"  'sta:translate-to-en)
-
-;; google things
-(global-set-key (kbd "C-q c")  'quick-calc)
 
 ;; copy line
 (global-set-key "\C-c\C-k" 'sta:copy-line)
@@ -51,10 +80,6 @@
 
 ;; show file name
 (global-set-key [C-f1] 'sta:copy-buffer-file-name-as-kill)
-(global-set-key (kbd "C-q .") 'sta:copy-buffer-file-name-as-kill)
-
-;; package upgrades
-(global-set-key (kbd "C-q p") 'list-packages)
 
 ;;multiple cursors
 ;;(global-set-key (kbd "C-q m") 'mc/edit-lines)
@@ -81,12 +106,6 @@
 ;;(global-set-key (kbd "C-S") 'occur)
 (global-set-key (kbd "C-s") 'isearch-forward)
 
-(global-set-key (kbd "C-q t") 'sta:snakecase-translit-region)
-(global-set-key (kbd "C-q a") 'sta:ascii-translit-region)
-(global-set-key (kbd "C-q b") 'sta:show-http-response-in-browser)
-(global-set-key (kbd "C-q s") 'sta:go-to-scratch-buffer)
-(global-set-key (kbd "C-q l") 'sta:region-to-browser)
-
 (global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)
 
 ;; edit files as root
@@ -107,5 +126,3 @@
 
 (global-set-key (kbd "M-z") 'zap-to-char)
 (global-set-key (kbd "M-a") 'zap-up-to-char)
-
-
