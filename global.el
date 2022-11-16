@@ -231,8 +231,6 @@
 ;;     :type git
 ;;     :repo "https://codeberg.org/ideasman42/emacs-elisp-autofmt.git"))
 
-(use-package elisp-format :ensure t)
-
 (use-package lua-mode
   :ensure t
   :mode ("\\.lua$" . lua-mode)
