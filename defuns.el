@@ -106,12 +106,8 @@ none exists, or if the current buffer is already a term."
   (interactive)
   (let ((b (sta:last-term-buffer (buffer-list))))
     (if (or (not b) (eq 'vterm-mode major-mode))
-        (multi-vterm-project)
-        (switch-to-buffer (multi-vterm-project-get-buffer-name))
-        (vterm--goto-line -1)
-        (vterm-send-string  (format "cd %s && clear" (multi-vterm-project-root)))
-        (vterm-send-return)
-      (switch-to-buffer b))))
+        (multi-vterm))
+      (switch-to-buffer b)))
 
 (defun sta:copy-line (&optional arg)
   "Do a kill-line but copy rather than kill.  This function directly calls
