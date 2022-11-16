@@ -300,16 +300,6 @@
         web-mode-enable-current-column-highlight t
         web-mode-engines-alist '(("django" . "\\.html\\'"))))
 
-;; (add-hook 'css-mode-hook
-;;   (lambda () (rainbow-mode t)))
-
-;; (add-hook 'html-mode-hook
-;;   (lambda ()
-;;     (set (make-local-variable 'sgml-basic-offset) 2)
-;;     (setq indent-tabs-mode t)
-;;     ;; load rainbow mode
-;;     (rainbow-mode t)))
-
 (use-package w3m
   :ensure t
   :config
