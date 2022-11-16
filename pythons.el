@@ -34,4 +34,4 @@
       python-indent-guess-indent-offset-verbose nil)
 
 ;; django templates
-(use-package pony-mode :ensure t)
+;;(use-package pony-mode :ensure t)
