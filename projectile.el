@@ -9,6 +9,7 @@
 
 (use-package projectile
   :ensure t
+  :delight '(:eval (concat " [pr:" (projectile-project-name) "]"))
   :init
   (projectile-mode +1)
   :bind (:map projectile-mode-map

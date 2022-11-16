@@ -1,5 +1,6 @@
 (use-package company
   :ensure t
+  :delight
   :config
   (setq
    company-minimum-prefix-length 1

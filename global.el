@@ -53,6 +53,15 @@
 ;;(setq whitespace-style '(face lines-tail))
 ;;(add-hook 'prog-mode-hook 'whitespace-mode)
 
+;; pimp my modeline
+(use-package delight
+  :ensure t
+  :init
+  (delight '((abbrev-mode nil "abbrev")
+            (eldoc-mode nil "eldoc")
+            (dot-mode nil)
+            (overwrite-mode " Ov" t))))
+
 ;; show matching parens
 (use-package paren-face
   :ensure t
@@ -138,6 +147,7 @@
 ;; yasnippets everywhere
 (use-package yasnippet
   :ensure t
+  :delight yas-minor-mode
   :bind ("M-s" . yas-expand)
   :config
   (setq yas-prompt-functions '(yas/ido-prompt))
@@ -145,6 +155,7 @@
 
 (use-package undo-tree
   :ensure t
+  :delight
   :config
   ;; Prevent undo tree files from polluting conf dir
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
@@ -154,6 +165,7 @@
 ;; show help while pressing part of the chord f.e M-q
 (use-package which-key
   :ensure t
+  :delight
   :config
   (setq
    which-key-show-early-on-C-h t
