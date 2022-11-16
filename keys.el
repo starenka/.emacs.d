@@ -9,7 +9,7 @@
 _a_: ascii region      _c_ calc            _v b_: blame          _v i_: gh issues   _f_: find files
 _t_: snakecase region  _d_ docs lookup     _v t_: timemachine    _v o_: gh org      _s_: goto *scratch*
 _u_: string inflection _p_ list packages   _v s_: status         _v p_: gh prs      _b_: restlient resp in browser
-_g_: google            _._ copy file name  _v l_: file log:      _v r_: gh repo     ^ ^
+_g_: google            _._ copy file name  _v l_: file log       _v r_: gh repo     ^ ^
 _l_: google region     _k_ kill process    ^ ^                   ^ ^                ^ ^
 
 "
