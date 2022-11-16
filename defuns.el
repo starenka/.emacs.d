@@ -326,12 +326,6 @@ buffer is not visiting a file."
    (deadgrep--buffer-name deadgrep--search-term default-directory) t)
   (deadgrep-restart))
 
-;; https://github.com/Wilfred/deadgrep/issues/24#issuecomment-942290197
-(defun sta:deadgrep--include-args (rg-args)
-  "Adds flags to rigrep"
-  ;;(push "--hidden" rg-args) ;; consider hidden folders/files
-  (push "--multiline" rg-args))
-
 (defun sta:magit-get-github-web-repo-url (&optional remote-name)
   "Gets github repo web url"
 

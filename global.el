@@ -103,6 +103,11 @@
 (use-package rg
   :ensure t
   :config
+  ;; https://github.com/Wilfred/deadgrep/issues/24#issuecomment-942290197
+  (defun sta:deadgrep--include-args (rg-args)
+  "Adds flags to rigrep"
+  ;;(push "--hidden" rg-args) ;; consider hidden folders/files
+  (push "--multiline" rg-args))
   (advice-add 'deadgrep--arguments :filter-return #'sta:deadgrep--include-args))
 
 (use-package deadgrep
