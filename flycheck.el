@@ -1,3 +1,5 @@
+;; apt install ansible-lint
+;; pip install yammlint --user
 (use-package flycheck
   :ensure t
   :config

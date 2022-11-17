@@ -1,3 +1,4 @@
+;; apt install python3-pylsp
 (use-package lsp-mode
   :ensure t
   :init

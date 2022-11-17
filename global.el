@@ -115,8 +115,9 @@
   :ensure t
   :bind ("C-S-d" . duplicate-thing))
 
-;; search stuff
+;; apt install silversearcher-ag
 (use-package ag :ensure t)
+;; apt install ripgrep
 (use-package rg
   :ensure t
   :config
@@ -219,7 +220,7 @@
   :config
   (add-hook 'Info-selection-hook 'info-colors-fontify-node))
 
-;; git 
+;; apt install git
 (use-package magit
   :ensure t
   :bind ("C-x c" . magit-status))
