@@ -4,7 +4,7 @@ old.tar.bz2
 .cache
 .emacs.desktop*
 .lsp-session*
-auto-save-list/*
+auto-save*/*
 backups/*
 bookmarks
 custom.el
