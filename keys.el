@@ -3,7 +3,22 @@
 
 (global-unset-key (kbd "C-q"))
 (global-unset-key (kbd "s-q"))
-(dolist (kv '(("." . sta:copy-buffer-file-name-as-kill)
+
+(defhydra sta:toggles ()
+  "toggles & tools"
+  ("i" text-scale-increase "zoom in")
+  ("o" text-scale-decrease "zoom out")
+  ("r" (text-scale-adjust 0) "zoom out")
+  ("a" abbrev-mode "abbrev")
+  ("d" toggle-debug-on-error "debug")
+  ("f" auto-fill-mode "fill")
+  ("t" toggle-truncate-lines "truncate")
+  ("w" whitespace-mode "whitespace")
+  ("q" nil "cancel"))
+
+(dolist (kv '(
+  ("/" . sta:toggles/body)
+  ("." . sta:copy-buffer-file-name-as-kill)
   ("a" . sta:ascii-translit-region)
   ("b" . sta:show-http-response-in-browser)
   ("c" . quick-calc)
@@ -24,7 +39,7 @@
   ("v r" . sta:goto-github-repo)
   ("v s" . magit-status)
   ("v t" . git-timemachine)))
-  
+
   (global-set-key (kbd (format "s-q %s" (car kv))) (cdr kv))
   (global-set-key (kbd (format "C-q %s" (car kv))) (cdr kv)))
 
