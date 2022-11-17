@@ -14,9 +14,9 @@
   (defun ar/quick-kill-process ()
     "kills process"
     (interactive)
-    (let* ((pid-width 5)
-           (comm-width 25)
-           (user-width 10)
+    (let* ((pid-width  9)
+           (comm-width 30)
+           (user-width 9)
            (processes (proced-process-attributes))
            (candidates
             (mapcar (lambda (attributes)
