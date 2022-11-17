@@ -63,5 +63,6 @@
   "Set major mode for viewing alzheimer's notes.")
 
 (define-key alzheimer-mode-map (kbd "q") 'kill-buffer-and-window)
+(define-key alzheimer-mode-map (kbd "g") (lambda () (interactive) (kill-buffer-and-window) (alzheimer-show)))
 
 (provide 'alzheimer)
