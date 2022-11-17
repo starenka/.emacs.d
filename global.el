@@ -36,7 +36,7 @@
 
 (setq-default
  bidi-display-reordering nil  ;; should speedup long lines rendering https://emacs.stackexchange.com/a/603
- abbrev-mode t
+ abbrev-mode nil
  indent-tabs-mode nil
  tab-width 4
  kill-read-only-ok t ;; sta:copy-line (see defuns)
