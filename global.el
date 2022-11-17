@@ -4,7 +4,7 @@
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; no scrollbar
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; start maximized
-;;(desktop-save-mode 1) ;; save on exit
+(desktop-save-mode 1) ;; save on exit
 (global-auto-revert-mode t) ;; sync buffers on disk change
 (set-default 'fill-column 90) ;; Line-wrapping
 (windmove-default-keybindings) ;;navigate between windows w/ shift+arrows
