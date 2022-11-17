@@ -1,41 +1,32 @@
 ;; C-h c <key> to get the name
 ;; [C-x] r C-h C-h to show all keys starting with [C-x]
 
-
-(defhydra sta ()
-  "
-^String^                ^Utils^            ^VCS^                 ^GitHub            ^Odds & ends
-^^^^^^^^----------------------------------------------------------------------------------------
-_a_: ascii region      _c_ calc            _v b_: blame          _v i_: gh issues   _f_: find files
-_t_: snakecase region  _d_ docs lookup     _v t_: timemachine    _v o_: gh org      _s_: goto *scratch*
-_u_: string inflection _p_ list packages   _v s_: status         _v p_: gh prs      _b_: restlient resp in browser
-_g_: google            _._ copy file name  _v l_: file log       _v r_: gh repo     ^ ^
-_l_: google region     _k_ kill process    ^ ^                   ^ ^                ^ ^
-
-"
-  ("." sta:copy-buffer-file-name-as-kill :exit t)
-  ("a" sta:ascii-translit-region :exit t)
-  ("b" sta:show-http-response-in-browser :exit t)
-  ("c" quick-calc :exit t)
-  ("d" devdocs-lookup :exit t)
-  ("f" sta:find-files-dwim :exit t)
-  ("g" sta:google :exit t)
-  ("k" ar/quick-kill-process :exit t)
-  ("l" sta:region-to-browser :exit t)
-  ("p" list-packages :exit t)
-  ("s" sta:go-to-scratch-buffer :exit t)
-  ("t" sta:snakecase-translit-region :exit t)
-  ("u" string-inflection-cycle :exit t)
-  ("v b"  git-timemachine-blame :exit t)
-  ("v i"  sta:goto-github-issues :exit t)
-  ("v l"  magit-log-buffer-file :exit t)
-  ("v o"  sta:goto-github-org :exit t)
-  ("v p"  sta:goto-github-prs :exit t)
-  ("v r"  sta:goto-github-repo :exit t)
-  ("v s"  magit-status :exit t)
-  ("v t"  git-timemachine :exit t))
-(global-set-key (kbd "s-q") 'sta/body)
-(global-set-key (kbd "C-q") 'sta/body)
+(global-unset-key (kbd "C-q"))
+(global-unset-key (kbd "s-q"))
+(dolist (kv '(("." . sta:copy-buffer-file-name-as-kill)
+  ("a" . sta:ascii-translit-region)
+  ("b" . sta:show-http-response-in-browser)
+  ("c" . quick-calc)
+  ("d" . devdocs-lookup)
+  ("f" . sta:find-files-dwim)
+  ("g" . sta:google)
+  ("k" . ar/quick-kill-process)
+  ("l" . sta:region-to-browser)
+  ("p" . list-packages)
+  ("s" . sta:go-to-scratch-buffer)
+  ("t" . sta:snakecase-translit-region)
+  ("u" . string-inflection-cycle)
+  ("v b" . git-timemachine-blame)
+  ("v i" . sta:goto-github-issues)
+  ("v l" . magit-log-buffer-file)
+  ("v o" . sta:goto-github-org)
+  ("v p" . sta:goto-github-prs)
+  ("v r" . sta:goto-github-repo)
+  ("v s" . magit-status)
+  ("v t" . git-timemachine)))
+  
+  (global-set-key (kbd (format "s-q %s" (car kv))) (cdr kv))
+  (global-set-key (kbd (format "C-q %s" (car kv))) (cdr kv)))
 
 (global-set-key (kbd "<f5>") #'deadgrep)
 (global-set-key [?\s-s] #'deadgrep)
