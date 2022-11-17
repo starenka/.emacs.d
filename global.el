@@ -259,8 +259,8 @@
 (use-package dimmer
   :ensure t
   :pin melpa
-  :config
-  (setq dimmer-fraction .2)
+  :init
+  (setq dimmer-fraction .25)
   (dimmer-configure-which-key)
   (dimmer-mode t))
 
