@@ -18,7 +18,7 @@
   "Reads file"
   (with-temp-buffer
     (insert-file-contents path)
-    (split-string (buffer-string) "\n" t)))
+    (mapcar 'string-trim (split-string (buffer-string) "\n" t))))
 
 (defun alzheimer--get-binding (callable)
   "Annotate command with keybinding"
