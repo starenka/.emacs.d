@@ -265,6 +265,8 @@
   (dimmer-configure-which-key)
   (dimmer-mode t))
 
+(use-package whitespace-cleanup-mode :ensure t)
+
 ;; lua support
 (use-package lua-mode
   :ensure t

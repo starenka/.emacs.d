@@ -38,7 +38,8 @@
   ("v p" . sta:goto-github-prs)
   ("v r" . sta:goto-github-repo)
   ("v s" . magit-status)
-  ("v t" . git-timemachine)))
+  ("v t" . git-timemachine)
+  ("w" . whitespace-cleanup)))
 
   (global-set-key (kbd (format "s-q %s" (car kv))) (cdr kv))
   (global-set-key (kbd (format "C-q %s" (car kv))) (cdr kv)))
