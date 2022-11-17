@@ -100,14 +100,15 @@
     (if (eq 'vterm-mode (with-current-buffer (car l) major-mode))
         (car l) (sta:last-term-buffer (cdr l)))))
 
+
 (defun sta:get-term ()
   "Switch to the term buffer last used, or create a new one if
 none exists, or if the current buffer is already a term."
   (interactive)
   (let ((b (sta:last-term-buffer (buffer-list))))
-    (if (or (not b) (eq 'vterm-mode major-mode))
-        (multi-vterm))
-      (switch-to-buffer b)))
+    (if (or (not b) (eq 'vterm-mode  major-mode))
+        (multi-vterm)
+      (switch-to-buffer b))))
 
 (defun sta:copy-line (&optional arg)
   "Do a kill-line but copy rather than kill.  This function directly calls
