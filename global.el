@@ -16,8 +16,9 @@
   inhibit-startup-message t ;; Don't show the startup screen
   ring-bell-function 'ignore ;; turn off hells & bells
   column-number-mode t ;; Display line and column numbers
-  backup-directory-alist '(("." . "~/.emacs.d/backups")) ;; Make sure all backup files only live in one place
-  auto-save-file-name-transforms `((".*", "~/.emacs.d/auto-save/" t)) ;; dont litter autosave files
+  backup-directory-alist '(("." . "~/.emacs.d/.tmp/backups/")) ;; Make sure all backup files only live in one place
+  auto-save-file-name-transforms '((".*" "~/.emacs.d/.tmp/auto-saves/" t)) ;; dont litter autosave files
+  auto-save-list-file-prefix "~/.emacs.d/.tmp/.auto-save-list-"
   bookmark-save-flag 1 ;; save bmarks
   load-prefer-newer t ;; always get newest files
   gc-cons-threshold 100000000 ;; http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
@@ -169,7 +170,7 @@
   :delight
   :config
   ;; Prevent undo tree files from polluting conf dir
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.tmp/undo"))
         undo-tree-visualizer-timestamps t)
   (global-undo-tree-mode))
 

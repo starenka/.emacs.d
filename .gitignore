@@ -1,11 +1,9 @@
 \#*\#
 .\#*
-old.tar.bz2
+.tmp/*
 .cache
 .emacs.desktop*
 .lsp-session*
-auto-save*/*
-backups/*
 bookmarks
 custom.el
 devdocs
@@ -20,7 +18,6 @@ projectile.cache
 straight/*
 transient/*
 tramp*
-undo/*
 url/*
 var/*
 xkcd/*
