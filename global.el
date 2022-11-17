@@ -17,6 +17,7 @@
   ring-bell-function 'ignore ;; turn off hells & bells
   column-number-mode t ;; Display line and column numbers
   backup-directory-alist '(("." . "~/.emacs.d/backups")) ;; Make sure all backup files only live in one place
+  auto-save-file-name-transforms `((".*", "~/.emacs.d/auto-save/" t)) ;; dont litter autosave files
   bookmark-save-flag 1 ;; save bmarks
   load-prefer-newer t ;; always get newest files
   gc-cons-threshold 100000000 ;; http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
@@ -254,6 +255,14 @@
   :ensure t
   :bind ("s-j" . ace-select-window)
   :init (setq aw-dispatch-always t))
+
+(use-package dimmer
+  :ensure t
+  :pin melpa
+  :config
+  (setq dimmer-fraction .2)
+  (dimmer-configure-which-key)
+  (dimmer-mode t))
 
 ;; lua support
 (use-package lua-mode
