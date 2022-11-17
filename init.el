@@ -11,7 +11,6 @@
                           
 (package-initialize)
 
-
 ;; el-get
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (unless (require 'el-get nil 'noerror)
@@ -22,6 +21,11 @@
       (goto-char (point-max))
       (eval-print-last-sexp))))
 (el-get 'sync)
+
+;; use-package
+(dolist (package '(use-package))
+   (unless (package-installed-p package)
+       (package-install package)))
 
 ;; straigt.el
 (defvar bootstrap-version)

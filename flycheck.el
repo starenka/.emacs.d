@@ -1,11 +1,3 @@
-(flycheck-define-checker ansible
-  "https://ansible-lint.readthedocs.io/en/latest/usage.html"
-
-  :command ("ansbile-lint" "-pq" source-inplace)
-  :error-patterns
-    ((error line-start (file-name) ":" line ": error: " (message) line-end))
-  :modes yaml-mode ansible)
-
 (use-package flycheck
   :ensure t
   :config
@@ -34,6 +26,14 @@
   :init
   (add-hook 'python-mode-hook 'flycheck-mode)
   )
+
+(flycheck-define-checker ansible
+  "https://ansible-lint.readthedocs.io/en/latest/usage.html"
+
+  :command ("ansbile-lint" "-pq" source-inplace)
+  :error-patterns
+    ((error line-start (file-name) ":" line ": error: " (message) line-end))
+  :modes yaml-mode ansible)
 
 (eval-after-load 'flymake '(require 'flymake-cursor))
 
