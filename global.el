@@ -28,6 +28,7 @@
   tab-stop-list (number-sequence 4 200 4)
   indent-line-function 'insert-tab
   windmove-wrap-around t
+  warning-minimum-level :error ;; don't shout at me if not necessary (esp. native-comp is loud)
   initial-scratch-message
   (concat ";; evaluate & print      C-j\n"
           ";; evaluate defun        C-M-x\n\n"
