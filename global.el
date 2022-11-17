@@ -98,16 +98,23 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
+;; large file handling
 (use-package vlf-setup :ensure vlf)
+
+;; jumping to last modified lines
 (use-package goto-chg
   :ensure t
   :bind ("C-M-r" . goto-last-change))
 
+;; moving buffers
 (use-package buffer-move :ensure t)
+
+;; easy line/region duplication
 (use-package duplicate-thing
   :ensure t
   :bind ("C-S-d" . duplicate-thing))
 
+;; search stuff
 (use-package ag :ensure t)
 (use-package rg
   :ensure t
@@ -125,6 +132,7 @@
   :bind (:map deadgrep-mode-map
               ("t" . sta:deadgrep-file-type)))
 
+;; dir tree
 (use-package direx
   :ensure t
   ;;:straight '(direx
@@ -136,7 +144,6 @@
                             (nlinum-mode -1)
                             (setq-local global-hl-line-mode nil)
                             )))
-
 ;; buffer name handling
 (use-package uniquify
   :config
@@ -153,6 +160,7 @@
   (setq yas-prompt-functions '(yas/ido-prompt))
   (yas-global-mode 1))
 
+;; undo buffer changes
 (use-package undo-tree
   :ensure t
   :delight
@@ -177,6 +185,7 @@
 
 (winner-mode t)
 
+;; help on stereoids
 (use-package helpful
   :ensure t
   :bind (("C-h f"   . helpful-callable)
@@ -203,62 +212,74 @@
 ;; lisp AC
 (use-package ac-slime :ensure t)
 
+;; info pages more readable
 (use-package info-colors
   :ensure t
   :config
   (add-hook 'Info-selection-hook 'info-colors-fontify-node))
 
+;; git 
 (use-package magit
   :ensure t
   :bind ("C-x c" . magit-status))
   ;;:config
   ;;(setq magit-diff-auto-show 't) ; dont show diffs on comit and such
 
+;; git blame / history navigation simplified
 (use-package git-timemachine :ensure t)
 
+;; mini frame on otop instead of minibuffer
 ;;(use-package mini-frame
 ;;  :ensure t
 ;;  :config
 ;;  (mini-frame-mode +1))
 
+;; dash
 (use-package devdocs
   :ensure t
   :config
   (add-hook 'devdocs-mode-hook (lambda () (text-scale-set 2))))
 
+;; jump to char/word
 (use-package avy
   :ensure t
   :bind ("s-." . avy-goto-char-2)
   :config
   (setq avy-all-windows t))
 
+;; jump troigh windows
 (use-package ace-window
   :ensure t
   :bind ("s-j" . ace-select-window)
   :init (setq aw-dispatch-always t))
 
+;; lua support
 (use-package lua-mode
   :ensure t
   :mode ("\\.lua$" . lua-mode)
   :config
   (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
 
+;; markdown support
 (use-package markdown-mode
   :ensure t
   :mode (("\\.text\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode)))
 
+;; rst support
 (use-package rst
   :ensure t
   :mode (("\\.txt\\'" . rst-mode)
          ("\\.rst\\'" . rst-mode)
          ("\\.rest\\'" . rst-mode)))
 
+;; adoc support
 (use-package adoc-mode
   :ensure t
   :mode ("\\.adoc\\'" . rst-mode))
 
+;; elastic support
 (use-package es-mode
   :ensure t
   :mode (("\\.elastic$" . es-mode)
@@ -266,6 +287,7 @@
   :config
   (add-hook 'es-mode-hook (lambda () (company-mode))))
 
+;; postman for big boys
 (use-package restclient
   :ensure t
   :mode (("\\.rest$" . restclient-mode)
@@ -275,15 +297,18 @@
               (setq-local indent-tabs-mode t
                     tab-width 2))))
 
+;; systemd units support
 (use-package systemd
   :ensure t
   :mode ("\\.service$" . systemd-mode))
 
+;; ansible
 (use-package poly-ansible
   :ensure t
   :config
   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 
+;; dockerfile
 (use-package dockerfile-mode :ensure t)
 
 ;; epub
@@ -291,6 +316,7 @@
   :ensure t
   :mode ("\\.epub\\'" . nov-mode))
 
+;; html/js/css/django...
 (use-package web-mode ;; https://web-mode.org
   :ensure t
   :mode ("\\.html?\\'" . web-mode)
@@ -301,12 +327,14 @@
         web-mode-enable-current-column-highlight t
         web-mode-engines-alist '(("django" . "\\.html\\'"))))
 
+;; browser
 (use-package w3m
   :ensure t
   :config
   (setq browse-url-browser-function 'w3m-browse-url)
   (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t))
 
+;; nicer pdf rendering
 (use-package pdf-tools
   :ensure t
   :pin melpa
@@ -326,6 +354,7 @@
                                   'dark)
                              (pdf-view-midnight-minor-mode))))))
 
+;; well...
 (use-package xkcd :ensure t)
 
 ;; screensaver
