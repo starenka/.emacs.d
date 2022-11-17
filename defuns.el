@@ -380,23 +380,3 @@ buffer is not visiting a file."
       (setf (elt list i) (elt list j))
       (setf (elt list j) tmp)))
   list)
-
-(defun sta:get-binding (callable)
-  "Annotate command CAND with keybinding."
-  (when-let* ((sym (intern-soft callable))
-              (key (and (commandp sym) (where-is-internal sym nil 'first-only))))
-    (key-description key)))
-
-(defun sta:callable-help (callable)
-  "returns brief callable info"
-  (require 'marginalia)
-  (format "%s  (%s)\n\n%s"
-          callable
-          (sta:get-binding callable)
-          (documentation (intern-soft callable) 'variable-documentation)))
-
-(defun sta:alzheimer ()
-  "print random function w/ keybindings and docs"
-  (interactive)
-  (popup-tip (sta:callable-help (sta:get-random-line-from-file (expand-file-name "alzheimer" user-init-dir)))))
-

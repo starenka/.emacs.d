@@ -78,3 +78,6 @@
 
 (load-user-file "visage.el")
 (load-user-file "keys.el")
+
+;; my modes
+(load-user-file "alzheimer.el")
