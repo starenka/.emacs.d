@@ -16,8 +16,10 @@
   '((t :inherit 'info-title-1))
   "Mode heading face")
 
-(defun alzheimer--read-file (path)
-  "Reads file"
+(defun alzheimer--get-pills (path)
+  "Reads file line by line or creates empty one"
+  (when (not (file-exists-p path))
+    (with-temp-buffer (write-file path)))
   (with-temp-buffer
     (insert-file-contents path)
     (mapcar 'string-trim (split-string (buffer-string) "\n" t))))
@@ -56,16 +58,27 @@
 (defun alzheimer-show (&optional detailed-doc)
   "Creates buffer and shows alzheimer"
   (interactive)
-  (let ((detailed-doc (or detailed-doc nil))))
-  (switch-to-buffer-other-window "*alzheimer*")
-  (alzheimer-mode)
-  (erase-buffer)
-  (insert (propertize "Take your pill" 'face 'alzheimer-heading-face))
-  (insert "\n\n")
-  (dolist (item (alzheimer--read-file (expand-file-name "alzheimer-pills" user-init-dir)))
-    (insert (alzheimer--mk-item item detailed-doc)))
-  ;; (insert (format "\n\n%s" (format-time-string "%a %b %d %H:%M:%S %Z %Y" (current-time))))
-  (setq buffer-read-only t))
+  (let* ((detailed-doc (or detailed-doc nil))
+        (pills-file (expand-file-name "alzheimer-pills" user-init-dir))
+        (pills (alzheimer--get-pills pills-file)))
+
+    (switch-to-buffer-other-window "*alzheimer*")
+    (alzheimer-mode)
+    (erase-buffer)
+
+    (if pills (progn
+                (insert (propertize "Take your pill" 'face 'alzheimer-heading-face))
+                (insert "\n\n")
+                (dolist (item (alzheimer--get-pills (expand-file-name "alzheimer-pills" user-init-dir)))
+                  (insert (alzheimer--mk-item item detailed-doc))))
+      (progn (insert (propertize "No pills yet :/" 'face 'alzheimer-heading-face))
+             (insert "\n\n")
+             (insert (format (concat "Add your precious commandps (one line each) to '%s'."
+                                     "\nWe will fetch the keybindings and docstring for you. "
+                                     "Just hit `g` to relaod when ready.") pills-file))))
+
+    ;; (insert (format "\n\n%s" (format-time-string "%a %b %d %H:%M:%S %Z %Y" (current-time))))
+    (setq buffer-read-only t)))
 
 (define-derived-mode alzheimer-mode fundamental-mode "Alzheimer"
   "Set major mode for viewing alzheimer's notes.")
