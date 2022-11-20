@@ -10,3 +10,4 @@ shell-command-on-region
 shell-command
 just-one-space
 eval-expression
+sta:diff-last-two-kills

@@ -23,6 +23,7 @@
   ("b" . sta:show-http-response-in-browser)
   ("c" . quick-calc)
   ("d" . devdocs-lookup)
+  ("D" . sta:diff-last-two-kills)
   ("f" . sta:find-files-dwim)
   ("g" . sta:google)
   ("k" . ar/quick-kill-process)
