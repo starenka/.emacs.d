@@ -35,11 +35,13 @@
 
 (defun alzheimer--get-doc (callable)
   "Gets callable doc"
-  (documentation (intern-soft callable) 'variable-documentation))
+  (when-let ((sym (intern-soft callable)))
+    (documentation sym 'variable-documentation)))
 
 (defun alzheimer--get-short-doc (callable)
   "Gets callable short doc"
-  (nth 0 (split-string (alzheimer--get-doc callable) "\n" t)))
+  (when-let ((doc (alzheimer--get-doc callable)))
+    (nth 0 (split-string doc "\n" t))))
 
 (defun alzheimer--mk-item (item &optional detailed-doc)
   "Formats item"
@@ -47,9 +49,9 @@
          (kb (alzheimer--get-binding item))
          (name item)
          (doc (if detailed-doc (alzheimer--get-doc item) (alzheimer--get-short-doc item)))
-         (faced-key (propertize kb 'face 'alzheimer-kb-face))
+         (faced-key (propertize (or kb "n/a") 'face 'alzheimer-kb-face))
          (faced-name (propertize name 'face 'alzheimer-item-face))
-         (faced-doc (propertize doc 'face 'alzheimer-doc-face)))
+         (faced-doc (propertize (or doc "") 'face 'alzheimer-doc-face)))
     (format format-string faced-key faced-name faced-doc)))
 
 (defun alzheimer--reload (&optional detailed-doc)
