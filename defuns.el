@@ -380,3 +380,8 @@ buffer is not visiting a file."
       (setf (elt list i) (elt list j))
       (setf (elt list j) tmp)))
   list)
+
+(defun sta:reset-zoom ()
+  "resets text scale"
+  (interactive)
+  (text-scale-adjust 0))

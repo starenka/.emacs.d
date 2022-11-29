@@ -4,20 +4,44 @@
 (global-unset-key (kbd "C-q"))
 (global-unset-key (kbd "s-q"))
 
+(defhydra sta:windows ()
+  ("e" enlarge-window-horizontally "enlarge win horizontally" :column "Sizing")
+  ("s" shrink-window-horizontally "shrink win horizontally")
+  ("E" enlarge-window "enlarge win vertically")
+  ("S" shrink-window "shrink win vertically")
+  ("b" balance-windows "balance window height")
+  ("m" maximize-window "maximize current window")
+  ("M" minimize-window "minimize current window")
+
+  ("h" split-window-below "split horizontally" :column "Split management")
+  ("v" split-window-right "split vertically")
+  ("d" delete-window "delete current window")
+  ("x" delete-other-windows "delete-other-windows")
+
+  ("j" ace-window "ace window" :column "Navigation")
+  ("<left>" windmove-left "← window")
+  ("<down>" windmove-down "↓ window")
+  ("<up>" windmove-up "↑ window")
+  ("<right>" windmove-right "→ window")
+
+  ("q" nil "quit" :column nil))
+
 (defhydra sta:toggles ()
-  "toggles & tools"
-  ("i" text-scale-increase "zoom in")
+  ("i" text-scale-increase "zoom in" :column "Zoom")
   ("o" text-scale-decrease "zoom out")
-  ("r" (text-scale-adjust 0) "zoom out")
-  ("a" abbrev-mode "abbrev")
+  ("r" sta:reset-zoom "reset zoom")
+
+  ("a" abbrev-mode "abbrev" :column "Toggles")
   ("d" toggle-debug-on-error "debug")
   ("f" auto-fill-mode "fill")
   ("t" toggle-truncate-lines "truncate")
   ("w" whitespace-mode "whitespace")
-  ("q" nil "cancel"))
+
+  ("q" nil "cancel" :column nil))
 
 (dolist (kv '(
   ("/" . sta:toggles/body)
+  ("\\" . sta:windows/body)
   ("." . sta:copy-buffer-file-name-as-kill)
   ("a" . sta:ascii-translit-region)
   ("b" . sta:show-http-response-in-browser)
