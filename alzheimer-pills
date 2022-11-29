@@ -11,3 +11,6 @@ shell-command
 just-one-space
 eval-expression
 sta:diff-last-two-kills
+count-words-region
+insert-char
+describe-char
