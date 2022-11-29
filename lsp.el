@@ -25,6 +25,7 @@
    )
   :bind (
          ("C-c g" . lsp-find-definition)
+         ("C-c f" . xref-find-definitions-other-window)
          ("C-c r" . lsp-ui-peek-find-references)
          ("C-c d" . lsp-describe-thing-at-point)
          ("C-c h" . lsp-ui-doc-glance))
