@@ -9,6 +9,7 @@
 (set-default 'fill-column 90) ;; Line-wrapping
 (windmove-default-keybindings) ;;navigate between windows w/ shift+arrows
 
+(when (fboundp 'electric-indent-mode) (electric-indent-mode -1)) ;; dont autoindent
 ;;(initial-buffer-choice "~/TODO")
 ;;(display-battery-mode t) ;; Show battery stats
 
