@@ -312,6 +312,9 @@
               (setq-local indent-tabs-mode t
                     tab-width 2))))
 
+;; jq for restclient stuff
+(use-package restclient-jq :ensure t)
+
 ;; systemd units support
 (use-package systemd
   :ensure t
