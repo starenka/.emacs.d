@@ -14,3 +14,5 @@ sta:diff-last-two-kills
 count-words-region
 insert-char
 describe-char
+restclient-jq-interactive-result
+calc-dispatch
