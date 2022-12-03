@@ -16,3 +16,5 @@ insert-char
 describe-char
 restclient-jq-interactive-result
 calc-dispatch
+cider-jack-in
+sta:prev-window
