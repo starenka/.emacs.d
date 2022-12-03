@@ -274,6 +274,9 @@
   :config
   (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
 
+(use-package clojure-mode :ensure t)
+(use-package cider :ensure t)
+
 ;; markdown support
 (use-package markdown-mode
   :ensure t

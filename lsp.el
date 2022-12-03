@@ -2,8 +2,9 @@
 (use-package lsp-mode
   :ensure t
   :init
-  :hook ((python-mode . lsp-deferred)
+  :hook ((python-mode . lsp-deferred) ;; apt install python3-pylsp
          (lua-mode . lsp-deferred)
+         (clojure-mode . lsp-deferred) ;; lsp-install-server ...
          (lsp-mode . lsp-enable-which-key-integration))
   :config
   (setq
