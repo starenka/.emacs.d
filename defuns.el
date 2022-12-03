@@ -385,3 +385,8 @@ buffer is not visiting a file."
   "resets text scale"
   (interactive)
   (text-scale-adjust 0))
+
+(defun sta:prev-window ()
+  "jumps to previous window"
+  (interactive)
+  (other-window -1))
