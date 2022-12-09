@@ -266,6 +266,7 @@
   (dimmer-mode t))
 
 (use-package whitespace-cleanup-mode :ensure t)
+(use-package ascii-table :ensure t)
 
 ;; lua support
 (use-package lua-mode
