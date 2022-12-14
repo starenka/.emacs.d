@@ -381,6 +381,8 @@
 
 ;; well...
 (use-package xkcd :ensure t)
+(use-package snow :ensure t)
+(use-package fireplace :ensure t)
 
 ;; screensaver
 (use-package zone
