@@ -57,6 +57,7 @@
   ("t" . sta:snakecase-translit-region)
   ("u" . string-inflection-cycle)
   ("v b" . git-timemachine-blame)
+  ("v f" . sta:goto-github-file)
   ("v i" . sta:goto-github-issues)
   ("v l" . magit-log-buffer-file)
   ("v o" . sta:goto-github-org)

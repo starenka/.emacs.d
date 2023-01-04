@@ -354,6 +354,17 @@ buffer is not visiting a file."
   (interactive)
   (sta:vivaldi (string-join (butlast (split-string (sta:magit-get-github-web-repo-url) "/" )) "/")))
 
+(defun sta:goto-github-file (&optional branch)
+  "spawn browser with file on gh"
+  (interactive)
+  (sta:vivaldi
+   (format "%s/tree/%s/%s#L%s:L%s"
+           (sta:magit-get-github-web-repo-url)
+           (or branch "master")
+           (replace-regexp-in-string (regexp-quote (projectile-project-root)) "" (buffer-file-name))
+           (line-number-at-pos)
+           (line-number-at-pos))))
+
 (defun sta:lore-mastering-emacs ()
   "Open the bible"
   (interactive)
