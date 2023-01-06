@@ -56,6 +56,9 @@
 ;;(setq whitespace-style '(face lines-tail))
 ;;(add-hook 'prog-mode-hook 'whitespace-mode)
 
+;; file lib
+(use-package f :demand)
+
 ;; pimp my modeline
 (use-package delight
   :ensure t
