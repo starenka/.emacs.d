@@ -361,7 +361,7 @@ buffer is not visiting a file."
    (format "%s/tree/%s/%s#L%s:L%s"
            (sta:magit-get-github-web-repo-url)
            (or branch "master")
-           (replace-regexp-in-string (regexp-quote (projectile-project-root)) "" (buffer-file-name))
+           (replace-regexp-in-string (regexp-quote (file-truename (projectile-project-root))) "" (file-truename buffer-file-name))
            (line-number-at-pos)
            (line-number-at-pos))))
 
