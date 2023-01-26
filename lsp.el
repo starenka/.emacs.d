@@ -5,6 +5,7 @@
   :hook ((python-mode . lsp-deferred) ;; apt install python3-pylsp
          (lua-mode . lsp-deferred)
          (clojure-mode . lsp-deferred) ;; lsp-install-server ...
+         (java-mode . lsp-deferred)
          (rust-mode . lsp-deferred) ;; https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
          (lsp-mode . lsp-enable-which-key-integration))
   :config

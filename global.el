@@ -285,6 +285,10 @@
 ;;rust
 (use-package rust-mode :ensure t)
 
+;;this is java
+(use-package lsp-java :ensure t)
+(use-package gradle-mode :ensure t)
+
 ;; markdown support
 (use-package markdown-mode
   :ensure t
