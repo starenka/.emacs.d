@@ -23,7 +23,7 @@
    lsp-pylsp-plugins-pycodestyle-enabled nil
    lsp-pylsp-plugins-pydocstyle-enabled nil
    lsp-pylsp-plugins-mccabe-enabled nil
-   lsp-pylsp-plugins-autopep8-enabled t
+   lsp-pylsp-plugins-autopep8-enabled nil
    ;;lsp-pylsp-plugins-jedi-use-pyenv-environment t ;; just stick venv dir in your project
    )
   :bind (

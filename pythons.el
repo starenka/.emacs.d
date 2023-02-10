@@ -1,3 +1,8 @@
+(use-package py-autopep8
+  :ensure t
+  :pin melpa
+  :hook ((python-mode) . py-autopep8-mode))
+
 (defun lsp-py-install-save-hooks ()
   ;;(add-hook 'before-save-hook #'lsp-organize-imports t t)
   (add-hook 'before-save-hook #'lsp-format-buffer t t))
@@ -17,6 +22,7 @@
                                                                  "python~3.10"
                                                                  ;;"python~3.11"
                                                                  "redis"))))
+
 
 (use-package pyvenv
   :ensure t
