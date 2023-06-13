@@ -286,6 +286,12 @@
 (use-package rust-mode :ensure t)
 
 ;;this is java
+(use-package cc-mode
+  :config
+  (add-hook 'java-mode-hook (lambda ()
+              (setq-local indent-tabs-mode t
+                          tab-width 2
+                          c-basic-offset 2))))
 (use-package lsp-java :ensure t)
 (use-package gradle-mode :ensure t)
 
@@ -358,6 +364,14 @@
         web-mode-code-indent-offset 2
         web-mode-enable-current-column-highlight t
         web-mode-engines-alist '(("django" . "\\.html\\'"))))
+
+(use-package js-auto-format-mode
+  :ensure t
+  :config
+  (add-hook 'js-mode-hook #'js-auto-format-mode))
+
+;; packer
+(use-package hcl-mode :ensure t)
 
 ;; browser
 (use-package w3m
