@@ -17,7 +17,8 @@
 (with-eval-after-load "monokai-theme"
   (custom-theme-set-faces
    'monokai
-   '(mode-line-buffer-id ((nil :foreground "goldenrod1")))
+   ;;'(mode-line ((nil :foreground "black" :background "goldenrod1")))
+   ;;'(mode-line-buffer-id ((nil :foreground "gray")))
    '(deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
    '(selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1")))))
 
@@ -56,5 +57,7 @@
 (defvar sta:theme-dark 'monokai)
 (defvar sta:theme-light 'twilight-bright)
 (defvar sta:theme-default sta:theme-dark)
+;;(defvar sta:theme-default sta:theme-light)
 
+(setq-default cursor-type '(box . 4))
 (sta:toggle-theme)
