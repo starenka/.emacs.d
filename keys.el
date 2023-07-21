@@ -52,7 +52,7 @@
   ("g" . sta:google)
   ("k" . ar/quick-kill-process)
   ("l" . sta:region-to-browser)
-  ("p" . list-packages)
+  ("p" . package-upgrade-all)
   ("s" . sta:go-to-scratch-buffer)
   ("t" . sta:snakecase-translit-region)
   ("u" . string-inflection-cycle)
