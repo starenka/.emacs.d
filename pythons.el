@@ -8,7 +8,7 @@
   (add-hook 'before-save-hook #'lsp-format-buffer t t))
 
 (add-hook 'python-mode-hook 'lsp-py-install-save-hooks)
-(add-hook 'python-mode-hook (lambda ()
+(add-hook 'python-mode-hook (lambda () ;; M-x devdocs-install
                               (setq-local devdocs-current-docs '(
                                                                  "bash"
                                                                  "django~3.2"
@@ -18,9 +18,7 @@
                                                                  ;;"javascript"
                                                                  ;;"lua~5.4"
                                                                  "postgresql~15"
-                                                                 ;;"python~3.9"
-                                                                 "python~3.10"
-                                                                 ;;"python~3.11"
+                                                                 "python~3.11"
                                                                  "redis"))))
 
 
