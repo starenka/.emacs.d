@@ -1,5 +1,9 @@
 ;; packaging
 
+;; https://jeffkreeftmeijer.com/emacs-native-comp-log/
+(setq native-comp-async-report-warnings-errors nil)
+(setq straight-repository-branch "develop")
+
 (require 'package)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
@@ -71,6 +75,7 @@
 (load-user-file "proced.el")
 
 (load-user-file "lsp.el")
+;;(load-user-file "py-autoruff.el")
 (load-user-file "pythons.el")
 (load-user-file "lisp.el")
 
