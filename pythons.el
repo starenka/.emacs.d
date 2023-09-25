@@ -10,13 +10,12 @@
 (add-hook 'python-mode-hook 'lsp-py-install-save-hooks)
 (add-hook 'python-mode-hook (lambda () ;; M-x devdocs-install
                               (setq-local devdocs-current-docs '(
-                                                                 "bash"
                                                                  "django~3.2"
                                                                  ;;"elisp"
-                                                                 ;;"html"
+                                                                 "html"
                                                                  "http"
                                                                  ;;"javascript"
-                                                                 ;;"lua~5.4"
+                                                                 "lua~5.4"
                                                                  "postgresql~15"
                                                                  "python~3.11"
                                                                  "redis"))))
