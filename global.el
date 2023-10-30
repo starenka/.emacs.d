@@ -1,5 +1,6 @@
 (server-start) ;; server mode
 (fset 'yes-or-no-p 'y-or-n-p) ;; "y or n" instead of "yes or no"
+(setopt use-short-answers t)
 (menu-bar-mode -1) ;; no menu bar
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; no scrollbar
@@ -8,7 +9,7 @@
 (global-auto-revert-mode t) ;; sync buffers on disk change
 (set-default 'fill-column 90) ;; Line-wrapping
 (windmove-default-keybindings) ;;navigate between windows w/ shift+arrows
-
+(pixel-scroll-precision-mode 1) ;; emacs 29
 ;;(initial-buffer-choice "~/TODO")
 ;;(display-battery-mode t) ;; Show battery stats
 
