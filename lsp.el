@@ -2,7 +2,7 @@
 (use-package lsp-mode
   :ensure t
   :init
-  :hook ((python-mode . lsp-deferred) ;; apt install python3-pylsp
+  :hook ((python-mode . lsp-deferred)
          (lua-mode . lsp-deferred)
          (clojure-mode . lsp-deferred) ;; lsp-install-server ...
          (java-mode . lsp-deferred)
@@ -19,6 +19,10 @@
    lsp-ui-doc-enable nil
    lsp-diagnostics-disabled-modes '(python-mode) ;; let me do flycheck myself
    ;; pylsp
+   ;; apt install python3-pylsp
+   ;; mkvirtualenv pylsp && pip install 'python-lsp-server[all] python-lsp-ruff python-lsp-isort pylsp-rope'
+   lsp-pylsp-server-command "/data/.envs/pylsp/bin/pylsp"
+   lsp-pylsp-plugins-ruff.enabled t
    lsp-pylsp-configuration-sources ["flake8"]
    lsp-pylsp-plugins-pycodestyle-enabled nil
    lsp-pylsp-plugins-pydocstyle-enabled nil
