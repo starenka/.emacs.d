@@ -3,11 +3,15 @@
   :pin melpa
   :hook ((python-mode) . py-autopep8-mode))
 
-(defun lsp-py-install-save-hooks ()
-  ;;(add-hook 'before-save-hook #'lsp-organize-imports t t)
-  (add-hook 'before-save-hook #'lsp-format-buffer t t))
+(use-package reformatter
+  :hook
+  (python-mode . ruff-format-on-save-mode)
+  (python-ts-mode . ruff-format-on-save-mode)
+  :config
+  (reformatter-define ruff-format
+    :program "ruff"
+    :args `("format" "--stdin-filename" ,buffer-file-name "-")))
 
-(add-hook 'python-mode-hook 'lsp-py-install-save-hooks)
 (add-hook 'python-mode-hook (lambda () ;; M-x devdocs-install
                               (setq-local devdocs-current-docs '(
                                                                  "django~3.2"
