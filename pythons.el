@@ -3,14 +3,23 @@
   :pin melpa
   :hook ((python-mode) . py-autopep8-mode))
 
+;;(use-package reformatter
+;;  :hook
+;;  (python-mode . ruff-format-on-save-mode)
+;;  (python-ts-mode . ruff-format-on-save-mode)
+;;  :config
+;;  (reformatter-define ruff-format
+;;    :program "ruff"
+;;    :args `("format" "--stdin-filename" ,buffer-file-name "-")))
+
 (use-package reformatter
   :hook
-  (python-mode . ruff-format-on-save-mode)
-  (python-ts-mode . ruff-format-on-save-mode)
+  (python-mode . autopep8-on-save-mode)
+  (python-ts-mode . autopep8-on-save-mode)
   :config
-  (reformatter-define ruff-format
-    :program "ruff"
-    :args `("format" "--stdin-filename" ,buffer-file-name "-")))
+  (reformatter-define autopep8-format
+    :program "autopep8"
+    :args '("--in-place" "--hang-closing" "--aggresive 2" "--jobs 0" "--pep8-passes 10000" "-v" buffer-file-name)))
 
 (add-hook 'python-mode-hook (lambda () ;; M-x devdocs-install
                               (setq-local devdocs-current-docs '(
