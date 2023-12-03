@@ -20,7 +20,7 @@
    ;;'(mode-line ((nil :foreground "black" :background "goldenrod1")))
    ;;'(mode-line-buffer-id ((nil :foreground "gray")))
    '(deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
-   '(selectrum-current-candidate ((nil :foreground "black" :background "goldenrod1")))))
+   '(vertico-current ((nil :foreground "black" :background "goldenrod1")))))
 
 (defadvice load-theme (before theme-dont-propagate activate)
   "Disable theme before loading new one."
