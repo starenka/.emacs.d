@@ -18,6 +18,7 @@
   :config
   (setq projectile-switch-project-action 'projectile-after-switch-project-hook
         projectile-git-submodule-command "" ;; don't recursce on submodules
+        projectile-git-command "git ls-files -zco" ;; workaround for projectile-find-file not showing ignored files
         ;;projectile-enable-caching t ;; wont recognize new files sometimes
         projectile-globally-ignored-files
         (append '(".pyc"
