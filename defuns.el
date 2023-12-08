@@ -306,11 +306,11 @@ buffer is not visiting a file."
   (require 'projectile)
   (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
 
-(defun sta:selectrum-yank-pop ()
+(defun sta:yank-pop ()
   "Copies item from killring"
   (interactive)
   (insert
-   (selectrum-read "Search kill ring: "
+   (completing-read "Search kill ring: "
                    (mapcar 'identity kill-ring))))
 
 (defun sta:deadgrep-file-type ()

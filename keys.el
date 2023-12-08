@@ -140,7 +140,7 @@
 ;;(global-set-key (kbd "C-S") 'occur)
 (global-set-key (kbd "C-s") 'isearch-forward)
 
-(global-set-key (kbd "C-x y")  'sta:selectrum-yank-pop)
+(global-set-key (kbd "C-x y")  'sta:yank-pop)
 
 ;; edit files as root
 ;;(global-set-key (kbd "C-x C-r") 'sta:sudo-edit)
