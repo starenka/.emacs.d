@@ -21,3 +21,4 @@ sta:prev-window
 python-shell-send-region
 sta:yank-pop
 python-add-import
+ar/quick-kill-process
