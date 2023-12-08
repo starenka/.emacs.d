@@ -19,3 +19,5 @@ calc-dispatch
 cider-jack-in
 sta:prev-window
 python-shell-send-region
+sta:yank-pop
+python-add-import
