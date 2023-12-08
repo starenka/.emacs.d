@@ -11,7 +11,6 @@
    flycheck-yamllintrc "yammlint"
    flycheck-dockerfile-hadolint-executable "/home/starenka/.local/bin/hadolint"
    flycheck-css-stylelint-executable "npx stylelint"
-   flycheck-ansible-executable "ansible-lint")
   (setq-default flycheck-disabled-checkers
   '(emacs-lisp-checkdoc ;; dont yell about missing docs in el files
     python-pycompile
