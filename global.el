@@ -159,6 +159,15 @@
   uniquify-buffer-name-style 'post-forward
   uniquify-separator "/"))
 
+;; widen currently used window
+(use-package golden-ratio
+  :ensure t
+  :hook (after-init . golden-ratio-mode)
+  :config
+  ;;(setq golden-ratio-auto-scale t)
+  :custom
+  (golden-ratio-exclude-modes '(occur-mode)))
+
 ;; yasnippets everywhere
 (use-package yasnippet
   :ensure t

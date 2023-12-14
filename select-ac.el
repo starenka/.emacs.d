@@ -64,6 +64,13 @@
   ;; intelligent over time
   (prescient-persist-mode +1))
 
+;; (use-package vertico-posframe
+;;   :ensure t
+;;   :custom
+;;   (vertico-posframe-parameters
+;;    '((left-fringe . 8)
+;;      (right-fringe . 8))))
+
 ;;(use-package orderless
 ;;  :ensure t
 ;;  :custom
