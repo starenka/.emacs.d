@@ -107,7 +107,7 @@
 (put 'upcase-region 'disabled nil)
 
 ;; large file handling
-(use-package vlf-setup :ensure vlf)
+(use-package vlf-setup :ensure vlf :defer)
 
 ;; jumping to last modified lines
 (use-package goto-chg
@@ -123,7 +123,7 @@
   :bind ("C-S-d" . duplicate-thing))
 
 ;; apt install silversearcher-ag
-(use-package ag :ensure t)
+(use-package ag :ensure t :defer :disabled)
 ;; apt install ripgrep
 (use-package rg
   :ensure t
@@ -297,11 +297,11 @@
   (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
 
 ;; clojure
-(use-package clojure-mode :ensure t)
-(use-package cider :ensure t)
+(use-package clojure-mode :ensure t :defer)
+(use-package cider :ensure t :defer)
 
 ;;rust
-(use-package rust-mode :ensure t)
+(use-package rust-mode :ensure t :defer)
 
 ;;this is java
 (use-package cc-mode
@@ -310,12 +310,13 @@
               (setq-local indent-tabs-mode t
                           tab-width 2
                           c-basic-offset 2))))
-(use-package lsp-java :ensure t)
-(use-package gradle-mode :ensure t)
+(use-package lsp-java :ensure t :defer)
+(use-package gradle-mode :ensure t :defer)
 
 ;; markdown support
 (use-package markdown-mode
   :ensure t
+  :defer
   :mode (("\\.text\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode)))
@@ -323,6 +324,7 @@
 ;; rst support
 (use-package rst
   :ensure t
+  :defer
   :mode (("\\.txt\\'" . rst-mode)
          ("\\.rst\\'" . rst-mode)
          ("\\.rest\\'" . rst-mode)))
@@ -330,6 +332,7 @@
 ;; adoc support
 (use-package adoc-mode
   :ensure t
+  :defer
   :mode ("\\.adoc\\'" . rst-mode))
 
 ;; elastic support
@@ -351,30 +354,34 @@
                     tab-width 2))))
 
 ;; jq for restclient stuff
-(use-package restclient-jq :ensure t)
+(use-package restclient-jq :ensure t :defer)
 
 ;; systemd units support
 (use-package systemd
   :ensure t
+  :defer
   :mode ("\\.service$" . systemd-mode))
 
 ;; ansible
 (use-package poly-ansible
   :ensure t
+  :defer
   :config
   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 
 ;; dockerfile
-(use-package dockerfile-mode :ensure t)
+(use-package dockerfile-mode :ensure t :defer)
 
 ;; epub
 (use-package nov
   :ensure t
+  :defer
   :mode ("\\.epub\\'" . nov-mode))
 
 ;; html/js/css/django...
 (use-package web-mode ;; https://web-mode.org
   :ensure t
+  :defer
   :mode ("\\.html?\\'" . web-mode)
   :custom
   (web-mode-markup-indent-offset 2)
@@ -385,15 +392,17 @@
 
 (use-package js-auto-format-mode
   :ensure t
+  :defer
   :config
   (add-hook 'js-mode-hook #'js-auto-format-mode))
 
 ;; packer
-(use-package hcl-mode :ensure t)
+(use-package hcl-mode :ensure t :defer)
 
 ;; browser
 (use-package w3m
   :ensure t
+  :defer
   :custom
   (browse-url-browser-function 'w3m-browse-url)
   :config
@@ -403,6 +412,7 @@
 (use-package pdf-tools
   :ensure t
   :pin melpa
+  :defer
   :init
   (setq
    pdf-info-epdfinfo-program "/usr/bin/epdfinfo" ;; apt install elpa-pdf-tools-server
@@ -420,9 +430,9 @@
                              (pdf-view-midnight-minor-mode))))))
 
 ;; well...
-(use-package xkcd :ensure t)
-(use-package snow :ensure t)
-(use-package fireplace :ensure t)
+(use-package xkcd :ensure t :defer)
+(use-package snow :ensure t :defer)
+(use-package fireplace :ensure t :defer)
 
 ;; screensaver
 (use-package zone
