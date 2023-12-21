@@ -78,8 +78,9 @@
 
 (use-package nlinum
   :ensure t
+  :custom
+  (global-hl-line-mode nil)
   :config
-  (setq global-hl-line-mode nil)
   (global-nlinum-mode t))
 
 ;;(use-package idle-highlight-mode
@@ -99,8 +100,8 @@
 ;; @FIXME (use-package dired-details+ :ensure t)
 
 (use-package tramp
-  :config
-  (setq tramp-default-method "ssh"))
+  :custom
+  (tramp-default-method "ssh"))
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
@@ -154,53 +155,59 @@
                             )))
 ;; buffer name handling
 (use-package uniquify
-  :config
-  (setq
-  uniquify-buffer-name-style 'post-forward
-  uniquify-separator "/"))
+  :custom
+  (uniquify-buffer-name-style 'post-forward)
+  (uniquify-separator "/"))
 
 ;; widen currently used window
 (use-package golden-ratio
   :ensure t
   :hook (after-init . golden-ratio-mode)
-  :config
-  ;;(setq golden-ratio-auto-scale t)
   :custom
+  ;;(golden-ratio-auto-scale t)
   (golden-ratio-exclude-modes '(occur-mode)))
+
+;; fap fap fap
+;; (use-package dashboard
+;;   :ensure t
+;;   :config
+;;   (dashboard-setup-startup-hook))
 
 ;; yasnippets everywhere
 (use-package yasnippet
   :ensure t
   :delight yas-minor-mode
   :bind ("M-s" . yas-expand)
+  :custom
+  (yas-prompt-functions '(yas/ido-prompt))
   :config
-  (setq yas-prompt-functions '(yas/ido-prompt))
   (yas-global-mode 1))
 
 ;; undo buffer changes
 (use-package undo-tree
   :ensure t
   :delight
+  :custom
+  (undo-tree-history-directory-alist '(("." . "~/.emacs.d/.tmp/undo")))
+  (undo-tree-visualizer-timestamps t)
   :config
   ;; Prevent undo tree files from polluting conf dir
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.tmp/undo"))
-        undo-tree-visualizer-timestamps t)
   (global-undo-tree-mode))
 
 ;; show help while pressing part of the chord f.e M-q
 (use-package which-key
   :ensure t
   :delight
+  :custom
+  (which-key-show-early-on-C-h t)
+  (which-key-idle-delay 10000)
+  (which-key-idle-secondary-delay 0.05)
   :config
-  (setq
-   which-key-show-early-on-C-h t
-   which-key-idle-delay 10000
-   which-key-idle-secondary-delay 0.05)
   (which-key-mode))
 
 (use-package hydra :commands defhydra :ensure t)
 
-(winner-mode t)
+(use-package winner :ensure t :config (winner-mode t))
 
 ;; help on stereoids
 (use-package helpful
@@ -238,9 +245,9 @@
 ;; apt install git
 (use-package magit
   :ensure t
+  ;; :custom
+  ;;(magit-diff-auto-show 't) ; dont show diffs on comit and such
   :bind ("C-x c" . magit-status))
-  ;;:config
-  ;;(setq magit-diff-auto-show 't) ; dont show diffs on comit and such
 
 ;; git blame / history navigation simplified
 (use-package git-timemachine :ensure t)
@@ -261,8 +268,8 @@
 (use-package avy
   :ensure t
   :bind ("s-." . avy-goto-char-2)
-  :config
-  (setq avy-all-windows t))
+  :custom
+  (avy-all-windows t))
 
 ;; jump troigh windows
 (use-package ace-window
@@ -273,8 +280,9 @@
 (use-package dimmer
   :ensure t
   :pin melpa
+  :custom
+  (dimmer-fraction .25)
   :init
-  (setq dimmer-fraction .25)
   (dimmer-configure-which-key)
   (dimmer-mode t))
 
@@ -368,12 +376,12 @@
 (use-package web-mode ;; https://web-mode.org
   :ensure t
   :mode ("\\.html?\\'" . web-mode)
-  :config
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-enable-current-column-highlight t
-        web-mode-engines-alist '(("django" . "\\.html\\'"))))
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2)
+  (web-mode-enable-current-column-highlight t)
+  (web-mode-engines-alist '(("django" . "\\.html\\'"))))
 
 (use-package js-auto-format-mode
   :ensure t
@@ -386,8 +394,9 @@
 ;; browser
 (use-package w3m
   :ensure t
+  :custom
+  (browse-url-browser-function 'w3m-browse-url)
   :config
-  (setq browse-url-browser-function 'w3m-browse-url)
   (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t))
 
 ;; nicer pdf rendering
@@ -418,9 +427,9 @@
 ;; screensaver
 (use-package zone
   :ensure t
-  :config
-  (setq zone-programs [zone-pgm-putz-with-case
-                       zone-pgm-drip-fretfully
+  :custom
+  (zone-programs [zone-pgm-putz-with-case
+                  zone-pgm-drip-fretfully
   ;;                      zone-pgm-jitter
   ;;                      zone-pgm-whack-chars
   ;;                      zone-pgm-rotate
@@ -434,10 +443,11 @@
   ;;                      zone-pgm-paragraph-spaz
   ;;                      zone-pgm-random-life
                        ])
+  :config
   (zone-when-idle 300))
 
 ;; startup time profiler
 (use-package esup
   :ensure :pin melpa
-  :config
-  (setq esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
+  :custom
+  (esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
