@@ -36,6 +36,7 @@
   ("f" auto-fill-mode "fill")
   ("t" toggle-truncate-lines "truncate")
   ("w" whitespace-mode "whitespace")
+  ("h" sta:toggle-theme "toggle b/w theme")
 
   ("q" nil "cancel" :column nil))
 
