@@ -223,7 +223,7 @@ buffer is not visiting a file."
       (insert (current-kill 1 t)))
     (diff old new "-u" t)))
 
-(cl-defun sta:get-file-python-path (fpath &optional (dominating-file ".flake8"))
+(cl-defun sta:get-file-python-path (fpath &optional (dominating-file "pyproject.toml"))
   "Construts file python import path based on .flake8 file position"
   (string-join
    (split-string
