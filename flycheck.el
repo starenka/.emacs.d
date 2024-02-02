@@ -36,7 +36,11 @@
     ((error line-start (file-name) ":" line ": error: " (message) line-end))
   :modes yaml-mode ansible)
 
-(eval-after-load 'flymake '(require 'flymake-cursor))
+(use-package flymake-cursor :ensure t)
+(use-package flymake
+  :ensure t
+  :config
+  (require 'flymake-cursor))
 
 (use-package flyspell-correct
   :ensure t
