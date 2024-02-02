@@ -19,7 +19,7 @@
   column-number-mode t ;; Display line and column numbers
   backup-directory-alist '(("." . "~/.emacs.d/.tmp/backups/")) ;; Make sure all backup files only live in one place
   auto-save-file-name-transforms '((".*" "~/.emacs.d/.tmp/auto-saves/" t)) ;; dont litter autosave files
-  auto-save-list-file-prefix "~/.emacs.d/.tmp/.auto-save-list-"
+  auto-save-list-file-prefix "~/.emacs.d/.tmp/auto-saves/.auto-save-list-"
   bookmark-save-flag 1 ;; save bmarks
   load-prefer-newer t ;; always get newest files
   gc-cons-threshold 100000000 ;; http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
@@ -160,19 +160,13 @@
   (uniquify-separator "/"))
 
 ;; widen currently used window
-(use-package golden-ratio
-  :ensure t
-  :hook (after-init . golden-ratio-mode)
-  :delight
-  :custom
-  ;;(golden-ratio-auto-scale t)
-  (golden-ratio-exclude-modes '(occur-mode)))
-
-;; fap fap fap
-;; (use-package dashboard
+;; (use-package golden-ratio
 ;;   :ensure t
-;;   :config
-;;   (dashboard-setup-startup-hook))
+;;   :hook (after-init . golden-ratio-mode)
+;;   :delight
+;;   :custom
+;;   (golden-ratio-auto-scale t)
+;;   (golden-ratio-exclude-modes '(occur-mode)))
 
 ;; yasnippets everywhere
 (use-package yasnippet
