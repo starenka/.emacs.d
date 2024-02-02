@@ -22,6 +22,7 @@
                                                                  "lua~5.4"
                                                                  "postgresql~15"
                                                                  "python~3.11"
+                                                                 "numpy~1.23"
                                                                  "redis"))))
 
 
