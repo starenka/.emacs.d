@@ -12,6 +12,7 @@
 (pixel-scroll-precision-mode 1) ;; emacs 29
 ;;(initial-buffer-choice "~/TODO")
 ;;(display-battery-mode t) ;; Show battery stats
+(add-hook 'text-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 (setq
   inhibit-startup-message t ;; Don't show the startup screen
@@ -98,6 +99,7 @@
   (toggle-hl-line-when-idle 1))
 
 ;; @FIXME (use-package dired-details+ :ensure t)
+
 
 (use-package tramp
   :custom
