@@ -22,3 +22,10 @@ sta:yank-pop
 python-add-import
 ar/quick-kill-process
 sta:copy-line
+follow-mode
+artist-mode
+read-only-mode
+view-mode
+cycle-spacing
+tabify
+untabify
