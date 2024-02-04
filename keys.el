@@ -36,6 +36,8 @@
   ("f" auto-fill-mode "fill")
   ("t" toggle-truncate-lines "truncate")
   ("w" whitespace-mode "whitespace")
+  ("v" view-mode "toggle view mode")
+  ("r" read-only-mode "toggle readonly mode")
   ("h" sta:toggle-theme "toggle b/w theme")
 
   ("q" nil "cancel" :column nil))
