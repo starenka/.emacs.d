@@ -29,3 +29,5 @@ view-mode
 cycle-spacing
 tabify
 untabify
+htmlfontify-buffer
+sqlite-mode-open-file
