@@ -455,6 +455,7 @@
   :custom
   (zone-programs [zone-pgm-putz-with-case
                   zone-pgm-drip-fretfully
+                  zone-pgm-random-life
   ;;                      zone-pgm-jitter
   ;;                      zone-pgm-whack-chars
   ;;                      zone-pgm-rotate
