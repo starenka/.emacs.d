@@ -50,6 +50,8 @@
 
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;; https://mail.gnu.org/archive/html/help-gnu-emacs/2024-04/msg00211.html
+(setq package-check-signature nil)
 
 ;; func to load other init files
 (defconst user-init-dir
