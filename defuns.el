@@ -319,6 +319,14 @@ buffer is not visiting a file."
   (if (projectile-project-root) (neotree-dir (projectile-project-root)) (neotree-dir default-directory)))
 
 
+(defun sta:update-neotree ()
+  "Make Neotree find and display the current buffer's file."
+  (interactive)
+  (when (neo-global--window-exists-p)
+    (let ((current-file (buffer-file-name)))
+      (when current-file
+        (neotree-find current-file)))))
+
 (defun sta:yank-pop ()
   "Copies item from killring"
   (interactive)
