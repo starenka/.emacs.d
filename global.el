@@ -124,8 +124,6 @@
   :ensure t
   :bind ("C-S-d" . duplicate-thing))
 
-;; apt install silversearcher-ag
-(use-package ag :ensure t :defer :disabled)
 ;; apt install ripgrep
 (use-package rg
   :ensure t
@@ -155,6 +153,12 @@
                             (nlinum-mode -1)
                             (setq-local global-hl-line-mode nil)
                             )))
+
+(use-package neotree
+  :ensure t
+  :config
+  (setq neo-theme 'arrow))
+
 ;; buffer name handling
 (use-package uniquify
   :custom
@@ -246,8 +250,8 @@
   ;;(magit-diff-auto-show 't) ; dont show diffs on comit and such
   :bind ("C-x c" . magit-status))
 
-;; git blame / history navigation simplified
-(use-package git-timemachine :ensure t)
+;; git blame / history navigation simplified (fucked up rn)
+(use-package git-timemachine :ensure t) 
 
 ;; mini frame on otop instead of minibuffer
 ;;(use-package mini-frame
@@ -368,6 +372,22 @@
 
 ;; dockerfile
 (use-package dockerfile-mode :ensure t :defer)
+
+(use-package reformatter
+  :hook
+  (python-mode . autopep8-format-on-save-mode)
+  (python-ts-mode . autopep8-format-on-save-mode)
+  (yaml-mode . prettier-yaml-format-on-save-mode)
+  :config
+  (reformatter-define autopep8-format
+    :program "autopep8"
+    :args `("-"))
+
+  (reformatter-define prettier-yaml-format
+    :program "prettier"
+    :args '("--parser" "yaml"))
+  )
+
 
 ;; epub
 (use-package nov

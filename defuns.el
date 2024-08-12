@@ -302,6 +302,23 @@ buffer is not visiting a file."
   (require 'projectile)
   (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
 
+
+(defun sta:neotree-open (dir)
+  "Open a unique Neotree window for DIR."
+  (let ((buf-name (concat "NeoTree: " (file-name-nondirectory (directory-file-name dir)))))
+    (if (not (get-buffer buf-name))
+        (progn
+          (neotree-dir dir)
+          (rename-buffer buf-name))
+      (switch-to-buffer buf-name))))
+
+(defun sta:neotree-project-or-neotree ()
+  "Open neotree in project root of file dir."
+  (interactive)
+  (require 'projectile)
+  (if (projectile-project-root) (neotree-dir (projectile-project-root)) (neotree-dir default-directory)))
+
+
 (defun sta:yank-pop ()
   "Copies item from killring"
   (interactive)
