@@ -3,15 +3,6 @@
   :bind (:map python-mode-map
               ("M-i" . python-add-import)))
 
-(use-package reformatter
-  :hook
-  (python-mode . autopep8-format-on-save-mode)
-  (python-ts-mode . autopep8-format-on-save-mode)
-  :config
-  (reformatter-define autopep8-format
-    :program "autopep8"
-    :args `("-")))
-
 (add-hook 'python-mode-hook (lambda () ;; M-x devdocs-install
                               (setq-local devdocs-current-docs '(
                                                                  "django~4.2"
