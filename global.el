@@ -364,12 +364,24 @@
   :defer
   :mode ("\\.service$" . systemd-mode))
 
-;; ansible
-(use-package poly-ansible
+;; ;; ansible
+;; (use-package poly-ansible
+;;   :ensure t
+;;   :defer
+;;   :config
+;;   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
+
+(use-package yaml-pro
   :ensure t
-  :defer
-  :config
-  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
+  :after yaml-mode
+  :hook (yaml-mode . yaml-pro-mode))
+
+ (use-package ansible
+   :ensure t
+   :defer
+   :config
+   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
+
 
 ;; dockerfile
 (use-package dockerfile-mode :ensure t :defer)
