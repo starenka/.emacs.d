@@ -192,6 +192,7 @@
   :custom
   (undo-tree-history-directory-alist '(("." . "~/.emacs.d/.tmp/undo")))
   (undo-tree-visualizer-timestamps t)
+  (undo-tree-auto-save-history t)
   :config
   ;; Prevent undo tree files from polluting conf dir
   (global-undo-tree-mode))
