@@ -2,27 +2,42 @@
 ;; minibuffer completion: vertico (display), prescient (filter/sort), orderless (matches candidates)
 ;; marginalia anotates stuff in minibuffer
 
-(use-package company
+(use-package corfu-terminal
   :ensure t
-  :delight
   :config
-  (setq
-   company-minimum-prefix-length 1
-   company-idle-delay 0.0 ;; default is 0.2
-   company-selection-wrap-around t)
-  (global-company-mode t))
+  (unless (display-graphic-p)
+  (corfu-terminal-mode +1)))
 
-(use-package company-prescient
+(use-package corfu
   :ensure t
-  :straight t
-  :config
-  (company-prescient-mode +1))
+  :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
 
-(use-package company-quickhelp
+  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  (corfu-popupinfo-mode t)
+  :init
+  (global-corfu-mode))
+
+(use-package kind-icon
   :ensure t
+  :after corfu
+  ;:custom
+  ; (kind-icon-blend-background t)
+  ; (kind-icon-default-face 'corfu-default) ; only needed with blend-background
   :config
-  (company-quickhelp-mode t)
-  (setq company-quickhelp-delay 2))
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 
 (use-package vertico
