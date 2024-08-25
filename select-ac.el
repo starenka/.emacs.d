@@ -1,3 +1,7 @@
+;; at point completion: company vs corfu
+;; minibuffer completion: vertico (display), prescient (filter/sort), orderless (matches candidates)
+;; marginalia anotates stuff in minibuffer
+
 (use-package company
   :ensure t
   :delight
@@ -7,6 +11,19 @@
    company-idle-delay 0.0 ;; default is 0.2
    company-selection-wrap-around t)
   (global-company-mode t))
+
+(use-package company-prescient
+  :ensure t
+  :straight t
+  :config
+  (company-prescient-mode +1))
+
+(use-package company-quickhelp
+  :ensure t
+  :config
+  (company-quickhelp-mode t)
+  (setq company-quickhelp-delay 2))
+
 
 (use-package vertico
   :ensure t
@@ -77,18 +94,6 @@
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
-
-(use-package company-prescient
-  :ensure t
-  :straight t
-  :config
-  (company-prescient-mode +1))
-
-(use-package company-quickhelp
-  :ensure t
-  :config
-  (company-quickhelp-mode t)
-  (setq company-quickhelp-delay 2))
 
 (use-package marginalia
   :ensure t
