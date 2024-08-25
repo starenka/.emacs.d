@@ -71,11 +71,12 @@
 ;;    '((left-fringe . 8)
 ;;      (right-fringe . 8))))
 
-;;(use-package orderless
-;;  :ensure t
-;;  :custom
-;;  (completion-styles '(orderless basic))
-;;  (completion-category-overrides '((file (styles basic partial-completion)))))
+(use-package orderless
+  :ensure t
+  :init
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (partial-completion))))))
 
 (use-package company-prescient
   :ensure t
