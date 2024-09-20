@@ -55,7 +55,7 @@
   ("g" . sta:google)
   ("k" . ar/quick-kill-process)
   ("l c" . gptel)
-  ("l C" . gptel-menu)
+  ("l C" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
   ("l s" . gptel-send)
   ("l l" . gptel-quick)
   ("p" . package-upgrade-all)
