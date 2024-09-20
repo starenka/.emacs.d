@@ -512,3 +512,13 @@
   :ensure :pin melpa
   :custom
   (esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
+
+
+(use-package gptel
+  :ensure t
+  :custom
+  (gptel-default-model "ChatGPT:gpt-4o"))
+
+(straight-use-package
+ '(gptel-quick :type git :host github :repo "karthink/gptel-quick"))
+
