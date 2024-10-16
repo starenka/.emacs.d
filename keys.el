@@ -53,6 +53,7 @@
   ("D" . sta:diff-last-two-kills)
   ("f" . sta:find-files-dwim)
   ("g" . sta:google)
+  ("i" . string-inflection-cycle)
   ("k" . ar/quick-kill-process)
   ("l c" . gptel)
   ("l C" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
@@ -62,7 +63,7 @@
   ("r" . sta:region-to-browser)
   ("s" . sta:go-to-scratch-buffer)
   ("t" . sta:snakecase-translit-region)
-  ("u" . string-inflection-cycle)
+  ("u" . lsp-find-references)
   ("v b" . git-timemachine-blame)
   ("v f" . sta:goto-github-file)
   ("v i" . sta:goto-github-issues)
