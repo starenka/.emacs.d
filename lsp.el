@@ -19,8 +19,9 @@
    lsp-ui-doc-enable nil
    lsp-diagnostics-disabled-modes '(python-mode) ;; let me do flycheck myself
    ;; pylsp
-   ;; apt install python3-pylsp
-   ;; mkvirtualenv pylsp && pip install 'python-lsp-server[all] python-lsp-ruff python-lsp-isort pylsp-rope'
+   ;; mkvirtualenv pylsp && pip install 'python-lsp-server[all]' python-lsp-ruff python-lsp-isort pylsp-rope
+   ;; workon pylsp && pip install -U 'python-lsp-server[all]' python-lsp-ruff python-lsp-isort pylsp-rope
+
    lsp-pylsp-server-command "/data/.envs/pylsp/bin/pylsp"
    lsp-pylsp-plugins-ruff.enabled t
    lsp-pylsp-configuration-sources ["flake8"]
