@@ -52,6 +52,7 @@
   ("d" . devdocs-lookup)
   ("D" . sta:diff-last-two-kills)
   ("f" . sta:find-files-dwim)
+  ("F" . sta:sta:find-file-dired)
   ("g" . sta:google)
   ("i" . string-inflection-cycle)
   ("k" . ar/quick-kill-process)
