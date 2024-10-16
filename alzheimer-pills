@@ -31,3 +31,5 @@ tabify
 untabify
 htmlfontify-buffer
 sqlite-mode-open-file
+find-dired
+sta:find-file-dired
