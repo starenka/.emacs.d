@@ -5,7 +5,7 @@
 
 (add-hook 'python-mode-hook (lambda () ;; M-x devdocs-install
                               (setq-local devdocs-current-docs '(
-                                                                 "django~4.2"
+                                                                 "django~5.0"
                                                                  ;;"elisp"
                                                                  "html"
                                                                  "http"
