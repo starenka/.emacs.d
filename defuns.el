@@ -452,3 +452,25 @@ buffer is not visiting a file."
                 (package-install package-desc)
                 (package-delete  old-package)))))
       (message "All packages are up to date"))))
+
+
+(defun sta:buffer-path ()
+  "Return the directory of the current buffer if in a Projectile project,
+   otherwise return the directory of the current buffer's file if visiting a file.
+  "
+
+   (if (projectile-project-p)
+      (projectile-project-root)
+    (when (buffer-file-name)
+      (file-name-directory (buffer-file-name)))))
+
+
+(defun sta:find-file-dired (filename)
+  " runs (find-dired) with path taken from buffer location and limiting the find to just file name pattern "
+
+  (interactive "sEnter filename pattern: ")
+  (let ((dir (sta:buffer-path)))
+    (if dir
+        (find-dired dir (concat "-name " (shell-quote-argument filename)))
+      (message "No valid directory found."))))
+
