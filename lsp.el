@@ -18,6 +18,7 @@
    lsp-ui-sideline-show-code-actions nil
    lsp-ui-doc-enable nil
    lsp-diagnostics-disabled-modes '(python-mode) ;; let me do flycheck myself
+   lsp-file-watch-threshold 2000
    ;; pylsp
    ;; mkvirtualenv pylsp && pip install 'python-lsp-server[all]' python-lsp-ruff python-lsp-isort pylsp-rope
    ;; workon pylsp && pip install -U 'python-lsp-server[all]' python-lsp-ruff python-lsp-isort pylsp-rope
