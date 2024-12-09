@@ -367,22 +367,22 @@
   :mode ("\\.service$" . systemd-mode))
 
 ;; ;; ansible
-;; (use-package poly-ansible
-;;   :ensure t
-;;   :defer
-;;   :config
-;;   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
+(use-package poly-ansible
+  :ensure t
+  :defer
+  :config
+  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 
 (use-package yaml-pro
   :ensure t
   :after yaml-mode
   :hook (yaml-mode . yaml-pro-mode))
 
- (use-package ansible
-   :ensure t
-   :defer
-   :config
-   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
+(use-package ansible
+  :ensure t
+  :defer
+  :config
+  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 
 
 ;; dockerfile
@@ -517,8 +517,8 @@
 (use-package gptel
   :ensure t
   :custom
-  (gptel-default-model "ChatGPT:gpt-4o"))
+    (gptel-default-model "ChatGPT:gpt-o1-mini"))
 
-(straight-use-package
- '(gptel-quick :type git :host github :repo "karthink/gptel-quick"))
+;;(straight-use-package
+;; '(gptel-quick :type git :host github :repo "karthink/gptel-quick"))
 
