@@ -60,6 +60,7 @@
   ("l C" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
   ("l s" . gptel-send)
   ("l l" . gptel-quick)
+  ("l r" . gptel-rewrite)
   ("p" . package-upgrade-all)
   ("r" . sta:region-to-browser)
   ("s" . sta:go-to-scratch-buffer)
