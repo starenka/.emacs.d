@@ -155,6 +155,9 @@
                             (setq-local global-hl-line-mode nil)
                             )))
 
+(use-package dir-treeview
+  :ensure t)
+
 (use-package neotree
   :ensure t
   :config
