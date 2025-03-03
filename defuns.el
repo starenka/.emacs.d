@@ -223,22 +223,16 @@ buffer is not visiting a file."
       (insert (current-kill 1 t)))
     (diff old new "-u" t)))
 
-(cl-defun sta:get-file-python-path (fpath &optional (files '("pyproject.toml" ".flake8" ".dir-locals.el" ".git" ".projectile")))
-  "Constructs file Python import path based on the position of specified configuration or directory files."
-  (let ((dominating-file (seq-find #'url-file-exists-p
-                                    (mapcar (lambda (file)
-                                              (locate-dominating-file fpath file))
-                                            files))))
-    (if dominating-file
-        (string-join
-         (split-string
-          (file-name-sans-extension
-           (string-remove-prefix
-            dominating-file
-            fpath))
-          "/")
-         ".")
-      (error "No project file found"))))
+(cl-defun sta:get-file-python-path (fpath &optional (dominating-file "pyproject.toml"))
+  "Construts file python import path based on pyproject.toml file position"
+  (string-join
+   (split-string
+    (file-name-sans-extension
+     (string-remove-prefix
+      (locate-dominating-file fpath dominating-file)
+      fpath))
+    "/")
+   "."))
 
 (defun sta:copy-buffer-file-name-as-kill (choice)
   "Copyies the buffer file name/path/python path/directory etc to the kill-ring."
