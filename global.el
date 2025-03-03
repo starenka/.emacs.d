@@ -156,7 +156,8 @@
                             )))
 
 (use-package dir-treeview
-  :ensure t)
+  :ensure t
+  :bind (("g" . treeview-refresh-tree)))
 
 (use-package neotree
   :ensure t
