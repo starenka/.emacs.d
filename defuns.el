@@ -223,16 +223,14 @@ buffer is not visiting a file."
       (insert (current-kill 1 t)))
     (diff old new "-u" t)))
 
+
 (cl-defun sta:get-file-python-path (fpath &optional (dominating-file "pyproject.toml"))
-  "Construts file python import path based on pyproject.toml file position"
-  (string-join
-   (split-string
-    (file-name-sans-extension
-     (string-remove-prefix
-      (locate-dominating-file fpath dominating-file)
-      fpath))
-    "/")
-   "."))
+  "Constructs the Python import path based on the position of the pyproject.toml file."
+  (let ((relative-path (file-name-sans-extension
+                        (string-remove-prefix
+                         (locate-dominating-file fpath dominating-file)
+                         fpath))))
+    (string-join (split-string relative-path "/") ".")))
 
 (defun sta:copy-buffer-file-name-as-kill (choice)
   "Copyies the buffer file name/path/python path/directory etc to the kill-ring."
