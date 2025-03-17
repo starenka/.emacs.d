@@ -155,9 +155,7 @@
                             (setq-local global-hl-line-mode nil)
                             )))
 
-(use-package dir-treeview
-  :ensure t
-  :bind (("g" . treeview-refresh-tree)))
+(use-package dir-treeview :ensure t)
 
 (use-package neotree
   :ensure t
@@ -195,11 +193,11 @@
   :ensure t
   :delight
   :custom
+  ;; Prevent undo tree files from polluting conf dir
   (undo-tree-history-directory-alist '(("." . "~/.emacs.d/.tmp/undo")))
   (undo-tree-visualizer-timestamps t)
   (undo-tree-auto-save-history t)
   :config
-  ;; Prevent undo tree files from polluting conf dir
   (global-undo-tree-mode))
 
 ;; show help while pressing part of the chord f.e M-q
