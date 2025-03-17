@@ -387,7 +387,7 @@ buffer is not visiting a file."
   (sta:vivaldi
    (format "%s/tree/%s/%s#L%s:L%s"
            (sta:magit-get-github-web-repo-url)
-           (or branch "master")
+           (or branch (magit-get-current-branch))
            (replace-regexp-in-string (regexp-quote (file-truename (projectile-project-root))) "" (file-truename buffer-file-name))
            (line-number-at-pos)
            (line-number-at-pos))))
