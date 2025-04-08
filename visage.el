@@ -56,8 +56,8 @@
 
 (defvar sta:theme-dark 'monokai)
 (defvar sta:theme-light 'twilight-bright)
-(defvar sta:theme-default sta:theme-dark)
-;;(defvar sta:theme-default sta:theme-light)
+;;(defvar sta:theme-default sta:theme-dark)
+(defvar sta:theme-default sta:theme-light)
 
 (setq-default cursor-type '(box . 4))
 (sta:toggle-theme)
