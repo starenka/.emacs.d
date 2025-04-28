@@ -11,10 +11,10 @@
 (use-package corfu
   :ensure t
   :custom
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
   (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
   ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
@@ -27,7 +27,18 @@
   ;;        (eshell-mode . corfu-mode))
 
   (corfu-popupinfo-mode t)
+  :config
+  (define-key corfu-map (kbd "<tab>") #'corfu-next)   ; Use Tab to cycle forward
+  (define-key corfu-map (kbd "<backtab>") #'corfu-previous)   ; Use Shift+Tab to cycle backward
+  (define-key corfu-map (kbd "<down>") #'corfu-next)   ; Use Down arrow to cycle forward
+  (define-key corfu-map (kbd "<up>") #'corfu-previous)   ; Use Up arrow to cycle backward
+  (define-key corfu-map (kbd "<return>") #'corfu-insert) ; Use Enter to select completion
+  (define-key corfu-map (kbd "C-g") 'corfu-quit)      ;; C-g to close the popup
+  (define-key corfu-map (kbd "<escape>") 'corfu-quit)  ;; ESC to close the popup
+  (define-key corfu-map (kbd "S-<return>") 'corfu-quit) ;; Shift + Enter to close the popup
+  (add-hook 'gptel-mode-hook (lambda () (corfu-mode -1))) ;; Disable Corfu in gptel
   :init
+  (global-company-mode -1)
   (global-corfu-mode))
 
 (use-package kind-icon

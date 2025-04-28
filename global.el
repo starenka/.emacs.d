@@ -345,9 +345,9 @@
 (use-package es-mode
   :ensure t
   :mode (("\\.elastic$" . es-mode)
-         ("\\.es$" . es-mode))
-  :config
-  (add-hook 'es-mode-hook (lambda () (company-mode))))
+         ("\\.es$" . es-mode)))
+  ;;:config
+  ;;(add-hook 'es-mode-hook (lambda () (company-mode))))
 
 ;; postman for big boys
 (use-package restclient
