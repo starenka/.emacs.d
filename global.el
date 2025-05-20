@@ -13,6 +13,7 @@
 ;;(initial-buffer-choice "~/TODO")
 ;;(display-battery-mode t) ;; Show battery stats
 (add-hook 'text-mode-hook (lambda () (electric-indent-local-mode -1)))
+(global-company-mode -1)
 
 (setq
   inhibit-startup-message t ;; Don't show the startup screen

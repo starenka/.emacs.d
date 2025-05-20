@@ -1,7 +1,6 @@
 ;; apt install python3-pylsp
 (use-package lsp-mode
   :ensure t
-  :after corfu
   :init
   :hook ((python-mode . lsp-deferred)
          (lua-mode . lsp-deferred)
@@ -34,7 +33,6 @@
    ;;lsp-pylsp-plugins-jedi-use-pyenv-environment t ;; just stick venv dir in your project
 
    lsp-completion-provider :none ; Disable default completion
-   completion-in-region-function #'corfu-completion-in-region ; Use corfu for at point completion
    )
   :bind (
          ("C-c g" . lsp-find-definition)
