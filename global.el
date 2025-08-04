@@ -522,7 +522,7 @@
 (use-package gptel
   :ensure t
   :custom
-    (gptel-default-model "ChatGPT:gpt-o1-mini"))
+    (gptel-default-model "ChatGPT:o4-mini"))
 
 ;;(straight-use-package
 ;; '(gptel-quick :type git :host github :repo "karthink/gptel-quick"))
