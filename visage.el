@@ -6,6 +6,7 @@
 
 (use-package monokai-theme :ensure t :pin melpa)
 (use-package twilight-bright-theme :ensure t)
+(use-package doom-themes :ensure t)
 
 (with-eval-after-load "twilight-bright-theme"
   (custom-theme-set-faces
@@ -54,10 +55,11 @@
                     :width 'normal)
 
 
-(defvar sta:theme-dark 'monokai)
+;;(defvar sta:theme-dark 'monokai)
+(defvar sta:theme-dark 'doom-lantern)
 (defvar sta:theme-light 'twilight-bright)
 ;;(defvar sta:theme-default sta:theme-dark)
-(defvar sta:theme-default sta:theme-light)
+(defvar sta:theme-default sta:theme-dark)
 
 (setq-default cursor-type '(box . 4))
 (sta:toggle-theme)
