@@ -353,6 +353,8 @@
 ;; postman for big boys
 (use-package restclient
   :ensure t
+  :straight (:host github :repo "pashky/restclient.el"
+                   :commit "b9b373c8fbd5c5f764e34541d1b496e1bb0d7dc1")
   :mode (("\\.rest$" . restclient-mode)
          ("\\.http$" . restclient-mode))
   :config
