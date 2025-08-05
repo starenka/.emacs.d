@@ -158,12 +158,6 @@
 
 (use-package dir-treeview :ensure t)
 
-(use-package neotree
-  :ensure t
-  :config
-  (setq neo-theme 'arrow)
-  (add-hook 'window-configuration-change-hook 'sta:update-neotree))
-
 ;; buffer name handling
 (use-package uniquify
   :custom
