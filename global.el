@@ -144,17 +144,17 @@
               ("t" . sta:deadgrep-file-type)))
 
 ;; dir tree
-(use-package direx
-  :ensure t
-  ;;:straight '(direx
-  ;;            :type git
-  ;;            :host github
-  ;;            :repo "starenka/direx")
-  :config
-  (add-hook 'direx:direx-mode-hook (lambda ()
-                            (nlinum-mode -1)
-                            (setq-local global-hl-line-mode nil)
-                            )))
+;; (use-package direx
+;;   :ensure t
+;;   ;;:straight '(direx
+;;   ;;            :type git
+;;   ;;            :host github
+;;   ;;            :repo "starenka/direx")
+;;   :config
+;;   (add-hook 'direx:direx-mode-hook (lambda ()
+;;                             (nlinum-mode -1)
+;;                             (setq-local global-hl-line-mode nil)
+;;                             )))
 
 (use-package dir-treeview :ensure t)
 
