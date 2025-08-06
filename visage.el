@@ -1,4 +1,4 @@
-(advice-add 'load-theme :before (lambda (&rest _) (mapc 'disable-theme custom-enabled-themes)))
+(advice-add 'load-theme :before (lambda (&rest _) (sta:disable-themes)))
 
 (use-package monokai-theme :ensure t :pin melpa)
 (use-package twilight-bright-theme :ensure t)
@@ -47,6 +47,9 @@
   (when favourite-themes
     (load-theme (car favourite-themes) t)))
 
+(defun sta:disable-themes ()
+  (mapc 'disable-theme custom-enabled-themes))
+
 (defun sta:cycle-themes ()
   (interactive)
   (let* ((current-theme (car custom-enabled-themes))
@@ -54,5 +57,5 @@
                          (car favourite-themes))))
     (load-theme next-theme t)))
 
+(sta:disable-themes)
 (sta:load-default-theme)
-
