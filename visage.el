@@ -1,8 +1,4 @@
-;;(use-package solarized-theme :ensure t)
-;;(use-package seoul256-theme :ensure t)
-;;(use-package nimbus-theme :ensure t)
-;;(use-package leuven-theme :ensure t)
-;;((use-package nano-theme :ensure t)
+(advice-add 'load-theme :before (lambda (&rest _) (mapc 'disable-theme custom-enabled-themes)))
 
 (use-package monokai-theme :ensure t :pin melpa)
 (use-package twilight-bright-theme :ensure t)
@@ -23,18 +19,6 @@
    '(deadgrep-match-face ((nil :foreground "black" :background "goldenrod1")))
    '(vertico-current ((nil :foreground "black" :background "goldenrod1")))))
 
-(defadvice load-theme (before theme-dont-propagate activate)
-  "Disable theme before loading new one."
-  (mapc #'disable-theme custom-enabled-themes))
-
-(defun sta:toggle-theme ()
-  "Toggle bright and dark themes"
-  (interactive)
-  (let ((current-theme (car custom-enabled-themes)))
-    (cond ((eq current-theme sta:theme-dark) (load-theme sta:theme-light t))
-          ((eq current-theme sta:theme-light) (load-theme sta:theme-dark t))
-          ((eq current-theme nil) (load-theme sta:theme-default t)))))
-
 
 (set-face-attribute 'default nil
                     :family "DejaVu Sans Mono"
@@ -54,12 +38,21 @@
                     :weight 'normal
                     :width 'normal)
 
-
-;;(defvar sta:theme-dark 'monokai)
-(defvar sta:theme-dark 'doom-lantern)
-(defvar sta:theme-light 'twilight-bright)
-;;(defvar sta:theme-default sta:theme-dark)
-(defvar sta:theme-default sta:theme-dark)
-
 (setq-default cursor-type '(box . 4))
-(sta:toggle-theme)
+
+
+(defvar favourite-themes '(doom-lantern twilight-bright monokai))
+
+(defun sta:load-default-theme ()
+  (when favourite-themes
+    (load-theme (car favourite-themes) t)))
+
+(defun sta:cycle-themes ()
+  (interactive)
+  (let* ((current-theme (car custom-enabled-themes))
+         (next-theme (or (cadr (memq current-theme favourite-themes))
+                         (car favourite-themes))))
+    (load-theme next-theme t)))
+
+(sta:load-default-theme)
+

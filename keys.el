@@ -167,3 +167,5 @@
 
 (global-set-key (kbd "M-z") 'zap-to-char)
 (global-set-key (kbd "M-a") 'zap-up-to-char)
+
+(global-set-key (kbd "C-c t") 'sta:cycle-themes)
