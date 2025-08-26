@@ -41,7 +41,7 @@
 (setq-default cursor-type '(box . 4))
 
 
-(defvar favourite-themes '(doom-lantern twilight-bright monokai))
+(defvar favourite-themes '(twilight-bright doom-lantern monokai))
 
 (defun sta:load-default-theme ()
   (when favourite-themes
