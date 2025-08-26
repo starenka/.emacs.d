@@ -72,6 +72,15 @@
             (dot-mode nil)
             (overwrite-mode " Ov" t))))
 
+;; minor modes as menu
+;;(use-package minions
+;;    :ensure t
+;;    :custom
+;;    (minions-mode-line-lighter "…")
+;;   (minions-mode-line-delimiters '("" . ""))
+;;    :config
+;;    (minions-mode +1))
+
 ;; show matching parens
 (use-package paren-face
   :ensure t
