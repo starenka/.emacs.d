@@ -534,6 +534,7 @@
 
 (use-package beacon
   :ensure t
+  :delight
   :config
   (beacon-mode 1))
 
