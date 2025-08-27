@@ -512,3 +512,22 @@ buffer is not visiting a file."
           (cons "emacs-lsp-booster" orig-result))
       orig-result)))
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+
+(defun sta:rae-wotd ()
+  "Call the RAE WOTD script and open the resulting HTML file in EWW."
+  (interactive)
+  (let ((script-path (expand-file-name "~/.config/awesome/opt/rae_wotd"))
+        (output "")
+        (return-code 0))
+    (with-temp-buffer
+      (setq return-code (call-process "python" nil t nil script-path))
+      (setq output (buffer-string))
+
+      (if (zerop return-code)
+          (let ((html-file (string-trim output)))
+            (if (file-exists-p html-file)
+                (progn
+                  (eww-open-file html-file)
+                  (text-scale-adjust 7))
+              (message "No HTML file returned from the script.")))
+        (message "Failed to execute Python script. Check the script for errors.")))))

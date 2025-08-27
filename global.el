@@ -499,6 +499,9 @@
   (zone-programs [zone-pgm-putz-with-case
                   zone-pgm-drip-fretfully
                   zone-pgm-random-life
+                  sta:rae-wotd
+                  sta:rae-wotd
+                  sta:rae-wotd
   ;;                      zone-pgm-jitter
   ;;                      zone-pgm-whack-chars
   ;;                      zone-pgm-rotate
