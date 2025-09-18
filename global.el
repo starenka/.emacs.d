@@ -299,6 +299,11 @@
 (use-package whitespace-cleanup-mode :ensure t)
 (use-package ascii-table :ensure t)
 
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
 ;; lua support
 (use-package lua-mode
   :ensure t
