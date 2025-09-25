@@ -6,7 +6,7 @@
          (lua-mode . lsp-deferred)
          (clojure-mode . lsp-deferred) ;; lsp-install-server ...
          (java-mode . lsp-deferred)
-         (rust-mode . lsp-deferred) ;; https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
+         (rust-mode . lsp-deferred) ;; $ rustup component add rust-analyzer
          (lsp-mode . lsp-enable-which-key-integration))
   :config
   (setq
