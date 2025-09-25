@@ -401,6 +401,13 @@
 ;; dockerfile
 (use-package dockerfile-mode :ensure t :defer)
 
+;; direnv
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
+
 (use-package reformatter
   :hook
   (python-mode . autopep8-format-on-save-mode)
@@ -505,8 +512,6 @@
                   zone-pgm-drip-fretfully
                   zone-pgm-random-life
                   sta:rae-wotd
-                  sta:rae-wotd
-                  sta:rae-wotd
   ;;                      zone-pgm-jitter
   ;;                      zone-pgm-whack-chars
   ;;                      zone-pgm-rotate
@@ -548,7 +553,7 @@
   :config
   (ultra-scroll-mode 1))
 
-
+;; show cursor on win change
 (use-package beacon
   :ensure t
   :delight
