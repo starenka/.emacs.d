@@ -423,6 +423,7 @@
     :args '("--parser" "yaml"))
   )
 
+(use-package csv-mode :ensure t)
 
 ;; epub
 (use-package nov
