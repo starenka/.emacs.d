@@ -518,7 +518,11 @@ buffer is not visiting a file."
   (interactive)
   (let ((script-path (expand-file-name "~/.config/awesome/opt/rae_wotd"))
         (output "")
-        (return-code 0))
+        (return-code 0)
+        (buffer-name "*RAE-WOTD*"))
+    ;; Close existing RAE-WOTD eww buffer if exists
+    (when (get-buffer buffer-name)
+      (kill-buffer buffer-name))
     (with-temp-buffer
       (setq return-code (call-process "python" nil t nil script-path))
       (setq output (buffer-string))
@@ -526,8 +530,11 @@ buffer is not visiting a file."
       (if (zerop return-code)
           (let ((html-file (string-trim output)))
             (if (file-exists-p html-file)
-                (progn
+                (let ((shr-width (window-body-width)))
+                  ;; Open file, rename buffer, focus it, and adjust text scale
                   (eww-open-file html-file)
+                  (rename-buffer buffer-name)
+                  (switch-to-buffer buffer-name)
                   (text-scale-adjust 7))
               (message "No HTML file returned from the script.")))
-        (message "Failed to execute Python script. Check the script for errors.")))))
+        (message "Failed to execute Python script. Output:\n%s" output)))))
