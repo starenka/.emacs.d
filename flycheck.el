@@ -7,6 +7,10 @@
    flycheck-flake8rc ".flake8"
    flycheck-python-flake8-executable "flake8"
    flycheck-python-pylint-executable "pylint"
+   flycheck-python-ruff-executable "ruff"
+   ;;flycheck-python-flake8-executable (expand-file-name "~/.local/bin/flake8")
+   ;;flycheck-python-pylint-executable (expand-file-name "~/.local/bin/pylint")
+   ;;flycheck-python-ruff-executable (expand-file-name "~/.local/bin/ruff")
    flycheck-ansible-executable "ansible-lint"
    flycheck-yamllintrc "yammlint"
    flycheck-dockerfile-hadolint-executable "/home/starenka/.local/bin/hadolint"
