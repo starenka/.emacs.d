@@ -1,8 +1,9 @@
 (defun projectile-after-switch-project-hook ()
-  (sta:tree)
   (magit-status)
+  (delete-other-windows)
   (sta:spawn-vterm-and-activate-venv-if-py-project)
-  (ace-select-window))
+  (sta:tree))
+  ;;(ace-select-window))
 
 (use-package projectile
   :ensure t

@@ -170,17 +170,21 @@
 (use-package treemacs
   :ensure t
   :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config
+  (with-eval-after-load 'treemacs
+
+    (defun my-hidden-stuff (filename absolute-path)
+      (or (string-equal filename "__pycache__")
+          (string-prefix-p "/HOLD/MY/BEER/" absolute-path)))
+
+    (add-to-list 'treemacs-ignored-file-predicates #'my-hidden-stuff))
   (progn
     (setq treemacs-buffer-name-function            #'treemacs-default-buffer-name
           treemacs-buffer-name-prefix              " *Treemacs-Buffer-"
           treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
           treemacs-deferred-git-apply-delay        0.5
           treemacs-directory-name-transformer      #'identity
-          treemacs-display-in-side-window          nil
+          treemacs-display-in-side-window          t
           treemacs-eldoc-display                   'simple
           treemacs-file-event-delay                2000
           treemacs-file-extension-regex            treemacs-last-period-regex-value
@@ -192,7 +196,7 @@
           treemacs-git-command-pipe                ""
           treemacs-goto-tag-strategy               'refetch-index
           treemacs-header-scroll-indicators        '(nil . "^^^^^^")
-          treemacs-hide-dot-git-directory          t
+          treemacs-hide-dot-git-directory          nil
           treemacs-indentation                     2
           treemacs-indentation-string              " "
           treemacs-is-never-other-window           nil
@@ -215,8 +219,8 @@
           treemacs-project-follow-into-home        nil
           treemacs-show-cursor                     nil
           treemacs-show-hidden-files               t
-          treemacs-silent-filewatch                nil
-          treemacs-silent-refresh                  nil
+          treemacs-silent-filewatch                t
+          treemacs-silent-refresh                  t
           treemacs-sorting                         'alphabetic-asc
           treemacs-select-when-already-in-treemacs 'move-back
           treemacs-space-between-root-nodes        t
