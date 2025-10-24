@@ -294,44 +294,26 @@ buffer is not visiting a file."
         (multi-vterm-project)
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
 
-(defun sta:direx-project-or-direx ()
-  "Open direx in project root or file dir"
+;; (defun sta:direx-project-or-direx ()
+;;   "Open direx in project root or file dir"
+;;   (interactive)
+;;   (require 'projectile)
+;;   (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
+
+;; (defun sta:treeview-project-or-treeview ()
+;;   "Open dir-treeview in project root or file directory."
+;;   (interactive)
+;;   (require 'projectile)
+;;   (if (projectile-project-root)
+;;       (dir-treeview-open (projectile-project-root))
+;;     (dir-treeview-open default-directory)))
+
+(defun sta:tree ()
+  "Ads and opens current project/dir in treemacs"
   (interactive)
-  (require 'projectile)
-  (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
+  (require 'treemacs)
+  (treemacs-add-and-display-current-project-exclusively))
 
-
-(defun sta:neotree-open (dir)
-  "Open a unique Neotree window for DIR."
-  (let ((buf-name (concat "NeoTree: " (file-name-nondirectory (directory-file-name dir)))))
-    (if (not (get-buffer buf-name))
-        (progn
-          (neotree-dir dir)
-          (rename-buffer buf-name))
-      (switch-to-buffer buf-name))))
-
-(defun sta:neotree-project-or-neotree ()
-  "Open neotree in project root of file dir."
-  (interactive)
-  (require 'projectile)
-  (if (projectile-project-root) (neotree-dir (projectile-project-root)) (neotree-dir default-directory)))
-
-
-(defun sta:update-neotree ()
-  "Make Neotree find and display the current buffer's file."
-  (interactive)
-  (when (neo-global--window-exists-p)
-    (let ((current-file (buffer-file-name)))
-      (when current-file
-        (neotree-find current-file)))))
-
-(defun sta:treeview-project-or-treeview ()
-  "Open dir-treeview in project root or file directory."
-  (interactive)
-  (require 'projectile)
-  (if (projectile-project-root)
-      (dir-treeview-open (projectile-project-root))
-    (dir-treeview-open default-directory)))
 
 (defun sta:yank-pop ()
   "Copies item from killring"
