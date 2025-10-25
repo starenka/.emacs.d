@@ -142,6 +142,7 @@
 ;; dired/direx
 ;;(global-set-key (kbd "C-x d") 'sta:treeview-project-or-treeview)
 (global-set-key (kbd "C-x d") 'sta:tree)
+(global-set-key (kbd "s-0") 'treemacs-select-window)
 (global-set-key (kbd "C-x D") 'dired)
 ;; (add-hook 'direx-mode-hook
 ;;          (lambda () (local-set-key [(shift return)] #'direx:expand-item-recursively)))
