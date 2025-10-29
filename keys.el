@@ -4,44 +4,98 @@
 (global-unset-key (kbd "C-q"))
 (global-unset-key (kbd "s-q"))
 
-(defhydra sta:windows ()
-  ("e" enlarge-window-horizontally "enlarge win horizontally" :column "Sizing")
-  ("s" shrink-window-horizontally "shrink win horizontally")
-  ("E" enlarge-window "enlarge win vertically")
-  ("S" shrink-window "shrink win vertically")
-  ("b" balance-windows "balance window height")
-  ("m" maximize-window "maximize current window")
-  ("M" minimize-window "minimize current window")
 
-  ("h" split-window-below "split horizontally" :column "Split management")
-  ("v" split-window-right "split vertically")
-  ("d" delete-window "delete current window")
-  ("x" delete-other-windows "delete-other-windows")
+(defhydra sta:buffer-menu (:hint nil)
+  "
+^Mark^             ^Unmark^           ^Actions^          ^Search
+^^^^^^^^-----------------------------------------------------------------
+_m_: mark          _u_: unmark        _x_: execute       _R_: re-isearch
+_s_: save          _U_: unmark up     _b_: bury          _I_: isearch
+_d_: delete        ^ ^                _g_: refresh       _O_: multi-occur
+_D_: delete up     ^ ^                _T_: files only: % -28`Buffer-menu-files-only
+_~_: modified
+"
+  ("m" Buffer-menu-mark)
+  ("u" Buffer-menu-unmark)
+  ("U" Buffer-menu-backup-unmark)
+  ("d" Buffer-menu-delete)
+  ("D" Buffer-menu-delete-backwards)
+  ("s" Buffer-menu-save)
+  ("~" Buffer-menu-not-modified)
+  ("x" Buffer-menu-execute)
+  ("b" Buffer-menu-bury)
+  ("g" revert-buffer)
+  ("T" Buffer-menu-toggle-files-only)
+  ("O" Buffer-menu-multi-occur :color blue)
+  ("I" Buffer-menu-isearch-buffers :color blue)
+  ("R" Buffer-menu-isearch-buffers-regexp :color blue)
+  ("c" nil "cancel")
+  ("v" Buffer-menu-select "select" :color blue)
+  ("o" Buffer-menu-other-window "other-window" :color blue)
+  ("q" quit-window "quit" :color blue))
 
-  ("j" ace-window "ace window" :column "Navigation")
-  ("<left>" windmove-left "← window")
-  ("<down>" windmove-down "↓ window")
-  ("<up>" windmove-up "↑ window")
-  ("<right>" windmove-right "→ window")
+(define-key Buffer-menu-mode-map "." 'sta:buffer-menu/body)
 
-  ("q" nil "quit" :column nil))
 
-(defhydra sta:toggles ()
-  ("i" text-scale-increase "zoom in" :column "Zoom")
-  ("o" text-scale-decrease "zoom out")
-  ("r" sta:reset-zoom "reset zoom")
+(defhydra sta:windows (:hint nil)
+  "
+^Sizing^                    ^Split management^        ^Navigation^
+─────────────────────────────────────────────────────────────────────────
+_e_: enlarge horizontaly    _h_: split horizontaly    _j_: ace window
+_s_: shrink horiz           _v_: split verticaly      _←_: windmove left
+_E_: enlarge vert           _d_: delete window        _↓_: windmove down
+_S_: shrink vert            _x_: delete others        _↑_: windmove up
+_b_: balance                _u_: undo                 _→_: windmove right
+_m_: maximize
+_M_: minimize
+"
+  ("e" enlarge-window-horizontally)
+  ("s" shrink-window-horizontally)
+  ("E" enlarge-window)
+  ("S" shrink-window)
+  ("b" balance-windows)
+  ("m" maximize-window)
+  ("M" minimize-window)
+  ("h" split-window-below)
+  ("v" split-window-right)
+  ("d" delete-window)
+  ("x" delete-other-windows)
+  ("x" winner-undo)
+  ("j" ace-window)
+  ("<left>" windmove-left)
+  ("<down>" windmove-down)
+  ("<up>" windmove-up)
+  ("<right>" windmove-right)
 
-  ("a" abbrev-mode "abbrev" :column "Toggles")
-  ("d" toggle-debug-on-error "debug")
-  ("f" auto-fill-mode "fill")
-  ("t" toggle-truncate-lines "truncate")
-  ("w" whitespace-mode "whitespace")
-  ("v" view-mode "toggle view mode")
-  ("r" read-only-mode "toggle readonly mode")
-  ("h" sta:toggle-theme "toggle b/w theme")
+  ("c" nil "cancel"))
 
-  ("q" nil "cancel" :column nil))
 
+(defhydra sta:toggles (:hint nil)
+  "
+^Zoom^             ^Toggles^           ^Misc^
+───────────────────────────────────────────────────────────
+[_i_] zoom in      [_a_] abbrev        [_d_] debug
+[_o_] zoom out     [_f_] fill          [_t_] truncate lines
+[_r_] resetzoom    [_w_] whitespace    [_v_] view mode
+^ ^                [_r_] read-only     [_h_] cycle themes
+
+"
+  ("i" text-scale-increase)
+  ("o" text-scale-decrease)
+  ("r" sta:reset-zoom)
+
+  ("a" abbrev-mode)
+  ("d" toggle-debug-on-error)
+  ("f" auto-fill-mode)
+  ("t" toggle-truncate-lines)
+  ("w" whitespace-mode)
+  ("v" view-mode)
+  ("r" read-only-mode)
+  ("h" sta:cycle-themes)
+
+  ("c" nil "cancel"))
+
+;; C-q ?
 (dolist (kv '(
   ("/" . sta:toggles/body)
   ("\\" . sta:windows/body)
