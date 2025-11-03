@@ -270,17 +270,12 @@
   :config
   (yas-global-mode 1))
 
-;; undo buffer changes
-(use-package undo-tree
+(use-package vundo
   :ensure t
-  :delight
-  :custom
-  ;; Prevent undo tree files from polluting conf dir
-  (undo-tree-history-directory-alist '(("." . "~/.emacs.d/.tmp/undo")))
-  (undo-tree-visualizer-timestamps t)
-  (undo-tree-auto-save-history t)
+  :defer t
   :config
-  (global-undo-tree-mode))
+  (setq vundo-glyph-alist vundo-unicode-symbols)
+  :bind (("C-x u"   . vundo)))
 
 ;; show help while pressing part of the chord f.e M-q
 (use-package which-key
