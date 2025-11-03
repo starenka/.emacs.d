@@ -277,6 +277,11 @@
   (setq vundo-glyph-alist vundo-unicode-symbols)
   :bind (("C-x u"   . vundo)))
 
+(use-package undo-fu-session
+  :ensure t
+  :config
+  (global-undo-fu-session-mode))
+
 ;; show help while pressing part of the chord f.e M-q
 (use-package which-key
   :ensure t
