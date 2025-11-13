@@ -184,10 +184,10 @@
           treemacs-hide-dot-git-directory          nil
           treemacs-indentation                     2
           treemacs-indentation-string              " "
-          treemacs-is-never-other-window           nil
+          treemacs-is-never-other-window           t
           treemacs-max-git-entries                 5000
           treemacs-missing-project-action          'ask
-          treemacs-move-files-by-mouse-dragging    t
+          treemacs-move-files-by-mouse-dragging    nil
           treemacs-move-forward-on-expand          nil
           treemacs-no-png-images                   t
           treemacs-no-delete-other-windows         t
@@ -234,7 +234,7 @@
       (`(t . _)
        (treemacs-git-mode 'simple)))
 
-    (treemacs-hide-gitignored-files-mode nil)))
+    (treemacs-hide-gitignored-files-mode -1)))
 
 
 (use-package treemacs-projectile
