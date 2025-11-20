@@ -131,6 +131,7 @@ _M_: minimize
   ("v s" . magit-status)
   ("v t" . git-timemachine)
   ("w" . whitespace-cleanup)
+  ("W" . fixup-whitespace)
   ("z" . alzheimer-show)))
 
   (global-set-key (kbd (format "C-' %s" (car kv))) (cdr kv))
