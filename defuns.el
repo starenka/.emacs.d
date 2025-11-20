@@ -135,21 +135,6 @@ none exists, or if the current buffer is already a term."
                              (concat (projectile-project-name) "/") nil (thing-at-point 'name))))
   (bookmark-set name))
 
-;; (defun sta:direx:create-file ()
-;;   "creates file in direx at point"
-;;   (interactive)
-;;   (let* ((item (direx:item-at-point!))
-;;          (file (direx:item-tree item))
-;;          (parent-dir
-;;           (if (typep file 'direx:directory)
-;;               (direx:file-full-name file)
-;;             (direx:directory-dirname
-;;              (direx:file-full-name file))))
-;;          (fname (read-directory-name "Create/visit file: " parent-dir)))
-;;     (find-file fname)
-;;     (direx:item-refresh-parent item)
-;;     (direx:move-to-item-name-part item)))
-
 (defun sta:sudo-edit (&optional arg)
   "Edit currently visited file as root.
 
@@ -302,20 +287,6 @@ buffer is not visiting a file."
       (progn
         (multi-vterm-project)
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
-
-;; (defun sta:direx-project-or-direx ()
-;;   "Open direx in project root or file dir"
-;;   (interactive)
-;;   (require 'projectile)
-;;   (if (projectile-project-root) (direx-project:jump-to-project-root) (direx:jump-to-directory)))
-
-;; (defun sta:treeview-project-or-treeview ()
-;;   "Open dir-treeview in project root or file directory."
-;;   (interactive)
-;;   (require 'projectile)
-;;   (if (projectile-project-root)
-;;       (dir-treeview-open (projectile-project-root))
-;;     (dir-treeview-open default-directory)))
 
 (defun sta:tree ()
   "Ads and opens current project/dir in treemacs"
