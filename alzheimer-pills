@@ -1,41 +1,39 @@
 #MOVEMENT
-
 ace-select-window
-backward-sexp
 avy-goto-char-2
+backward-sexp
 forward-sexp
 
 #EDITING
-
+fixup-whitespace
 insert-char
 just-one-space
 tabify
 untabify
 zap-to-char
 zap-up-to-char
-fixup-whitespace
 
+#PYTHON/SHELL
+eval-expression
+python-add-import
+python-shell-send-region
+shell-command
+shell-command-on-region
+        
 #MISC
-
 ar/quick-kill-process *pgrep/pkill*
 artist-mode *ascii art creating*
 calc-dispatch 
-cider-jack-in
 count-words-region
 cycle-spacing
 describe-char
-eval-expression
 find-dired
 follow-mode
 git-timemachine
 htmlfontify-buffer
-python-add-import
-python-shell-send-region
 read-only-mode
 restclient-jq-interactive-result
 revert-buffer-with-coding-system
-shell-command
-shell-command-on-region
 sqlite-mode-open-file
 sta:copy-line
 sta:diff-last-two-kills
