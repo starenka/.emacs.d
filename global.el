@@ -235,7 +235,7 @@
       (`(t . _)
        (treemacs-git-mode 'simple)))
 
-    (treemacs-hide-gitignored-files-mode -1)))
+    (treemacs-hide-gitignored-files-mode )))
 
 
 (use-package treemacs-projectile
@@ -620,6 +620,7 @@
   :custom
   (gptel-model "gpt-4.1-mini")
   (gptel-default-model "gpt-4.1-mini"))
+
 
 ;;(straight-use-package
 ;; '(gptel-quick :type git :host github :repo "karthink/gptel-quick"))
