@@ -10,10 +10,8 @@
 (set-default 'fill-column 90) ;; Line-wrapping
 (windmove-default-keybindings) ;;navigate between windows w/ shift+arrows
 (pixel-scroll-precision-mode 1) ;; emacs 29
-;;(initial-buffer-choice "~/TODO")
-;;(display-battery-mode t) ;; Show battery stats
-(add-hook 'text-mode-hook (lambda () (electric-indent-local-mode -1)))
 (global-company-mode -1)
+;;(initial-buffer-choice "~/TODO")
 
 (setq
   inhibit-startup-message t ;; Don't show the startup screen
@@ -42,6 +40,11 @@
            ) ;; don't fuck w/ my scratches
 )
 
+;; dont autoindent after nl in this modes
+(dolist (hook '(markdown-mode-hook org-mode-hook text-mode-hook))
+  (add-hook hook (lambda () (electric-indent-local-mode -1))))
+
+
 (setq-default
  bidi-display-reordering nil  ;; should speedup long lines rendering https://emacs.stackexchange.com/a/603
  abbrev-mode nil
@@ -49,9 +52,6 @@
  tab-width 4
  kill-read-only-ok t ;; sta:copy-line (see defuns)
 )
-
-(use-package emacs
-  :hook (fundamental-mode . (lambda () (electric-indent-local-mode -1))))
 
 ;; file lib
 (use-package f :demand)
