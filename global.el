@@ -97,9 +97,6 @@
   :config
   (toggle-hl-line-when-idle ))
 
-;; @FIXME (use-package dired-details+ :ensure t)
-
-
 (use-package tramp
   :custom
   (tramp-default-method "ssh"))
