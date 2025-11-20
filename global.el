@@ -96,11 +96,6 @@
   :config
   (global-nlinum-mode t))
 
-;;(use-package idle-highlight-mode
-;;  :ensure t
-;;  :config (setq idle-highlight-idle-time .3)
-;;  :hook ((prog-mode text-mode) . idle-highlight-mode))
-
 ;; hl line on idle
 (use-package hl-line+
   :straight '(hl-line+
@@ -108,7 +103,7 @@
               :host github
               :repo "starenka/hl-line-")
   :config
-  (toggle-hl-line-when-idle 1))
+  (toggle-hl-line-when-idle ))
 
 ;; @FIXME (use-package dired-details+ :ensure t)
 
