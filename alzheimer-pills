@@ -1,10 +1,12 @@
 #MOVEMENT
+
 ace-select-window
 backward-sexp
 avy-goto-char-2
 forward-sexp
 
 #EDITING
+
 insert-char
 just-one-space
 tabify
@@ -13,9 +15,10 @@ zap-to-char
 zap-up-to-char
 fixup-whitespace
 
-#ZZ MISC ZZ
-ar/quick-kill-process
-artist-mode
+#MISC
+
+ar/quick-kill-process *pgrep/pkill*
+artist-mode *ascii art creating*
 calc-dispatch 
 cider-jack-in
 count-words-region

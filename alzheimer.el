@@ -17,15 +17,27 @@
 (defface alzheimer-heading-face '((t :inherit info-title-2)) "Face for headings in Alzheimer mode.")
 (defface alzheimer-help-face '((t :inherit Info-quoted)) "Face for help messages in Alzheimer mode.")
 (defface alzheimer-comment-face '((t :inherit font-lock-comment-face)) "Face for comments in Alzheimer mode.")
+(defvar alzheimer--pills-doc-toggle-state (make-hash-table :test 'equal)
+  "Hash table to track toggle state of full documentation display per function.")
+
+(defun alzheimer--get-first-sentence (doc)
+  "Return the first sentence from DOC string."
+  (if (string-match "\\`\\(.*?[.!?]\\)[ \n]" doc)
+      (match-string 1 doc)
+    (car (split-string doc "\n"))))
 
 (defun alzheimer--get-pills (&optional path)
   "Read pills from PATH or `alzheimer-pills-file`.
 The file can contain section headers defined as lines starting with `#SECTION-NAME`.
 Function lines follow, each line with: function-name [comment].
 Lines starting with `;` are ignored.
-Returns an alist of (SECTION . ITEMS), where ITEMS are lists of (FUNC-NAME COMMENT)."
+Returns an alist of (SECTION . ITEMS), where ITEMS are lists of (FUNC-NAME DISPLAY-DOC FULL-DOC).
+
+DISPLAY-DOC contains the comment followed by the function's documentation first sentence.
+FULL-DOC contains the comment followed by the full function's documentation."
   (let ((path (or path alzheimer-pills-file))
         (result (make-hash-table :test 'equal))
+        (sections '())
         (current-section "MISC"))
     (unless (file-exists-p path)
       (with-temp-buffer (write-file path)))
@@ -40,21 +52,35 @@ Returns an alist of (SECTION . ITEMS), where ITEMS are lists of (FUNC-NAME COMME
 
            ;; Section header line: #SECTION-NAME
            ((string-match-p "^#\\(.+\\)" line)
-            (setq current-section (string-trim (substring line 1))))
+            (setq current-section (string-trim (substring line 1)))
+            (unless (member current-section sections)
+              (push current-section sections)))
 
            ;; Otherwise, a function line with optional comment
            (t (let* ((parts (split-string line nil t))
                      (func (car parts))
-                     (comment (mapconcat 'identity (cdr parts) " ")))
+                     (comment (mapconcat 'identity (cdr parts) " "))
+                     (func-sym (intern func))
+                     (doc (when (and (fboundp func-sym) (documentation func-sym))
+                            (documentation func-sym)))
+                     (first-sentence (if doc (alzheimer--get-first-sentence doc) ""))
+                     (display-doc (string-trim (concat comment "  " first-sentence)))
+                     (full-doc (string-trim (concat comment "  " (or doc "")))))
                 (puthash current-section
-                         (append (gethash current-section result) (list (list func comment)))
+                         (append (gethash current-section result) (list (list func display-doc full-doc)))
                          result)))))
           (forward-line 1)))
-    ;; Convert hash table to alist, sorting sections alphabetically
-    (sort (let (alist)
-            (maphash (lambda (k v) (push (cons k v) alist)) result)
-            alist)
-          (lambda (a b) (string< (car a) (car b))))))
+    ;; Convert hash table to alist, preserving section order
+    (let (alist)
+      ;; If "MISC" section not present in sections but has items, add it first
+      (when (and (not (member "MISC" sections))
+                 (gethash "MISC" result))
+        (push "MISC" sections))
+      (dolist (section (reverse sections))
+        (let ((items (gethash section result)))
+          (when items
+            (push (cons section items) alist))))
+      (nreverse alist))))
 
 (defun alzheimer--edit-pills (&optional path)
   "Open the pills file located at PATH or `alzheimer-pills-file` in another window."
