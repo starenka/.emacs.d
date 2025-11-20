@@ -614,9 +614,8 @@
   (gptel-model "gpt-4.1-mini")
   (gptel-default-model "gpt-4.1-mini"))
 
-
-;;(straight-use-package
-;; '(gptel-quick :type git :host github :repo "karthink/gptel-quick"))
+(straight-use-package
+ '(gptel-quick :type git :host github :repo "karthink/gptel-quick"))
 
 ;; (package-vc-install '(ultra-scroll :vc-backend Git :url  "https://github.com/jdtsmith/ultra-scroll"))
 (use-package ultra-scroll
