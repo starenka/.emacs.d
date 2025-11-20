@@ -50,16 +50,8 @@
  kill-read-only-ok t ;; sta:copy-line (see defuns)
 )
 
-;; Trailing whitespace is unnecessary
-;;(defvar whitespace-cleanup-on-save t)
-;;(add-hook 'before-save-hook
-;;    (lambda ()
-;;    (if whitespace-cleanup-on-save (whitespace-cleanup))))
-
-;; line length
-;;(setq whitespace-line-column 100)
-;;(setq whitespace-style '(face lines-tail))
-;;(add-hook 'prog-mode-hook 'whitespace-mode)
+(use-package emacs
+  :hook (fundamental-mode . (lambda () (electric-indent-local-mode -1))))
 
 ;; file lib
 (use-package f :demand)
