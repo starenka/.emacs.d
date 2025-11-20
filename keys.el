@@ -1,8 +1,8 @@
 ;; C-h c <key> to get the name
 ;; [C-x] r C-h C-h to show all keys starting with [C-x]
 
+(global-unset-key (kbd "C-'"))
 (global-unset-key (kbd "C-q"))
-(global-unset-key (kbd "s-q"))
 
 
 (defhydra sta:buffer-menu (:hint nil)
@@ -133,7 +133,7 @@ _M_: minimize
   ("w" . whitespace-cleanup)
   ("z" . alzheimer-show)))
 
-  (global-set-key (kbd (format "s-q %s" (car kv))) (cdr kv))
+  (global-set-key (kbd (format "C-' %s" (car kv))) (cdr kv))
   (global-set-key (kbd (format "C-q %s" (car kv))) (cdr kv)))
 
 (global-set-key (kbd "<f5>") #'deadgrep)
