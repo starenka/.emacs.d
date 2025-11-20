@@ -169,10 +169,19 @@ buffer is not visiting a file."
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
-(defun sta:go-to-scratch-buffer ()
-  "Switches to scratch"
+(defun sta:go-to-scratch ()
+  "Switches to scratch buffer"
   (interactive)
   (switch-to-buffer "*scratch*"))
+
+(defun sta:go-to-fundamental-scratch ()
+  "Open a *scratch* buffer in fundamental mode."
+  (interactive)
+  (let ((buf (get-buffer-create "*fundamental-scratch*")))
+    (with-current-buffer buf
+      (fundamental-mode))
+    (switch-to-buffer buf)))
+
 
 (defun sta:ascii-translit-region (start end)
   "ASCIIfies region"
