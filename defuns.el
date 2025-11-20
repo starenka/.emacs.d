@@ -174,12 +174,12 @@ buffer is not visiting a file."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-(defun sta:go-to-fundamental-scratch ()
-  "Open a *scratch* buffer in fundamental mode."
+(defun sta:go-to-text-scratch ()
+  "Open a *scratch* buffer in text mode."
   (interactive)
-  (let ((buf (get-buffer-create "*fundamental-scratch*")))
+  (let ((buf (get-buffer-create "*itchy-scratch*")))
     (with-current-buffer buf
-      (fundamental-mode))
+      (text-mode))
     (switch-to-buffer buf)))
 
 

@@ -117,7 +117,7 @@ _M_: minimize
   ("l r" . gptel-rewrite)
   ("p" . package-upgrade-all)
   ("r" . sta:region-to-browser)
-  ("s" . sta:go-to-fundamental-scratch)
+  ("s" . sta:go-to-text-scratch)
   ("e" . sta:go-to-scratch)
   ("t" . sta:snakecase-translit-region)
   ("u" . lsp-find-references)
