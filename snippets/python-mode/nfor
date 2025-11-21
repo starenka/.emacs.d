@@ -4,4 +4,4 @@
 # key: nfor
 # --
 
-[[{${1:one}} for ${1} in {${2:inner}}] for ${2} in ${outer}]
+[[${1:one} for ${1} in ${2:inner}] for ${2} in ${outer}]
