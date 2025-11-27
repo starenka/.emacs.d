@@ -24,7 +24,7 @@
                              (pid (format (format "%%%ds" pid-width) (map-elt process 'pid)))
                              (user (format (format "%%-%ds" user-width)
                                            (truncate-string-to-width
-                                            (map-elt process 'user) user-width nil nil t)))
+                                            (or (map-elt process 'user) "") user-width nil nil t)))
                              (comm (format (format "%%-%ds" comm-width)
                                            (truncate-string-to-width
                                             (map-elt process 'comm) comm-width nil nil t)))
