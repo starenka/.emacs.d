@@ -13,6 +13,8 @@
 (global-company-mode -1)
 ;;(initial-buffer-choice "~/TODO")
 
+(make-directory "/tmp/emacs" t)
+
 (setq
   inhibit-startup-message t ;; Don't show the startup screen
   ring-bell-function 'ignore ;; turn off hells & bells
@@ -20,6 +22,9 @@
   backup-directory-alist '(("." . "~/.emacs.d/.tmp/backups/")) ;; Make sure all backup files only live in one place
   auto-save-file-name-transforms '((".*" "~/.emacs.d/.tmp/auto-saves/" t)) ;; dont litter autosave files
   auto-save-list-file-prefix "~/.emacs.d/.tmp/auto-saves/.auto-save-list-"
+  create-lockfiles t
+  flycheck-temp-prefix "/tmp/emacs"
+  lock-file-name-transforms '(("\\`/.*/\\([^/]+\\)\\'" "/tmp/emacs/\\1" t))
   bookmark-save-flag 1 ;; save bmarks
   load-prefer-newer t ;; always get newest files
   gc-cons-threshold 100000000 ;; http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
