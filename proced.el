@@ -15,7 +15,7 @@
     "kills process"
     (interactive)
     (let* ((pid-width  9)
-           (comm-width 30)
+           (comm-width 60)
            (user-width 9)
            (processes (proced-process-attributes))
            (candidates
@@ -49,4 +49,6 @@
       (when (y-or-n-p (format "Kill? %s" prompt-title))
         (if (eq (signal-process (map-elt selection 'pid) 9) 0)
             (message "killed: %s" prompt-title)
-          (message "error: could not kill %s" prompt-title))))))
+          (message "error: could not kill %s" prompt-title)))))
+
+ )
