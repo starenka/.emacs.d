@@ -17,6 +17,7 @@
    flycheck-css-stylelint-executable "npx stylelint")
   (setq-default flycheck-disabled-checkers
   '(emacs-lisp-checkdoc ;; dont yell about missing docs in el files
+    python-pylint
     python-pycompile
     python-mypy
     python-pyright))
