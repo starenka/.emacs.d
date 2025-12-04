@@ -605,8 +605,7 @@
 (use-package gptel
   :straight t
   :custom
-  (gptel-model "gpt-4.1-mini")
-  (gptel-default-model "gpt-4.1-mini"))
+  (gptel-model "gpt-4o-mini"))
 
 (use-package gptel-quick
   :straight (Gptel-quick :type git :host github :repo "karthink/gptel-quick"))
