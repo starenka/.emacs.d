@@ -172,6 +172,7 @@
           treemacs-goto-tag-strategy               'refetch-index
           treemacs-header-scroll-indicators        '(nil . "^^^^^^")
           treemacs-hide-dot-git-directory          nil
+          treemacs-hide-gitignored-files-mode      nil
           treemacs-indentation                     2
           treemacs-indentation-string              " "
           treemacs-is-never-other-window           t
@@ -224,7 +225,7 @@
       (`(t . _)
        (treemacs-git-mode 'simple)))
 
-    (treemacs-hide-gitignored-files-mode )))
+    ))
 
 
 (use-package treemacs-projectile
