@@ -40,8 +40,14 @@
 
 (setq-default cursor-type '(box . 4))
 
-
-(defvar favourite-themes '(twilight-bright tsdh-light doom-old-hope doom-lantern monokai))
+;; https://pawelbx.github.io/emacs-theme-gallery/
+(defvar favourite-themes '(twilight-bright
+                           tsdh-light
+                           alect-light
+                           hemisu-light
+                           doom-old-hope
+                           doom-lantern
+                           monokai))
 
 (defun sta:load-default-theme ()
   (when favourite-themes
