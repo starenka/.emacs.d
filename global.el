@@ -427,20 +427,25 @@
   ;;:config
   ;;(add-hook 'es-mode-hook (lambda () (company-mode))))
 
+
+;; (use-package jq-mode
+;;   :ensure t
+;;   :straight (:host github :repo "emacsmirror/jq-mode")
+;;   :mode "\\.jq\\'")
+
 ;; postman for big boys
 (use-package restclient
   :ensure t
   :straight (:host github :repo "pashky/restclient.el"
                    :commit "b9b373c8fbd5c5f764e34541d1b496e1bb0d7dc1")
+  ;;:straight (:host github :repo "emacsorphanage/restclient"
+  ;;                :commit "24a3df8e54f99214fd7ccea33b057cefa58ddfa4")
   :mode (("\\.rest$" . restclient-mode)
          ("\\.http$" . restclient-mode))
   :config
   (add-hook 'restclient-mode-hook (lambda ()
               (setq-local indent-tabs-mode t
                     tab-width 2))))
-
-;; jq for restclient stuff
-(use-package restclient-jq :ensure t :defer)
 
 ;; systemd units support
 (use-package systemd
