@@ -16,7 +16,6 @@ zap-up-to-char
 #PYTHON/SHELL
 eval-expression
 python-add-import
-python-shell-send-region
 shell-command
 shell-command-on-region
         
@@ -32,7 +31,6 @@ follow-mode
 git-timemachine
 htmlfontify-buffer
 read-only-mode
-restclient-jq-interactive-result
 revert-buffer-with-coding-system
 sqlite-mode-open-file
 sta:copy-line
@@ -43,3 +41,4 @@ sta:prev-window
 sta:yank-pop
 view-mode
 xref-find-definitions
+consult-jq
