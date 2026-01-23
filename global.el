@@ -328,6 +328,10 @@
   ;;(magit-diff-auto-show 't) ; dont show diffs on comit and such
   :bind ("C-x c" . magit-status))
 
+(use-package magit-pre-commit
+  :straight (:host github :repo "DamianB-BitFlipper/magit-pre-commit.el")
+  :after magit)
+
 ;; git blame / history navigation simplified (fucked up rn)
 (use-package git-timemachine :ensure t) 
 
