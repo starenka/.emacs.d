@@ -625,6 +625,10 @@
 (use-package gptel-quick
   :straight (Gptel-quick :type git :host github :repo "karthink/gptel-quick"))
 
+
+(use-package agent-shell
+  :ensure t)
+
 ;; (package-vc-install '(ultra-scroll :vc-backend Git :url  "https://github.com/jdtsmith/ultra-scroll"))
 (use-package ultra-scroll
   :ensure t
