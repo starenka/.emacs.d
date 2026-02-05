@@ -58,6 +58,12 @@
  kill-read-only-ok t ;; sta:copy-line (see defuns)
 )
 
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize))
+
 ;; file lib
 (use-package f :demand)
 
