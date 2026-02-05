@@ -182,15 +182,28 @@ buffer is not visiting a file."
   (sta:ascii-translit-region start end)
   (subst-char-in-region start end ?\s (string-to-char "_")))
 
-(defun sta:find-files-dwim ()
+(defun sta:find-files-dwim (prefill)
   "Invoke projectile file search / search in buffer dir if available, else /"
-  (interactive)
-  (if (projectile-project-p) ;; detect if current buffer is in a project
-      (projectile-find-file)
-    (find-file-other-window (if (buffer-file-name)
-                    (file-name-directory (buffer-file-name))
-                  "/"
-                  ))))
+  (interactive "P")
+  (let ((initial (when prefill
+                   (or (thing-at-point 'filename t)
+                       (thing-at-point 'symbol t)))))
+
+    (if (projectile-project-p) ;; detect if current buffer is in a project
+        (let* ((project-root (projectile-project-root))
+               (project-files (projectile-current-project-files))
+               (file (projectile-completing-read "Find file: " project-files
+                                                 :initial-input initial
+                                                 :caller 'projectile-find-file)))
+          (when file
+            (find-file (expand-file-name file project-root))))
+
+      (find-file-other-window
+       (read-file-name "Find file: "
+                       (if (buffer-file-name)
+                           (file-name-directory (buffer-file-name))
+                         "/")
+                       nil nil initial)))))
 
 (defun sta:move-line-up ()
   "Move up the current line."
