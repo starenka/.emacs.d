@@ -185,9 +185,12 @@ buffer is not visiting a file."
 (defun sta:find-files-dwim (prefill)
   "Invoke projectile file search / search in buffer dir if available, else /"
   (interactive "P")
-  (let ((initial (when prefill
+  (let ((initial (cond
+                  ((use-region-p)
+                   (buffer-substring-no-properties (region-beginning) (region-end)))
+                  (prefill
                    (or (thing-at-point 'filename t)
-                       (thing-at-point 'symbol t)))))
+                       (thing-at-point 'symbol t))))))
 
     (if (projectile-project-p) ;; detect if current buffer is in a project
         (let* ((project-root (projectile-project-root))
