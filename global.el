@@ -631,7 +631,7 @@
 (use-package gptel-quick
   :straight (Gptel-quick :type git :host github :repo "karthink/gptel-quick"))
 
-
+;; bun install -g @zed-industries/codex-acp @openai/codex
 (use-package agent-shell
   :ensure t)
 
