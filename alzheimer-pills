@@ -42,3 +42,6 @@ sta:yank-pop
 view-mode
 xref-find-definitions
 consult-jq
+
+#agent-shell
+agent-shell-set-session-model
