@@ -335,8 +335,7 @@
   :bind ("C-x c" . magit-status))
 
 (use-package magit-pre-commit
-  :straight (:host github :repo "DamianB-BitFlipper/magit-pre-commit.el")
-  :after magit)
+  :ensure t)
 
 ;; git blame / history navigation simplified (fucked up rn)
 (use-package git-timemachine :ensure t) 
