@@ -74,6 +74,7 @@
   (delight '((abbrev-mode nil "abbrev")
             (eldoc-mode nil "eldoc")
             (dot-mode nil)
+            (super-save-mode nil "super-save")
             (overwrite-mode " Ov" t))))
 
 ;; minor modes as menu
