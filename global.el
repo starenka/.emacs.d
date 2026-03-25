@@ -115,6 +115,11 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
+(use-package super-save
+  :ensure t
+  :config
+  (super-save-mode +1))
+
 ;; large file handling
 (use-package vlf-setup :ensure vlf :defer)
 
