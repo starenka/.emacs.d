@@ -340,7 +340,8 @@
   :bind ("C-x c" . magit-status))
 
 (use-package magit-pre-commit
-  :ensure t)
+  :ensure t
+  :after magit)
 
 ;; git blame / history navigation simplified (fucked up rn)
 (use-package git-timemachine :ensure t) 
