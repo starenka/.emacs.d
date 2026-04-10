@@ -4,6 +4,7 @@
 .cache
 .emacs.desktop*
 .lsp-session*
+.agent-shell/*
 bookmarks
 custom.el
 devdocs
@@ -12,6 +13,7 @@ history
 el-get/*
 eln-cache/*
 elpa/*
+elpaca/*
 nov-places
 projectile-bookmarks.eld
 projectile.cache
@@ -21,3 +23,6 @@ tramp*
 url/*
 var/*
 xkcd/*
+undo-fu-session/*
+workspace/*
+request/*
