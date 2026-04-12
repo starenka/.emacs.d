@@ -5,15 +5,16 @@
 
 (add-hook 'python-mode-hook (lambda () ;; M-x devdocs-install
                               (setq-local devdocs-current-docs '(
-                                                                 "django~5.0"
+                                                                 "django~6.0"
                                                                  ;;"elisp"
                                                                  "html"
                                                                  "http"
                                                                  ;;"javascript"
                                                                  "lua~5.4"
                                                                  "postgresql~15"
-                                                                 "python~3.11"
-                                                                 "numpy~1.23"
+                                                                 "python~3.14"
+                                                                 "python~3.9"
+                                                                 "numpy~2"
                                                                  "redis"))))
 
 
