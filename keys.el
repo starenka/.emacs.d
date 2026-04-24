@@ -1,7 +1,7 @@
 ;; C-h c <key> to get the name
 ;; [C-x] r C-h C-h to show all keys starting with [C-x]
 
-(global-unset-key (kbd "C-'"))
+(global-unset-key (kbd "C-;"))
 (global-unset-key (kbd "C-q"))
 
 
@@ -134,7 +134,7 @@ _M_: minimize
   ("W" . fixup-whitespace)
   ("z" . alzheimer-show)))
 
-  (global-set-key (kbd (format "C-' %s" (car kv))) (cdr kv))
+  (global-set-key (kbd (format "C-; %s" (car kv))) (cdr kv))
   (global-set-key (kbd (format "C-q %s" (car kv))) (cdr kv)))
 
 (global-set-key (kbd "<f5>") #'deadgrep)
