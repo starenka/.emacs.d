@@ -183,30 +183,53 @@ buffer is not visiting a file."
   (subst-char-in-region start end ?\s (string-to-char "_")))
 
 (defun sta:find-files-dwim (prefill)
-  "Invoke projectile file search / search in buffer dir if available, else /"
+  "Complete from open buffers and files in one minibuffer."
   (interactive "P")
-  (let ((initial (cond
-                  ((use-region-p)
-                   (buffer-substring-no-properties (region-beginning) (region-end)))
-                  (prefill
-                   (or (thing-at-point 'filename t)
-                       (thing-at-point 'symbol t))))))
-
-    (if (projectile-project-p) ;; detect if current buffer is in a project
-        (let* ((project-root (projectile-project-root))
-               (project-files (projectile-current-project-files))
-               (file (projectile-completing-read "Find file: " project-files
-                                                 :initial-input initial
-                                                 :caller 'projectile-find-file)))
-          (when file
-            (find-file (expand-file-name file project-root))))
-
-      (find-file-other-window
-       (read-file-name "Find file: "
-                       (if (buffer-file-name)
-                           (file-name-directory (buffer-file-name))
-                         "/")
-                       nil nil initial)))))
+  (let* ((initial (cond
+                   ((use-region-p)
+                    (buffer-substring-no-properties (region-beginning) (region-end)))
+                   (prefill
+                    (or (thing-at-point 'filename t)
+                        (thing-at-point 'symbol t)))))
+         (project-root (and (projectile-project-p)
+                            (projectile-project-root)))
+         (file-root (or project-root
+                        (and (buffer-file-name)
+                             (file-name-directory (buffer-file-name)))
+                        default-directory))
+         (buffer-candidates
+          (delq nil
+                (mapcar (lambda (buffer)
+                          (let ((name (buffer-name buffer)))
+                            (unless (string-prefix-p " " name)
+                              (cons (format "%s [b]" name) buffer))))
+                        (buffer-list))))
+         (file-candidates
+          (mapcar (lambda (file)
+                    (cons (format "%s" file)
+                          (expand-file-name file file-root)))
+                  (if project-root
+                      (projectile-current-project-files)
+                    (delq nil
+                          (mapcar (lambda (file)
+                                    (let ((path (expand-file-name file file-root)))
+                                      (when (file-regular-p path)
+                                        file)))
+                                  (directory-files file-root nil directory-files-no-dot-files-regexp))))))
+         (choice (completing-read
+                  "Buffer or file: "
+                  (append (mapcar #'car buffer-candidates)
+                          (mapcar #'car file-candidates))
+                  nil t initial))
+         (buffer (cdr (assoc choice buffer-candidates)))
+         (file (cdr (assoc choice file-candidates))))
+    (cond
+     (buffer
+      (switch-to-buffer buffer))
+     (file
+      (if project-root
+          (find-file file)
+        (find-file-other-window file))))))
 
 (defun sta:move-line-up ()
   "Move up the current line."
