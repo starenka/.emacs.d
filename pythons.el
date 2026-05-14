@@ -11,10 +11,10 @@
                                                                  "http"
                                                                  ;;"javascript"
                                                                  "lua~5.4"
-                                                                 "postgresql~15"
+                                                                 "postgresql~18"
                                                                  "python~3.14"
                                                                  "python~3.9"
-                                                                 "numpy~2"
+                                                                 "numpy~2.4"
                                                                  "redis"))))
 
 
