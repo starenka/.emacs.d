@@ -502,6 +502,9 @@
   :config
   (direnv-mode))
 
+(use-package just-mode
+  :ensure t
+  :mode ("\\(?:[Jj]ustfile\\|\\.just\\)\\'" . just-mode))
 
 (use-package reformatter
   :hook
