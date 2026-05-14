@@ -157,6 +157,11 @@
 (use-package treemacs
   :ensure t
   :defer t
+  :hook
+  (treemacs-mode . (lambda ()
+                     (display-line-numbers-mode -1)
+                     (when (fboundp 'nlinum-mode)
+                       (nlinum-mode -1))))
   :config
   (with-eval-after-load 'treemacs
 
