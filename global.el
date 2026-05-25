@@ -4,7 +4,11 @@
 (menu-bar-mode -1) ;; no menu bar
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; no scrollbar
+;; Ask the WM to maximize both the first GUI frame and any later frames.
+;; Awesome still needs a matching client rule because Emacs also publishes
+;; character-cell size hints, which can otherwise leave gaps around the frame.
 (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; start maximized
+(add-to-list 'initial-frame-alist '(fullscreen . maximized)) ;; initial frame too
 (desktop-save-mode 1) ;; save on exit
 (global-auto-revert-mode t) ;; sync buffers on disk change
 (set-default 'fill-column 90) ;; Line-wrapping
@@ -32,6 +36,9 @@
   undo-limit 633459
   redisplay-dont-pause t ;; https://www.masteringemacs.org/article/improving-performance-emacs-display-engine
   frame-inhibit-implied-size t ;; Don't resize frame as i use tiling manager (saves startup time)
+  ;; Important with Awesome: let the WM size the frame in pixels instead of
+  ;; snapping to text-cell geometry, otherwise "maximized" may not fill space.
+  frame-resize-pixelwise t ;; let WM maximize to exact screen pixels
   read-process-output-max (* 1024 1024) ;; 1mb https://emacs-lsp.github.io/lsp-mode/page/performance/
   auto-window-vscroll nil ;; https://emacs.stackexchange.com/a/28746
   tab-stop-list (number-sequence 4 200 4)
@@ -665,5 +672,3 @@
   :delight
   :config
   (beacon-mode 1))
-
-(toggle-frame-maximized)
