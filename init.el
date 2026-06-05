@@ -29,10 +29,8 @@
       (eval-print-last-sexp))))
 (el-get 'sync)
 
-;; use-package
-(dolist (package '(use-package))
-   (unless (package-installed-p package)
-       (package-install package)))
+;; Emacs 30 ships use-package with :vc support.
+(require 'use-package)
 
 ;; straigt.el
 (defvar bootstrap-version)
