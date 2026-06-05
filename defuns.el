@@ -7,11 +7,6 @@
   (split-window-right (floor (* 0.35 (window-width))))
   (other-window 1))
 
-(defun sta:direx-split ()
-  "[x|direx]"
-  (interactive)
-  (direx:jump-to-directory)
-  (sta:two-col-split))
 
 (defun sta:epic-split ()
   "[x|x + term]"
