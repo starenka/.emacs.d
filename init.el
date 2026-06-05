@@ -19,7 +19,7 @@
                           
 (package-initialize)
 
-;; el-get
+;; el-get (legacy; consider consolidating — three package managers run here: package.el, el-get, straight.el)
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (unless (require 'el-get nil 'noerror)
   (with-current-buffer
