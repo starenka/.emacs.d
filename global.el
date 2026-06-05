@@ -644,20 +644,32 @@
   (esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
 
 
-;; (use-package gptel
-;;   :straight t
-;;   :custom
-;;   (gptel-model "gpt-4o-mini"))
+(use-package gptel
+  :straight t
+  :config
+  (require 'gptel-openai-oauth)
+  (require 'gptel-gh)
 
-;; (use-package gptel-quick
-;;   :straight (Gptel-quick :type git :host github :repo "karthink/gptel-quick"))
+  (defun starenka/gptel-oauth-use-real-browser (orig-fn &rest args)
+    "Force OAuth browser prompts to use the system browser, not w3m."
+    (let ((browse-url-browser-function #'browse-url-default-browser))
+      (apply orig-fn args)))
+
+  (advice-add 'gptel-oauth--device-auth-prompt :around
+              #'starenka/gptel-oauth-use-real-browser)
+
+  (setq gptel-model 'gpt-5.4-mini
+        gptel-backend (gptel-make-openai-oauth "ChatGPT"))
+
+  (gptel-make-gh-copilot "GitHub Copilot"
+                         :host "api.individual.githubcopilot.com"))
 
 ;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex
 (use-package agent-shell
   :ensure t)
 
-(use-package eca
-  :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
+;; (use-package eca
+;;   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
 
 ;; (package-vc-install '(ultra-scroll :vc-backend Git :url  "https://github.com/jdtsmith/ultra-scroll"))
 (use-package ultra-scroll
