@@ -1,5 +1,4 @@
 (use-package python
-  :ensure t
   :bind (:map python-mode-map
               ("M-i" . python-add-import)))
 
