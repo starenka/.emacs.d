@@ -76,13 +76,13 @@ _M_: minimize
 ───────────────────────────────────────────────────────────
 [_i_] zoom in      [_a_] abbrev        [_d_] debug
 [_o_] zoom out     [_f_] fill          [_t_] truncate lines
-[_r_] resetzoom    [_w_] whitespace    [_v_] view mode
+[_0_] resetzoom    [_w_] whitespace    [_v_] view mode
 ^ ^                [_r_] read-only     [_h_] cycle themes
 
 "
   ("i" text-scale-increase)
   ("o" text-scale-decrease)
-  ("r" sta:reset-zoom)
+  ("0" sta:reset-zoom)
 
   ("a" abbrev-mode)
   ("d" toggle-debug-on-error)
