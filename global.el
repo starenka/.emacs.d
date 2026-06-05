@@ -285,7 +285,16 @@
 (use-package undo-fu-session
   :ensure t
   :config
-  (global-undo-fu-session-mode))
+  (defun sta:undo-fu-session-save-compatible-buffers ()
+    "Persist undo data for file buffers whose contents match disk."
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (and (bound-and-true-p undo-fu-session-mode)
+                   buffer-file-name
+                   (not (buffer-modified-p)))
+          (undo-fu-session-save)))))
+  (add-hook 'kill-emacs-hook #'sta:undo-fu-session-save-compatible-buffers)
+  (undo-fu-session-global-mode))
 
 ;; show help while pressing part of the chord f.e M-q
 (use-package which-key
