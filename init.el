@@ -5,6 +5,7 @@
 (setq straight-repository-branch "develop")
 
 (require 'package)
+(setq package-install-upgrade-built-in t) ;; allow upgrading built-ins (e.g. transient for magit)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/")
@@ -27,7 +28,7 @@
     (let (el-get-master-branch)
       (goto-char (point-max))
       (eval-print-last-sexp))))
-(el-get 'sync '()) ;; explicit empty list avoids syncing all packages on every startup
+(el-get 'sync) ;; sync el-get managed packages on startup
 
 ;; Emacs 30 ships use-package with :vc support.
 (require 'use-package)
