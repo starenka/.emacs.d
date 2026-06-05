@@ -446,7 +446,7 @@
 (use-package adoc-mode
   :ensure t
   :defer
-  :mode ("\\.adoc\\'" . rst-mode))
+  :mode ("\\.adoc\\'" . adoc-mode))
 
 ;; elastic support
 (use-package es-mode
