@@ -117,7 +117,6 @@
   (toggle-hl-line-when-idle ))
 
 (use-package tramp
-  :defer t
   :custom
   (tramp-default-method "ssh"))
 
@@ -138,7 +137,7 @@
   :bind ("C-M-r" . goto-last-change))
 
 ;; moving buffers
-(use-package buffer-move :ensure t :defer t)
+(use-package buffer-move :ensure t)
 
 ;; easy line/region duplication
 (use-package duplicate-thing
@@ -146,18 +145,21 @@
   :bind ("C-S-d" . duplicate-thing))
 
 ;; apt install ripgrep
-(use-package rg :ensure t :defer t)
+(use-package rg
+  :ensure t
+  :config
+  ;; https://github.com/Wilfred/deadgrep/issues/24#issuecomment-942290197
+  (defun sta:deadgrep--include-args (rg-args)
+  "Adds flags to rigrep"
+  ;;(push "--hidden" rg-args) ;; consider hidden folders/files
+  (push "--multiline" rg-args))
+  (advice-add 'deadgrep--arguments :filter-return #'sta:deadgrep--include-args))
 
 (use-package deadgrep
   :ensure t
   :pin melpa
   :bind (:map deadgrep-mode-map
-              ("t" . sta:deadgrep-file-type))
-  :config
-  ;; https://github.com/Wilfred/deadgrep/issues/24#issuecomment-942290197
-  (defun sta:deadgrep--include-args (rg-args)
-    (push "--multiline" rg-args))
-  (advice-add 'deadgrep--arguments :filter-return #'sta:deadgrep--include-args))
+              ("t" . sta:deadgrep-file-type)))
 
 (use-package treemacs
   :ensure t
@@ -292,7 +294,8 @@
 
 (use-package undo-fu-session
   :ensure t
-  :hook (after-init . global-undo-fu-session-mode))
+  :config
+  (global-undo-fu-session-mode))
 
 ;; show help while pressing part of the chord f.e M-q
 (use-package which-key
@@ -322,25 +325,24 @@
 ;; find symbol at point
 (use-package smartscan
   :ensure t
-  :hook (after-init . global-smartscan-mode))
+  :config
+  (global-smartscan-mode 1))
 
 (use-package dot-mode
   :ensure t
-  :commands (dot-mode-on)  ;; registers autoload so find-file-hook can trigger load
   :init
   (add-hook 'find-file-hook 'dot-mode-on))
 
-;; camel, snake, etc
-(use-package string-inflection :ensure t :defer t)
+;; camel, snake, etc 
+(use-package string-inflection :ensure t)
 
 ;; lisp AC
-(use-package ac-slime :ensure t :defer t)
+(use-package ac-slime :ensure t)
 
 ;; info pages more readable
 (use-package info-colors
   :ensure t
-  :commands (info-colors-fontify-node)  ;; autoload so hook triggers load
-  :init
+  :config
   (add-hook 'Info-selection-hook 'info-colors-fontify-node))
 
 ;; apt install git
@@ -355,7 +357,7 @@
   :after magit)
 
 ;; git blame / history navigation simplified (fucked up rn)
-(use-package git-timemachine :ensure t :defer t)
+(use-package git-timemachine :ensure t) 
 
 ;; mini frame on otop instead of minibuffer
 ;;(use-package mini-frame
@@ -366,7 +368,6 @@
 ;; dash
 (use-package devdocs
   :ensure t
-  :defer t
   :config
   (add-hook 'devdocs-mode-hook (lambda () (text-scale-set 2))))
 
@@ -388,16 +389,17 @@
   :pin melpa
   :custom
   (dimmer-fraction .25)
-  :hook (after-init . dimmer-mode)
-  :config
-  (dimmer-configure-which-key))
+  :init
+  (dimmer-configure-which-key)
+  (dimmer-mode t))
 
-(use-package whitespace-cleanup-mode :ensure t :defer t)
-(use-package ascii-table :ensure t :defer t)
+(use-package whitespace-cleanup-mode :ensure t)
+(use-package ascii-table :ensure t)
 
 (use-package editorconfig
   :ensure t
-  :hook (after-init . editorconfig-mode))
+  :config
+  (editorconfig-mode 1))
 
 ;; lua support
 (use-package lua-mode
@@ -509,7 +511,8 @@
 ;; direnv
 (use-package direnv
   :ensure t
-  :hook (after-init . direnv-mode))
+  :config
+  (direnv-mode))
 
 (use-package just-mode
   :ensure t
@@ -530,7 +533,7 @@
     :args '("--parser" "yaml"))
   )
 
-(use-package csv-mode :ensure t :defer t)
+(use-package csv-mode :ensure t)
 
 ;; epub
 (use-package nov
@@ -637,7 +640,6 @@
 ;; startup time profiler
 (use-package esup
   :ensure :pin melpa
-  :defer t
   :custom
   (esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
 
@@ -665,8 +667,7 @@
 
 ;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex
 (use-package agent-shell
-  :ensure t
-  :defer t)
+  :ensure t)
 
 ;; (use-package eca
 ;;   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
@@ -678,10 +679,12 @@
   :init
   (setq scroll-conservatively 101 ; important!
         scroll-margin 0)
-  :hook (after-init . ultra-scroll-mode))
+  :config
+  (ultra-scroll-mode 1))
 
 ;; show cursor on win change
 (use-package beacon
   :ensure t
   :delight
-  :hook (after-init . beacon-mode))
+  :config
+  (beacon-mode 1))
