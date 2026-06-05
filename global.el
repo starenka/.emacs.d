@@ -99,12 +99,8 @@
   (show-paren-mode t)
   (global-paren-face-mode t))
 
-(use-package nlinum
-  :ensure t
-  :custom
-  (global-hl-line-mode nil)
-  :config
-  (global-nlinum-mode t))
+;; built-in since Emacs 26, faster than the nlinum package
+(global-display-line-numbers-mode t)
 
 ;; hl line on idle
 (use-package hl-line+
@@ -165,9 +161,7 @@
   :defer t
   :hook
   (treemacs-mode . (lambda ()
-                     (display-line-numbers-mode -1)
-                     (when (fboundp 'nlinum-mode)
-                       (nlinum-mode -1))))
+                     (display-line-numbers-mode -1)))
   :config
   (with-eval-after-load 'treemacs
 
@@ -596,7 +590,7 @@
   :init
   (setq
    pdf-info-epdfinfo-program "/usr/bin/epdfinfo" ;; apt install elpa-pdf-tools-server
-   pdf-view-incompatible-modes '(nlinum-mode))
+   pdf-view-incompatible-modes '(display-line-numbers-mode))
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :hook
   ((pdf-view-mode-hook . pdf-view-fit-height-to-window)

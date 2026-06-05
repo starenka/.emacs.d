@@ -19,7 +19,6 @@
     (electric-indent-local-mode -1))
   (ansi-color-for-comint-mode-on)
   (display-line-numbers-mode -1)
-  (nlinum-mode -1)
   (setq-local global-hl-line-mode nil))
 
 (dolist (hook '(term-mode-hook vterm-mode-hook shell-mode-hook eshell-mode-hook))
