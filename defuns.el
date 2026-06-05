@@ -333,8 +333,7 @@ buffer is not visiting a file."
   "Copies item from killring"
   (interactive)
   (insert
-   (completing-read "Search kill ring: "
-                   (mapcar 'identity kill-ring))))
+   (completing-read "Search kill ring: " kill-ring)))
 
 (defun sta:deadgrep-file-type ()
   "Prompt the user for a new file type, then restart the search in deadgrep"
