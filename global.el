@@ -99,10 +99,7 @@
   (show-paren-mode t)
   (global-paren-face-mode t))
 
-;; built-in since Emacs 26, faster than the nlinum package
 (global-display-line-numbers-mode t)
-;; nlinum still installed in elpa/ — disable its global mode if it loads
-(with-eval-after-load 'nlinum (global-nlinum-mode -1))
 
 ;; hl line on idle
 (use-package hl-line+
