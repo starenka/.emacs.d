@@ -58,7 +58,7 @@
   (let ((fname "/tmp/emacs_http_response.html")
         (buffname "*HTTP Response*"))
     (if (not (get-buffer buffname))
-        (message (format "No %s buffer found, sorry." buffname))
+        (message "No %s buffer found, sorry." buffname)
         (switch-to-buffer buffname)
         (write-file fname)
         (kill-buffer)
