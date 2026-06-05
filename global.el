@@ -72,7 +72,7 @@
   :hook (after-init . exec-path-from-shell-initialize))
 
 ;; file lib
-(use-package f :demand)
+(use-package f :ensure t :demand)
 
 ;; pimp my modeline
 (use-package delight
