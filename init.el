@@ -61,8 +61,8 @@
         (t "~/.emacs.d/")))
 
 (defun load-user-file (file)
-  (interactive "f")
   "Load a file in current user's configuration directory"
+  (interactive "f")
   (load-file (expand-file-name file user-init-dir)))
 
 ;; store customized vars in separate file
