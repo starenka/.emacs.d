@@ -57,7 +57,8 @@
 
 
 (setq-default
- bidi-display-reordering nil  ;; should speedup long lines rendering https://emacs.stackexchange.com/a/603
+ bidi-paragraph-direction 'left-to-right  ;; speeds up long-line rendering (obsoletes bidi-display-reordering)
+ bidi-inhibit-bpa t                       ;; further bidi speedup, safe when direction is fixed
  abbrev-mode nil
  indent-tabs-mode nil
  tab-width 4
