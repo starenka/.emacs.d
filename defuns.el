@@ -115,13 +115,13 @@ none exists, or if the current buffer is already a term."
   "Jumps to bookmark"
   (interactive)
   (bookmark-jump
-   (ido-completing-read "Jump to bookmark: " (bookmark-all-names))))
+   (completing-read "Jump to bookmark: " (bookmark-all-names))))
 
 (defun sta:ido-delete-bookmark ()
   "Deletes boomkmark"
   (interactive)
   (bookmark-delete
-   (ido-completing-read "Delete bookmark: " (bookmark-all-names))))
+   (completing-read "Delete bookmark: " (bookmark-all-names))))
 
 (defun sta:projectile-bookmark-set (name)
   "Sets bookmark"
