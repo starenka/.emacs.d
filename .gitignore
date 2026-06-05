@@ -27,3 +27,6 @@ undo-fu-session/*
 workspace/*
 request/*
 .tmp/*
+.dap-breakpoints
+projects
+recentf
