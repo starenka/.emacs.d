@@ -598,7 +598,7 @@
   :init
   (setq
    pdf-info-epdfinfo-program "/usr/bin/epdfinfo" ;; apt install elpa-pdf-tools-server
-   pdf-view-incompatible-modes (nlinum-mode))
+   pdf-view-incompatible-modes '(nlinum-mode))
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :hook
   ((pdf-view-mode-hook . pdf-view-fit-height-to-window)
