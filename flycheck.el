@@ -36,7 +36,7 @@
 (flycheck-define-checker ansible
   "https://ansible-lint.readthedocs.io/en/latest/usage.html"
 
-  :command ("ansbile-lint" "-pq" source-inplace)
+  :command ("ansible-lint" "-pq" source-inplace)
   :error-patterns
     ((error line-start (file-name) ":" line ": error: " (message) line-end))
   :modes yaml-mode ansible)
