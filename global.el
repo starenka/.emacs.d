@@ -1,4 +1,5 @@
-(server-start) ;; server mode
+(require 'server)
+(unless (server-running-p) (server-start)) ;; server mode; skip if already running
 (fset 'yes-or-no-p 'y-or-n-p) ;; "y or n" instead of "yes or no"
 (setopt use-short-answers t)
 (menu-bar-mode -1) ;; no menu bar
