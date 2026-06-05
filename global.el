@@ -326,8 +326,6 @@
 ;; camel, snake, etc 
 (use-package string-inflection :ensure t)
 
-;; lisp AC
-(use-package ac-slime :ensure t)
 
 ;; info pages more readable
 (use-package info-colors
