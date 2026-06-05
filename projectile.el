@@ -18,11 +18,10 @@
         projectile-git-submodule-command "" ;; don't recursce on submodules
         projectile-git-command "git ls-files -zco" ;; workaround for projectile-find-file not showing ignored files
         ;;projectile-enable-caching t ;; wont recognize new files sometimes
-        projectile-globally-ignored-files
-        (append '(".pyc"
-                  ".class"
-                  "~")
-                projectile-globally-ignored-files))
+        ;; globally-ignored-files matches full names; use -suffixes for extensions
+        projectile-globally-ignored-file-suffixes
+        (append '(".pyc" ".class" "~")
+                projectile-globally-ignored-file-suffixes))
   (defconst projectile-mode-line-lighter " P")
   (define-key projectile-command-map (kbd "s s") #'deadgrep))
 
