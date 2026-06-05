@@ -1,4 +1,3 @@
-```emacs-lisp
 (defvar alzheimer-mode-detailed nil
   "Toggle detailed documentation display in Alzheimer mode.")
 
