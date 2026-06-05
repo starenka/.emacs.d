@@ -68,8 +68,8 @@
 (use-package exec-path-from-shell
   :ensure t
   :if (memq window-system '(mac ns x))
-  :config
-  (exec-path-from-shell-initialize))
+  ;; defer to after-init to avoid spawning a shell subprocess during startup
+  :hook (after-init . exec-path-from-shell-initialize))
 
 ;; file lib
 (use-package f :demand)
@@ -646,6 +646,7 @@
 
 (use-package gptel
   :straight t
+  :defer t
   :config
   (require 'gptel-openai-oauth)
   (require 'gptel-gh)

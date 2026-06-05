@@ -27,7 +27,7 @@
     (let (el-get-master-branch)
       (goto-char (point-max))
       (eval-print-last-sexp))))
-(el-get 'sync)
+(el-get 'sync '()) ;; explicit empty list avoids syncing all packages on every startup
 
 ;; Emacs 30 ships use-package with :vc support.
 (require 'use-package)
