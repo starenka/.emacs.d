@@ -60,7 +60,7 @@ _M_: minimize
   ("v" split-window-right)
   ("d" delete-window)
   ("x" delete-other-windows)
-  ("x" winner-undo)
+  ("u" winner-undo)
   ("j" ace-window)
   ("<left>" windmove-left)
   ("<down>" windmove-down)
