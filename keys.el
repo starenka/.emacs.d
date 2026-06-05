@@ -114,53 +114,6 @@ _M_: minimize
   ("l l" . gptel)
   ("l L" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
   ("l s" . gptel-send)
-
-This looks like a `C-q`-style hydra/menu setup.
-
-A few things jump out:
-
-1. **You unbound `C-q`**
-   ```elisp
-   (global-unset-key (kbd "C-q"))
-   ```
-   So if you intend to use `C-q` as the prefix for the menu at the bottom, you still need to **bind it to a hydra/body or prefix command**.
-
-2. **Duplicate keys in `sta:windows`**
-   ```elisp
-   ("x" delete-window)
-   ("x" winner-undo)
-   ```
-   Only one of these will effectively win; the latter typically overrides/conflicts. Use different keys, e.g.:
-   ```elisp
-   ("x" delete-other-windows)
-   ("u" winner-undo)
-   ```
-
-3. **Duplicate `r` in `sta:toggles`**
-   ```elisp
-   ("r" sta:reset-zoom)
-   ...
-   ("r" read-only-mode)
-   ```
-   Same issue: the second `r` conflicts. Pick another key for one of them.
-
-4. **Likely typo**
-   ```elisp
-   ("F" . sta:sta:find-file-dired)
-   ```
-   `sta:sta:find-file-dired` looks suspiciously like a typo, maybe meant:
-   ```elisp
-   ("F" . sta:find-file-dired)
-   ```
-
-5. **If you want `C-q` to open this menu**
-   you probably want something like:
-   ```elisp
-   (global-set-key (kbd "C-q") 'sta:your-hydra/body)
-   ```
-   or create a top-level hydra that dispatches to the others.
-
-If you want, I can help you turn this into a clean **single `C-q` dispatcher hydra** and fix the key conflicts.
   ("p" . package-upgrade-all)
   ("r" . sta:region-to-browser)
   ("s" . sta:go-to-text-scratch)
