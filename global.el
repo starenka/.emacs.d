@@ -163,13 +163,10 @@
   (treemacs-mode . (lambda ()
                      (display-line-numbers-mode -1)))
   :config
-  (with-eval-after-load 'treemacs
-
-    (defun my-hidden-stuff (filename absolute-path)
-      (or (string-equal filename "__pycache__")
-          (string-prefix-p "/HOLD/MY/BEER/" absolute-path)))
-
-    (add-to-list 'treemacs-ignored-file-predicates #'my-hidden-stuff))
+  (defun my-hidden-stuff (filename absolute-path)
+    (or (string-equal filename "__pycache__")
+        (string-prefix-p "/HOLD/MY/BEER/" absolute-path)))
+  (add-to-list 'treemacs-ignored-file-predicates #'my-hidden-stuff)
   (progn
     (setq treemacs-buffer-name-function            #'treemacs-default-buffer-name
           treemacs-buffer-name-prefix              " *Treemacs-Buffer-"
