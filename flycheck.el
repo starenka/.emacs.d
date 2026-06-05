@@ -12,7 +12,7 @@
    ;;flycheck-python-pylint-executable (expand-file-name "~/.local/bin/pylint")
    ;;flycheck-python-ruff-executable (expand-file-name "~/.local/bin/ruff")
    flycheck-ansible-executable "ansible-lint"
-   flycheck-yamllintrc "yammlint"
+   flycheck-yamllintrc "yamllint"
    flycheck-dockerfile-hadolint-executable "/home/starenka/.local/bin/hadolint"
    flycheck-css-stylelint-executable "npx stylelint")
   (setq-default flycheck-disabled-checkers
