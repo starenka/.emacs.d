@@ -34,7 +34,6 @@
   gc-cons-threshold 100000000 ;; http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
   ;; gc-cons-threshold most-positive-fixnum
   undo-limit 633459
-  redisplay-dont-pause t ;; https://www.masteringemacs.org/article/improving-performance-emacs-display-engine
   frame-inhibit-implied-size t ;; Don't resize frame as i use tiling manager (saves startup time)
   ;; Important with Awesome: let the WM size the frame in pixels instead of
   ;; snapping to text-cell geometry, otherwise "maximized" may not fill space.
