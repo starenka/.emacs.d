@@ -519,7 +519,7 @@ buffer is not visiting a file."
     (when (get-buffer buffer-name)
       (kill-buffer buffer-name))
     (with-temp-buffer
-      (setq return-code (call-process "python" nil t nil script-path))
+      (setq return-code (call-process "python3" nil t nil script-path))
       (setq output (buffer-string))
 
       (if (zerop return-code)
