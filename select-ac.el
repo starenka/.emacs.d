@@ -28,7 +28,6 @@
   (define-key corfu-map (kbd "S-<return>") 'corfu-quit) ;; Shift + Enter to close the popup
   (add-hook 'gptel-mode-hook (lambda () (corfu-mode -1))) ;; Disable Corfu in gptel
   :init
-  (global-company-mode -1)
   (global-corfu-mode))
 
 (use-package kind-icon
