@@ -21,5 +21,5 @@
   (display-line-numbers-mode -1)
   (setq-local global-hl-line-mode nil))
 
-(dolist (hook '(term-mode-hook vterm-mode-hook shell-mode-hook eshell-mode-hook))
+(dolist (hook '(term-mode-hook vterm-mode-hook shell-mode-hook eshell-mode-hook agent-shell-mode-hook))
   (add-hook hook #'my-term-shell-setup))
