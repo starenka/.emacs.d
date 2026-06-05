@@ -3,6 +3,8 @@
 (use-package monokai-theme :ensure t :pin melpa)
 (use-package twilight-bright-theme :ensure t)
 (use-package doom-themes :ensure t)
+(use-package alect-themes :ensure t)
+(use-package hemisu-theme :ensure t)
 
 (with-eval-after-load "twilight-bright-theme"
   (custom-theme-set-faces
