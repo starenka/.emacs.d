@@ -644,17 +644,20 @@
   (esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
 
 
-(use-package gptel
-  :straight t
-  :custom
-  (gptel-model "gpt-4o-mini"))
+;; (use-package gptel
+;;   :straight t
+;;   :custom
+;;   (gptel-model "gpt-4o-mini"))
 
-(use-package gptel-quick
-  :straight (Gptel-quick :type git :host github :repo "karthink/gptel-quick"))
+;; (use-package gptel-quick
+;;   :straight (Gptel-quick :type git :host github :repo "karthink/gptel-quick"))
 
-;; bun install -g @zed-industries/codex-acp @openai/codex
+;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex
 (use-package agent-shell
   :ensure t)
+
+(use-package eca
+  :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
 
 ;; (package-vc-install '(ultra-scroll :vc-backend Git :url  "https://github.com/jdtsmith/ultra-scroll"))
 (use-package ultra-scroll
