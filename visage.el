@@ -51,13 +51,35 @@
                            doom-lantern
                            monokai))
 
+(defvar sta:last-theme-file (expand-file-name "last-theme" user-emacs-directory))
+
+(defun sta:save-last-theme (theme &rest _)
+  (with-temp-file sta:last-theme-file
+    (insert (symbol-name theme))))
+
+(advice-add 'load-theme :after #'sta:save-last-theme)
+
 (defun sta:load-default-theme ()
-  (when favourite-themes
+  (let ((theme (or (and (file-exists-p sta:last-theme-file)
+                        (intern (string-trim
+                                 (with-temp-buffer
+                                   (insert-file-contents sta:last-theme-file)
+                                   (buffer-string)))))
+                   (car favourite-themes))))
     (sta:disable-themes)
-    (load-theme (car favourite-themes) t)))
+    (load-theme theme t)))
+
+(add-hook 'after-init-hook #'sta:load-default-theme)
 
 (defun sta:disable-themes ()
   (mapc 'disable-theme custom-enabled-themes))
+
+(defun sta:reload-theme ()
+  (interactive)
+  (when-let ((theme (car custom-enabled-themes)))
+    (sta:disable-themes)
+    (load-theme theme t)
+    (force-mode-line-update t)))
 
 (defun sta:cycle-themes ()
   (interactive)
@@ -66,6 +88,3 @@
                          (car favourite-themes))))
     (sta:disable-themes)
     (load-theme next-theme t)))
-
-;;(sta:disable-themes)
-(sta:load-default-theme)
