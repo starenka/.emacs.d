@@ -662,6 +662,13 @@
   (gptel-make-gh-copilot "GitHub Copilot"
                          :host "api.individual.githubcopilot.com"))
 
+(use-package chatgpt-shell
+  :ensure t
+  :defer t
+  :config
+  (setq chatgpt-shell-google-key
+        (lambda () (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))))
+
 ;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex
 (use-package agent-shell
   :ensure t)
