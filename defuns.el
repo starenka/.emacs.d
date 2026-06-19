@@ -26,17 +26,22 @@
   (sta:get-term)
   (other-window 2))
 
+(defun sta:awesome-run (cmd tag)
+  "run CMD and switch to awesome TAG index"
+  (start-process-shell-command cmd nil
+    (format "%s; echo 'awful.screen.focused().tags[%d]:view_only()' | awesome-client" cmd tag)))
+
 ;; browser funcs
 
-(defun sta:vivaldi (url)
+(defun sta:vivaldi (url &optional _new-window)
   "opens url in vivaldi and switches to coresponding awesome tag"
-  (save-window-excursion
-    (async-shell-command (format "vivaldi %s > /dev/null; echo 'awful.screen.focused().tags[4]:view_only()' | awesome-client" (shell-quote-argument url)))))
+  (interactive "sURL: ")
+  (sta:awesome-run (format "vivaldi %s > /dev/null" (shell-quote-argument url)) 4))
 
-(defun sta:firefox (url)
+(defun sta:firefox (url &optional _new-window)
   "opens url in firefox and switches to coresponding awesome tag"
-  (save-window-excursion
-    (async-shell-command (format "firefox %s > /dev/null; echo 'awful.screen.focused().tags[3]:view_only()' | awesome-client" (shell-quote-argument url)))))
+  (interactive "sURL: ")
+  (sta:awesome-run (format "firefox %s > /dev/null" (shell-quote-argument url)) 3))
 
 (defun sta:google (string)
   "googles phrase and switches to coresponding awesome tag"
