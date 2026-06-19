@@ -430,10 +430,15 @@
          ("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode))
   :config
-  (advice-add 'markdown-preview :around
-              (lambda (orig &rest args)
-                (cl-letf (((default-value 'browse-url-browser-function) 'sta:firefox))
-                  (apply orig args))))
+  ;; markdown-preview calls browse-url-of-buffer which switches to the HTML
+  ;; output buffer, so setq-local won't reach it. cl-letf on default-value
+  ;; overrides the global default seen by all buffers without a local binding.
+  ;; Named function (not lambda) so reloading replaces the advice instead of
+  ;; stacking a new anonymous one on top of the old.
+  (defun sta:markdown-preview-advice (orig &rest args)
+    (cl-letf (((default-value 'browse-url-browser-function) 'sta:firefox))
+      (apply orig args)))
+  (advice-add 'markdown-preview :around #'sta:markdown-preview-advice)
   :custom
   (markdown-command "pandoc -f markdown -t html5 --standalone --highlight-style=tango")) ;; apt install pandoc
 

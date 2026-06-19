@@ -28,23 +28,33 @@
 
 (defun sta:awesome-run (cmd tag)
   "run CMD and switch to awesome TAG index"
-  (let ((buf (get-buffer-create " *sta:awesome-run*")))
-    (when-let ((proc (get-buffer-process buf)))
-      (set-process-query-on-exit-flag proc nil)
-      (delete-process proc))
-    (async-shell-command
-      (format "%s; awesome-client 'awful.screen.focused().tags[%d]:view_only()'" cmd tag)
-      buf)))
+  ;; make-process with :buffer nil/:noquery t fires the browser with no display
+  ;; side effects — async-shell-command calls display-buffer which interferes
+  ;; when invoked from within other commands (e.g. markdown-preview).
+  ;; call-process runs awesome-client synchronously and immediately, decoupled
+  ;; from the browser process so it works regardless of whether the browser
+  ;; exits quickly (http://) or stays open (file://).
+  (make-process
+    :name "sta:awesome-tag-switch"
+    :command (list shell-file-name shell-command-switch cmd)
+    :buffer nil
+    :noquery t)
+  (call-process shell-file-name nil nil nil
+    shell-command-switch
+    (format "awesome-client 'awful.screen.focused().tags[%d]:view_only()'" tag)))
 
 ;; browser funcs
 
 (defun sta:vivaldi (url &optional _new-window)
   "opens url in vivaldi and switches to coresponding awesome tag"
+  ;; &optional _new-window satisfies the browse-url-browser-function signature
   (interactive (list (read-string "URL: " "https://")))
   (sta:awesome-run (format "vivaldi %s > /dev/null" (shell-quote-argument url)) 4))
 
 (defun sta:firefox (url &optional _new-window)
   "opens url in firefox and switches to coresponding awesome tag"
+  ;; &optional _new-window satisfies the browse-url-browser-function signature
+  ;; --new-tab ensures firefox reuses the existing window (works for both http:// and file://)
   (interactive (list (read-string "URL: " "https://")))
   (sta:awesome-run (format "firefox --new-tab %s > /dev/null" (shell-quote-argument url)) 3))
 
