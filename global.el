@@ -428,7 +428,14 @@
   :defer
   :mode (("\\.text\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode)
-         ("\\.md\\'" . markdown-mode)))
+         ("\\.md\\'" . markdown-mode))
+  :config
+  (advice-add 'markdown-preview :around
+              (lambda (orig &rest args)
+                (cl-letf (((default-value 'browse-url-browser-function) 'sta:firefox))
+                  (apply orig args))))
+  :custom
+  (markdown-command "pandoc -f markdown -t html5 --standalone --highlight-style=tango")) ;; apt install pandoc
 
 ;; rst support
 (use-package rst
