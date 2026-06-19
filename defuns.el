@@ -28,20 +28,25 @@
 
 (defun sta:awesome-run (cmd tag)
   "run CMD and switch to awesome TAG index"
-  (start-process-shell-command cmd nil
-    (format "%s; echo 'awful.screen.focused().tags[%d]:view_only()' | awesome-client" cmd tag)))
+  (let ((buf (get-buffer-create " *sta:awesome-run*")))
+    (when-let ((proc (get-buffer-process buf)))
+      (set-process-query-on-exit-flag proc nil)
+      (delete-process proc))
+    (async-shell-command
+      (format "%s; awesome-client 'awful.screen.focused().tags[%d]:view_only()'" cmd tag)
+      buf)))
 
 ;; browser funcs
 
 (defun sta:vivaldi (url &optional _new-window)
   "opens url in vivaldi and switches to coresponding awesome tag"
-  (interactive "sURL: ")
+  (interactive (list (read-string "URL: " "https://")))
   (sta:awesome-run (format "vivaldi %s > /dev/null" (shell-quote-argument url)) 4))
 
 (defun sta:firefox (url &optional _new-window)
   "opens url in firefox and switches to coresponding awesome tag"
-  (interactive "sURL: ")
-  (sta:awesome-run (format "firefox %s > /dev/null" (shell-quote-argument url)) 3))
+  (interactive (list (read-string "URL: " "https://")))
+  (sta:awesome-run (format "firefox --new-tab %s > /dev/null" (shell-quote-argument url)) 3))
 
 (defun sta:google (string)
   "googles phrase and switches to coresponding awesome tag"
