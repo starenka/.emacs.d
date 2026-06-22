@@ -444,6 +444,26 @@ buffer is not visiting a file."
   (interactive)
   (other-window -1))
 
+(defun sta:nuke-stale-elc ()
+  "Delete all .elc files from package dirs to clear stale bytecode."
+  (interactive)
+  (dolist (dir (list (expand-file-name "elpa" user-emacs-directory)
+                     (expand-file-name "el-get" user-emacs-directory)
+                     (expand-file-name "straight/build" user-emacs-directory)
+                     (expand-file-name "straight/repos" user-emacs-directory)
+                     (expand-file-name "elpaca/builds" user-emacs-directory)))
+    (when (file-directory-p dir)
+      (dolist (elc (directory-files-recursively dir "\\.elc$"))
+        (delete-file elc))))
+  (message "Stale .elc files nuked. Restart Emacs."))
+
+(with-eval-after-load 'straight
+  (advice-add 'straight-pull-all :after #'sta:nuke-stale-elc)
+  (advice-add 'straight-rebuild-all :after #'sta:nuke-stale-elc))
+
+(with-eval-after-load 'elpaca
+  (advice-add 'elpaca-upgrade-all :after #'sta:nuke-stale-elc))
+
 (defun package-upgrade-all ()
   "Upgrade all packages automatically without showing *Packages* buffer."
   (interactive)
@@ -471,7 +491,8 @@ buffer is not visiting a file."
               (let ((old-package (cadr (assq (package-desc-name package-desc)
                                              package-alist))))
                 (package-install package-desc)
-                (package-delete  old-package)))))
+                (package-delete  old-package))))
+          (sta:nuke-stale-elc))
       (message "All packages are up to date"))))
 
 
