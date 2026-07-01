@@ -1,5 +1,8 @@
 (require 'server)
-(unless (server-running-p) (server-start)) ;; server mode; skip if already running
+;; Daemon mode already provides the server; only start it for regular sessions.
+(unless (daemonp)
+  (unless (server-running-p)
+    (server-start)))
 (setopt use-short-answers t) ;; "y or n" instead of "yes or no" (Emacs 28+)
 (menu-bar-mode -1) ;; no menu bar
 (tool-bar-mode -1) ;; no toolbar

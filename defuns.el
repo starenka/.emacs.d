@@ -464,6 +464,29 @@ buffer is not visiting a file."
 (with-eval-after-load 'elpaca
   (advice-add 'elpaca-upgrade-all :after #'sta:nuke-stale-elc))
 
+(defun sta:restart-emacs-daemon ()
+  "Restart the current Emacs daemon."
+  (interactive)
+  (unless (daemonp)
+    (user-error "Current Emacs is not running as a daemon"))
+  (save-some-buffers t)
+  (let ((systemctl (executable-find "systemctl"))
+        (emacs-bin (expand-file-name invocation-name invocation-directory)))
+    (cond
+     ((and systemctl
+           (zerop (call-process systemctl nil nil nil
+                                "--user" "--quiet" "is-active" "emacs.service")))
+      ;; Let systemd recycle the daemon when it owns the process.
+      (call-process systemctl nil 0 nil "--user" "restart" "emacs.service"))
+     ((file-executable-p emacs-bin)
+      ;; Delay startup so the current daemon can release its socket cleanly.
+      (call-process-shell-command
+       (format "nohup %s --daemon >/dev/null 2>&1 &"
+               (shell-quote-argument emacs-bin)))
+      (kill-emacs))
+     (t
+      (user-error "Could not determine how to restart this Emacs daemon")))))
+
 (defun package-upgrade-all ()
   "Upgrade all packages automatically without showing *Packages* buffer."
   (interactive)
@@ -492,7 +515,11 @@ buffer is not visiting a file."
                                              package-alist))))
                 (package-install package-desc)
                 (package-delete  old-package))))
-          (sta:nuke-stale-elc))
+          (sta:nuke-stale-elc)
+          (if (daemonp)
+              (when (yes-or-no-p "Packages upgraded. Restart the Emacs daemon now? ")
+                (sta:restart-emacs-daemon))
+            (message "Packages upgraded. Restart Emacs to load the new code.")))
       (message "All packages are up to date"))))
 
 
