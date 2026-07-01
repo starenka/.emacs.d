@@ -11,36 +11,81 @@
   (require 'proced)
   (require 'seq)
 
+  (defun ar/proced--pad-string (string width &optional right-align)
+    "Pad STRING with spaces to WIDTH.
+If RIGHT-ALIGN is non-nil, align STRING to the right."
+    (let* ((string (or string ""))
+           (padding (max 0 (- width (string-width string))))
+           (spaces (make-string padding ? )))
+      (if right-align
+          (concat spaces string)
+        (concat string spaces))))
+
+  (defun ar/proced--format-candidate (process widths)
+    "Format PROCESS for completion using WIDTHS."
+    (let* ((pid (number-to-string (or (map-elt process 'pid) 0)))
+           (user (or (map-elt process 'user) ""))
+           (state (or (map-elt process 'state) ""))
+           (start (if-let ((value (map-elt process 'start)))
+                      (proced-format-start value)
+                    ""))
+           (pcpu (proced-format-cpu (or (map-elt process 'pcpu) 0.0)))
+           (pmem (proced-format-mem (or (map-elt process 'pmem) 0.0)))
+           (command (or (map-elt process 'args)
+                        (map-elt process 'comm)
+                        "")))
+      (format "%s %s %s %s %s %s %s"
+              (ar/proced--pad-string pid (map-elt widths 'pid) t)
+              (ar/proced--pad-string user (map-elt widths 'user))
+              (ar/proced--pad-string state (map-elt widths 'state))
+              (ar/proced--pad-string start (map-elt widths 'start))
+              (ar/proced--pad-string pcpu (map-elt widths 'pcpu) t)
+              (ar/proced--pad-string pmem (map-elt widths 'pmem) t)
+              command)))
+
   (defun ar/quick-kill-process ()
-    "kills process"
+    "Select a process from a compact, column-aligned list and kill it."
     (interactive)
-    (let* ((pid-width  9)
-           (comm-width 60)
-           (user-width 9)
-           (processes (proced-process-attributes))
+    (let* ((processes (proced-process-attributes))
+           (widths
+            (seq-reduce
+             (lambda (acc attributes)
+               (let* ((process (cdr attributes))
+                      (pid (number-to-string (or (map-elt process 'pid) 0)))
+                      (user (or (map-elt process 'user) ""))
+                      (state (or (map-elt process 'state) ""))
+                      (start (if-let ((value (map-elt process 'start)))
+                                 (proced-format-start value)
+                               ""))
+                      (pcpu (proced-format-cpu (or (map-elt process 'pcpu) 0.0)))
+                      (pmem (proced-format-mem (or (map-elt process 'pmem) 0.0))))
+                 (list
+                  (cons 'pid (max (map-elt acc 'pid) (string-width pid)))
+                  (cons 'user (max (map-elt acc 'user) (string-width user)))
+                  (cons 'state (max (map-elt acc 'state) (string-width state)))
+                  (cons 'start (max (map-elt acc 'start) (string-width start)))
+                  (cons 'pcpu (max (map-elt acc 'pcpu) (string-width pcpu)))
+                  (cons 'pmem (max (map-elt acc 'pmem) (string-width pmem))))))
+             processes
+             '((pid . 3)
+               (user . 4)
+               (state . 4)
+               (start . 5)
+               (pcpu . 4)
+               (pmem . 4))))
            (candidates
             (mapcar (lambda (attributes)
                       (let* ((process (cdr attributes))
-                             (pid (format (format "%%%ds" pid-width) (map-elt process 'pid)))
-                             (user (format (format "%%-%ds" user-width)
-                                           (truncate-string-to-width
-                                            (or (map-elt process 'user) "") user-width nil nil t)))
-                             (comm (format (format "%%-%ds" comm-width)
-                                           (truncate-string-to-width
-                                            (map-elt process 'comm) comm-width nil nil t)))
-                             (args-width (- (window-width) (+ pid-width user-width comm-width 3)))
-                             (args (map-elt process 'args)))
-                        (cons (if args
-                                  (format "%s %s %s %s" pid user comm (truncate-string-to-width args args-width nil nil t))
-                                (format "%s %s %s" pid user comm))
+                             (label (ar/proced--format-candidate process widths)))
+                        (cons label
                               process)))
                     processes))
            (selection (map-elt candidates
-                               (completing-read "kill process: "
+                               (completing-read "kill process (PID USER STAT START %CPU %MEM COMMAND): "
                                                 (seq-sort
                                                  (lambda (p1 p2)
-                                                   (string-lessp (nth 2 (split-string (string-trim (car p1))))
-                                                                 (nth 2 (split-string (string-trim (car p2))))))
+                                                   (string-lessp (or (map-elt (cdr p1) 'comm) "")
+                                                                 (or (map-elt (cdr p2) 'comm) "")))
                                                  candidates) nil t)))
            (prompt-title (format "%s %s %s"
                                  (map-elt selection 'pid)
