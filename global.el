@@ -690,7 +690,11 @@
 
 ;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex
 (use-package agent-shell
-  :ensure t)
+  :ensure t
+  :config
+  (setq agent-shell-agent-configs
+        (list #'agent-shell-anthropic-make-claude-code-config
+              #'agent-shell-openai-make-codex-config)))
 
 ;; (use-package eca
 ;;   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
