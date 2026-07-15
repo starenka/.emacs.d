@@ -102,16 +102,15 @@ _M_: minimize
   ("." . sta:copy-buffer-file-name-as-kill)
   ;;("a" . sta:ascii-translit-region)
   ("b" . sta:show-http-response-in-browser)
-  ("a a" . agent-shell)
-  ("a l" . gptel)
-  ("a L" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
-  ("a s" . gptel-send)
+  ("a" . agent-shell)
+  ("g g" . gptel)
+  ("g L" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
+  ("g s" . gptel-send)
   ("c" . quick-calc)
   ("d" . devdocs-lookup)
   ("D" . sta:diff-last-two-kills)
   ("f" . sta:find-files-dwim)
   ("F" . sta:find-file-dired)
-  ("g" . sta:google)
   ("i" . string-inflection-cycle)
   ("k" . ar/quick-kill-process)
 
