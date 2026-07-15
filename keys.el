@@ -95,13 +95,17 @@ _M_: minimize
 
   ("c" nil "cancel"))
 
-;; C-q ?
+;; C-q, C-;
 (dolist (kv '(
   ("/" . sta:toggles/body)
   ("\\" . sta:windows/body)
   ("." . sta:copy-buffer-file-name-as-kill)
-  ("a" . sta:ascii-translit-region)
+  ;;("a" . sta:ascii-translit-region)
   ("b" . sta:show-http-response-in-browser)
+  ("a a" . agent-shell)
+  ("a l" . gptel)
+  ("a L" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
+  ("a s" . gptel-send)
   ("c" . quick-calc)
   ("d" . devdocs-lookup)
   ("D" . sta:diff-last-two-kills)
@@ -110,10 +114,7 @@ _M_: minimize
   ("g" . sta:google)
   ("i" . string-inflection-cycle)
   ("k" . ar/quick-kill-process)
-  ("l a" . agent-shell)
-  ("l l" . gptel)
-  ("l L" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
-  ("l s" . gptel-send)
+
   ("p" . package-upgrade-all)
   ("r" . sta:region-to-browser)
   ("s" . sta:go-to-text-scratch)
