@@ -187,13 +187,6 @@ _M_: minimize
 (global-set-key (kbd "C->") 'increase-left-margin)
 (global-set-key (kbd "C-<") 'decrease-left-margin)
 
-;; boomkarks
-;;(define-key global-map [f8] 'bookmark-jump)
-(define-key global-map [f6] 'sta:ido-delete-bookmark)
-(define-key global-map [f8] 'sta:ido-switch-bookmark)
-(define-key global-map [f7] 'sta:projectile-bookmark-set)
-(define-key global-map [f9] 'bookmark-bmenu-list)
-
 ;; dired/direx
 ;;(global-set-key (kbd "C-x d") 'sta:treeview-project-or-treeview)
 (global-set-key (kbd "C-x d") 'sta:tree)
