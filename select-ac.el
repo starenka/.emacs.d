@@ -26,7 +26,7 @@
   (define-key corfu-map (kbd "C-g") 'corfu-quit)      ;; C-g to close the popup
   (define-key corfu-map (kbd "<escape>") 'corfu-quit)  ;; ESC to close the popup
   (define-key corfu-map (kbd "S-<return>") 'corfu-quit) ;; Shift + Enter to close the popup
-  (add-hook 'gptel-mode-hook (lambda () (corfu-mode -1))) ;; Disable Corfu in gptel
+  (add-hook 'gptkeysel-mode-hook (lambda () (corfu-mode -1))) ;; Disable Corfu in gptel
   :init
   (global-corfu-mode))
 
@@ -115,3 +115,14 @@
   :ensure t
   :init
   (marginalia-mode))
+
+(use-package consult
+  :ensure t
+  :config
+  ;; Reuse the minibuffer stack you already have for xref/LSP jumps.
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
+
+(use-package consult-lsp
+  :ensure t
+  :after (consult lsp-mode))
