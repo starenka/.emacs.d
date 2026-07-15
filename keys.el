@@ -136,8 +136,10 @@ _M_: minimize
   (global-set-key (kbd (format "C-; %s" (car kv))) (cdr kv))
   (global-set-key (kbd (format "C-q %s" (car kv))) (cdr kv)))
 
-(global-set-key (kbd "<f5>") #'deadgrep)
 (global-set-key [?\s-s] #'deadgrep)
+(global-set-key (kbd "<f5>") #'deadgrep)
+(global-set-key (kbd "<f6>") #'lsp-find-references)
+;;(global-set-key (kbd "<f6>") #'lsp-workspace-symbol)
 
 ;; move buffers between windows
 (global-set-key (kbd "<M-S-up>")     'buf-move-up)
