@@ -46,4 +46,13 @@
          ("C-c h" . lsp-ui-doc-glance))
   :commands lsp)
 
+;; Guard against a race where a debounced pull-diagnostics request fires while
+;; buffer-file-name is transiently nil (e.g. auto-revert with preserve-modes),
+;; which otherwise crashes with (wrong-type-argument stringp nil) in
+;; lsp-diagnostics--update-path.
+(advice-add 'lsp-diagnostics--request-pull-diagnostics :around
+            (lambda (orig-fn workspace)
+              (when (buffer-file-name)
+                (funcall orig-fn workspace))))
+
 (use-package lsp-ui :ensure t :commands lsp-ui-mode)
