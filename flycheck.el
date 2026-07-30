@@ -4,34 +4,35 @@
   :ensure t
   :config
   (setq
-   flycheck-flake8rc ".flake8"
-   flycheck-python-flake8-executable "flake8"
-   flycheck-python-pylint-executable "pylint"
    flycheck-python-ruff-executable "ruff"
-   ;;flycheck-python-flake8-executable (expand-file-name "~/.local/bin/flake8")
-   ;;flycheck-python-pylint-executable (expand-file-name "~/.local/bin/pylint")
    ;;flycheck-python-ruff-executable (expand-file-name "~/.local/bin/ruff")
    flycheck-ansible-executable "ansible-lint"
    flycheck-yamllintrc "yamllint"
    flycheck-dockerfile-hadolint-executable "/home/starenka/.local/bin/hadolint"
    flycheck-css-stylelint-executable "npx stylelint")
   (setq-default flycheck-disabled-checkers
-  '(emacs-lisp-checkdoc ;; dont yell about missing docs in el files
-    python-pylint
-    python-pycompile
-    python-mypy
-    python-pyright))
+                '(emacs-lisp-checkdoc ;; dont yell about missing docs in el files
+                  python-pylint
+                  python-flake8
+                  python-pycompile
+                  python-mypy
+                  python-pyright))
   :hook
   ((emacs-lisp-mode . flycheck-mode)
+   (python-mode . flycheck-mode)
+   (python-ts-mode . flycheck-mode)
    (sh-mode . flycheck-mode)
    (lua-mode . flycheck-mode)
    (yaml-mode . flycheck-mode)
    (ansible-mode . flycheck-mode)
    (dockerfile-mode . flycheck-mode)
-   (css-mode . flycheck-mode))
-  :init
-  (add-hook 'python-mode-hook 'flycheck-mode)
-  )
+   (css-mode . flycheck-mode)))
+
+(defun vitek/python-flycheck-ruff ()
+  (setq-local flycheck-checker 'python-ruff))
+
+(dolist (hook '(python-mode-hook python-ts-mode-hook))
+  (add-hook hook #'vitek/python-flycheck-ruff))
 
 (flycheck-define-checker ansible
   "https://ansible-lint.readthedocs.io/en/latest/usage.html"
@@ -54,5 +55,3 @@
 
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode t))))
-
-

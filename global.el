@@ -536,13 +536,13 @@
 
 (use-package reformatter
   :hook
-  (python-mode . autopep8-format-on-save-mode)
-  (python-ts-mode . autopep8-format-on-save-mode)
+  (python-mode . ruff-format-on-save-mode)
+  (python-ts-mode . ruff-format-on-save-mode)
   (yaml-mode . prettier-yaml-format-on-save-mode)
   :config
-  (reformatter-define autopep8-format
-    :program "autopep8"
-    :args `("-"))
+  (reformatter-define ruff-format
+    :program "ruff"
+    :args `("format" "--stdin-filename" ,input-file "-"))
 
   (reformatter-define prettier-yaml-format
     :program "prettier"
