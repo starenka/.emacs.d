@@ -694,7 +694,8 @@
   :config
   (setq agent-shell-agent-configs
         (list #'agent-shell-anthropic-make-claude-code-config
-              #'agent-shell-openai-make-codex-config)))
+              #'agent-shell-openai-make-codex-config)
+        agent-shell-chat-mode-enabled nil))
 
 ;; (use-package eca
 ;;   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
