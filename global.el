@@ -70,11 +70,11 @@
 
 (use-package exec-path-from-shell
   :ensure t
-  ;; GUI frames and daemon sessions do not reliably inherit the interactive
-  ;; shell PATH, especially when the daemon is started by systemd.
-  ;; Systemd-native alternative: define PATH in ~/.config/environment.d/*.conf
-  ;; so Emacs inherits it directly and this shell import becomes unnecessary.
-  :if (or (daemonp) (memq window-system '(mac ns x)))
+  ;; GUI frames don't inherit shell PATH; daemon sessions get PATH from the
+  ;; systemd unit override (~/.config/systemd/user/emacs.service.d/override.conf)
+  ;; so the shell import here is redundant for daemonp and was adding ~500ms
+  ;; to every daemon restart.
+  :if (memq window-system '(mac ns x))
   ;; defer to after-init to avoid spawning a shell subprocess during startup
   :hook (after-init . exec-path-from-shell-initialize))
 
