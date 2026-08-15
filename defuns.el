@@ -477,7 +477,13 @@ buffer is not visiting a file."
            (zerop (call-process systemctl nil nil nil
                                 "--user" "--quiet" "is-active" "emacs.service")))
       ;; Let systemd recycle the daemon when it owns the process.
-      (call-process systemctl nil 0 nil "--user" "restart" "emacs.service"))
+      (let ((status (call-process systemctl nil nil nil
+                                  "--user" "--no-block"
+                                  "restart" "emacs.service")))
+        (unless (eq status 0)
+          (user-error "Could not request an Emacs daemon restart (status %s)"
+                      status))
+        (message "Emacs daemon restart requested")))
      ((file-executable-p emacs-bin)
       ;; Delay startup so the current daemon can release its socket cleanly.
       (call-process-shell-command
