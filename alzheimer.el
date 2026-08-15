@@ -71,10 +71,13 @@ FULL-DOC contains the comment followed by the full function's documentation."
           (forward-line 1)))
     ;; Convert hash table to alist, preserving section order
     (let (alist)
-      ;; If "MISC" section not present in sections but has items, add it first
+      ;; If "MISC" section not present in sections but has items, add it first.
+      ;; `sections' accumulates via `push' during scanning (so it's already in
+      ;; reverse encounter order) and gets reversed once more below, so
+      ;; appending here (not pushing) is what makes MISC land first.
       (when (and (not (member "MISC" sections))
                  (gethash "MISC" result))
-        (push "MISC" sections))
+        (setq sections (append sections (list "MISC"))))
       (dolist (section (reverse sections))
         (let ((items (gethash section result)))
           (when items

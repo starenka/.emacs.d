@@ -423,7 +423,7 @@ buffer is not visiting a file."
   "gets random line from file"
   (with-temp-buffer
     (insert-file-contents path)
-    (nth 1 (sta:shuffle-list (split-string (buffer-string) "\n" t)))))
+    (nth 0 (sta:shuffle-list (split-string (buffer-string) "\n" t)))))
 
 (defun sta:shuffle-list (list)
   "inplace list shuffle"
@@ -592,18 +592,23 @@ buffer is not visiting a file."
     ;; Close existing RAE-WOTD eww buffer if exists
     (when (get-buffer buffer-name)
       (kill-buffer buffer-name))
+    ;; the eww/rename/switch/scale calls below must run *after*
+    ;; with-temp-buffer exits, not inside it - with-temp-buffer restores
+    ;; whatever buffer was current on entry, which would silently undo the
+    ;; switch-to-buffer below (the selected window would still show the
+    ;; right buffer, but `current-buffer' would revert behind your back)
     (with-temp-buffer
       (setq return-code (call-process "python3" nil t nil script-path))
-      (setq output (buffer-string))
-
-      (if (zerop return-code)
-          (let ((html-file (string-trim output)))
-            (if (file-exists-p html-file)
+      (setq output (buffer-string)))
+    (if (zerop return-code)
+        (let ((html-file (string-trim output)))
+          (if (file-exists-p html-file)
+              (progn
                 (let ((shr-width (window-body-width)))
-                  ;; Open file, rename buffer, focus it, and adjust text scale
-                  (eww-open-file html-file)
-                  (rename-buffer buffer-name)
-                  (switch-to-buffer buffer-name)
-                  (text-scale-adjust 7))
-              (message "No HTML file returned from the script.")))
-        (message "Failed to execute Python script. Output:\n%s" output)))))
+                  (eww-open-file html-file))
+                ;; Rename buffer, focus it, and adjust text scale
+                (rename-buffer buffer-name)
+                (switch-to-buffer buffer-name)
+                (text-scale-adjust 7))
+            (message "No HTML file returned from the script.")))
+      (message "Failed to execute Python script. Output:\n%s" output))))
