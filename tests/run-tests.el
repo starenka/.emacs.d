@@ -10,6 +10,12 @@
 (when (boundp 'native-comp-enable-subr-trampolines)
   (setq native-comp-enable-subr-trampolines nil))
 
+;; -batch (even with default package-user-dir pointing at the real elpa/)
+;; doesn't put installed packages on load-path unless package-initialize
+;; runs - some tests need real installed deps (e.g. git-link), not stubs.
+(require 'package)
+(package-initialize)
+
 (let* ((self (or load-file-name buffer-file-name))
        (here (file-name-directory self)))
   (dolist (file (directory-files here t "-tests\\.el\\'"))

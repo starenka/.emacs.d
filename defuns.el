@@ -365,47 +365,173 @@ buffer is not visiting a file."
    (deadgrep--buffer-name deadgrep--search-term default-directory) t)
   (deadgrep-restart))
 
-(defun sta:magit-get-github-web-repo-url (&optional remote-name)
-  "Gets github repo web url"
+;; forge-agnostic (github/gitlab/gitea/forgejo/bitbucket/sourcehut/...) repo
+;; helpers, built on top of git-link (global.el) rather than hand-rolling
+;; per-forge URL formats. git-link only covers file/commit/homepage links
+;; itself; issues/PRs/org have no upstream equivalent, so those are built
+;; here from the same remote-parsing + `git-link-remote-alist' host
+;; detection git-link uses, to stay in sync with whatever hosts are
+;; registered there (see .dir-locals.el note in global.el for self-hosted
+;; instances). git-link is `require'd lazily inside the functions below,
+;; not at top level - defuns.el loads before global.el (which use-package
+;; :ensure's git-link) in init.el, so a top-level require here would fail
+;; on every startup.
 
-  (let* ((remote-name (or remote-name
-                          (magit-get "branch" "main" "remote")
-                          (magit-get "branch" "master" "remote")))
-         (remote-url (magit-get "remote" remote-name "url")))
-    (when (string-match-p "github\.com" remote-url)
-      (format "https://github.com/%s"
-              (string-trim-right (nth 1 (split-string remote-url ":")) "\.git")))))
+;; git-link has no `git-link-homepage-gitea' - Codeberg (a public Forgejo
+;; instance) is its reference implementation for the gitea/forgejo URL
+;; scheme, so the homepage handler is only named `-codeberg'. Alias it so
+;; self-hosted Gitea/Forgejo registration never has to mention Codeberg,
+;; matching git-link's own `git-link-gitea' alias for the file-link handler.
+(with-eval-after-load 'git-link
+  (defalias 'git-link-homepage-gitea 'git-link-homepage-codeberg))
 
-(defun sta:goto-github-repo ()
-  "spawn browser with gh repo"
+(defconst sta:vc-forge-alist
+  '((github    :remote-handler git-link-github    :homepage-handler git-link-homepage-github
+               :issues-path "issues"   :prs-path "pulls")
+    (gitlab    :remote-handler git-link-gitlab    :homepage-handler git-link-homepage-github
+               :issues-path "-/issues" :prs-path "-/merge_requests")
+    (gitea     :remote-handler git-link-gitea     :homepage-handler git-link-homepage-gitea
+               :issues-path "issues"   :prs-path "pulls")
+    (bitbucket :remote-handler git-link-bitbucket :homepage-handler git-link-homepage-github
+               :issues-path "issues"   :prs-path "pull-requests")
+    (sourcehut :remote-handler git-link-sourcehut :homepage-handler git-link-homepage-github
+               :issues-path nil        :prs-path nil))
+  "Single source of truth for everything forge-specific: which git-link
+handlers build repo/file links for a forge, and the URL path suffixes for
+its issues/PR pages (nil = not reachable from the repo URL - e.g. sourcehut
+issues live on a separate todo.sr.ht domain and it has no PR concept at
+all). Add a new forge here and every sta:goto-forge-* command picks it up;
+nothing else needs touching.")
+
+(defconst sta:vc-forge-aliases '((forgejo . gitea))
+  "Forge-type aliases resolved before consulting `sta:vc-forge-alist' -
+Forgejo and Gitea share the same URL scheme, so `forgejo' is just a more
+recognizable name for the same table entry.")
+
+(defvar-local sta:forge-type nil
+  "Forge software for the current project's git remote - one of the keys
+in `sta:vc-forge-alist' (`github', `gitlab', `gitea', `bitbucket',
+`sourcehut'), or the `forgejo' alias for `gitea'.
+
+Leave nil to rely on git-link's own hostname-based auto-detection, which
+already covers github.com/gitlab.com and any self-hosted instance whose
+hostname contains \"github\"/\"gitlab\" (e.g. GitHub Enterprise). Self-hosted
+Gitea/Forgejo/Bitbucket/sourcehut instances have no such recognizable
+hostname pattern, so set this explicitly via `.dir-locals.el' - the actual
+remote hostname is read from `.git/config' automatically, you only need to
+say what software it runs:
+
+  ((nil . ((sta:forge-type . forgejo))))
+
+Since dir-locals apply to every file under the directory they live in, one
+`.dir-locals.el' at the root of a directory that holds many repos (e.g.
+~/work/) covers all of them at once, regardless of each repo's individual
+hostname - it's only ever used to look up which git-link handlers +
+issues/PRs paths to use, per `sta:vc-forge-alist'.")
+
+;; any symbol is safe here - just a lookup key, never eval'd - so
+;; .dir-locals.el settings don't need a per-project confirmation prompt
+(put 'sta:forge-type 'safe-local-variable #'symbolp)
+
+(defun sta:vc-normalize-forge-type (type)
+  "Resolve forge-type aliases (e.g. `forgejo' -> `gitea') to their
+canonical `sta:vc-forge-alist' key."
+  (or (cdr (assq type sta:vc-forge-aliases)) type))
+
+(defun sta:vc--ensure-forge-registered ()
+  "If `sta:forge-type' is set for this buffer, make sure git-link knows
+how to build links for the current repo's remote host. The hostname comes
+from the actual git remote (already in `.git/config', no need to repeat
+it) - only the forge software itself needs to be told."
+  (when sta:forge-type
+    (require 'git-link)
+    (let* ((type (sta:vc-normalize-forge-type sta:forge-type))
+           (spec (cdr (assq type sta:vc-forge-alist))))
+      (unless spec
+        (user-error "Unknown sta:forge-type `%s' - must be one of: %s"
+                    sta:forge-type (mapcar #'car sta:vc-forge-alist)))
+      (let* ((remote-url (git-link--remote-url (git-link--remote)))
+             (host (car (git-link--parse-remote remote-url)))
+             (host-regexp (regexp-quote host)))
+        (add-to-list 'git-link-remote-alist
+                      (list host-regexp (plist-get spec :remote-handler)))
+        (add-to-list 'git-link-homepage-remote-alist
+                      (list host-regexp (plist-get spec :homepage-handler)))))))
+
+(defun sta:vc-forge-type ()
+  "Return the current repo's forge-type symbol (a key in
+`sta:vc-forge-alist'), or nil if it can't be determined. Prefers the
+explicit `sta:forge-type' dir-local; falls back to whatever git-link's own
+`git-link-remote-alist' already recognizes by hostname."
+  (sta:vc--ensure-forge-registered)
+  (require 'git-link)
+  (if sta:forge-type
+      (sta:vc-normalize-forge-type sta:forge-type)
+    (let* ((remote-url (git-link--remote-url (git-link--remote)))
+           (host (car (git-link--parse-remote remote-url)))
+           (handler (git-link--handler git-link-remote-alist host)))
+      ;; compare resolved functions, not symbols: git-link's own alist may
+      ;; recognize a host via a differently-named alias of the same handler
+      ;; (e.g. codeberg.org resolves via `git-link-codeberg', while our
+      ;; table's canonical gitea entry says `git-link-gitea' - both are the
+      ;; same function, `git-link-gitea' is just a defalias)
+      (car (cl-find handler sta:vc-forge-alist
+                     :key (lambda (entry) (plist-get (cdr entry) :remote-handler))
+                     :test (lambda (a b) (eq (indirect-function a) (indirect-function b))))))))
+
+(defun sta:vc-web-repo-url ()
+  "Return the web homepage URL for the current repo, forge-agnostically.
+Unlike `git-link-homepage' this has no kill-ring/browser side effects -
+it's meant for building further URLs (issues, PRs, ...) on top of."
+  (sta:vc--ensure-forge-registered)
+  (require 'git-link)
+  (let* ((remote-url (git-link--remote-url (git-link--remote)))
+         (parsed (git-link--parse-remote remote-url))
+         (host (car parsed))
+         (handler (git-link--handler git-link-homepage-remote-alist host)))
+    (unless handler
+      (user-error "Forge for host `%s' not recognized - set `sta:forge-type' via .dir-locals.el (see global.el)" host))
+    (funcall handler (git-link--web-host host) (cadr parsed))))
+
+(defun sta:goto-forge-repo ()
+  "spawn browser with the current repo's homepage"
   (interactive)
-  (sta:vivaldi (sta:magit-get-github-web-repo-url)))
+  (sta:vivaldi (sta:vc-web-repo-url)))
 
-(defun sta:goto-github-issues ()
-  "spawn browser with repo gh issues"
-  (interactive)
-  (sta:vivaldi (format "%s/issues" (sta:magit-get-github-web-repo-url))))
+(defun sta:goto-forge--action (path-prop unsupported-noun)
+  "Open BASE + the PATH-PROP path (`:issues-path' or `:prs-path') for the
+current repo's forge, per `sta:vc-forge-alist'."
+  (let* ((type (or (sta:vc-forge-type) (user-error "Unrecognized forge for this repo")))
+         (spec (cdr (assq type sta:vc-forge-alist)))
+         (path (plist-get spec path-prop)))
+    (unless path
+      (user-error "%s doesn't expose %s under the repo URL" type unsupported-noun))
+    (sta:vivaldi (concat (sta:vc-web-repo-url) "/" path))))
 
-(defun sta:goto-github-prs ()
-  "spawn browser with repo gh prs"
+(defun sta:goto-forge-issues ()
+  "spawn browser with the current repo's issue tracker"
   (interactive)
-  (sta:vivaldi (format "%s/pulls" (sta:magit-get-github-web-repo-url))))
+  (sta:goto-forge--action :issues-path "issues"))
 
-(defun sta:goto-github-org ()
-  "spawn browser with repo gh org"
+(defun sta:goto-forge-prs ()
+  "spawn browser with the current repo's pull/merge requests"
   (interactive)
-  (sta:vivaldi (string-join (butlast (split-string (sta:magit-get-github-web-repo-url) "/" )) "/")))
+  (sta:goto-forge--action :prs-path "pull/merge requests"))
 
-(defun sta:goto-github-file (&optional branch)
-  "spawn browser with file on gh"
+(defun sta:goto-forge-org ()
+  "spawn browser with the current repo's org/group/workspace/user page"
   (interactive)
-  (sta:vivaldi
-   (format "%s/tree/%s/%s#L%s:L%s"
-           (sta:magit-get-github-web-repo-url)
-           (or branch (magit-get-current-branch))
-           (replace-regexp-in-string (regexp-quote (file-truename (projectile-project-root))) "" (file-truename buffer-file-name))
-           (line-number-at-pos)
-           (line-number-at-pos))))
+  (sta:vivaldi (string-join (butlast (split-string (sta:vc-web-repo-url) "/")) "/")))
+
+(defun sta:goto-forge-file ()
+  "spawn browser with the current file at the current line/region on its forge.
+Thin wrapper over `git-link' (which already builds forge-correct
+file+line URLs and supports region selection, prefix-arg remote
+selection, etc.) - kept as a stable, sta:-namespaced entry point. Honors
+`sta:forge-type' the same way the other sta:goto-forge-* commands do."
+  (interactive)
+  (sta:vc--ensure-forge-registered)
+  (call-interactively #'git-link))
 
 (defun sta:lore-mastering-emacs ()
   "Open the bible"

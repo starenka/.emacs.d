@@ -361,7 +361,24 @@
   :after magit)
 
 ;; git blame / history navigation simplified (fucked up rn)
-(use-package git-timemachine :ensure t) 
+(use-package git-timemachine :ensure t)
+
+;; builds forge-correct (github/gitlab/gitea/forgejo/bitbucket/sourcehut/...)
+;; URLs from the current git remote - see sta:goto-forge-* in defuns.el for
+;; the issues/PRs/org wrappers this doesn't cover itself, and
+;; `sta:vc-forge-alist' there for the single table all forge-specific
+;; knowledge lives in. Self-hosted instances (gitea/forgejo/bitbucket -
+;; GitHub/GitLab are auto-recognized by hostname, even self-hosted) need
+;; telling apart per-project via the `sta:forge-type' dir-local, e.g. one
+;; .dir-locals.el at the root of a directory holding many Forgejo repos:
+;;   ((nil . ((sta:forge-type . forgejo))))
+;; The hostname itself is read from each repo's own .git/config
+;; automatically - `sta:forge-type' only says what software it runs. See
+;; `sta:forge-type''s docstring in defuns.el for the full explanation.
+(use-package git-link
+  :ensure t
+  :custom
+  (git-link-open-in-browser #'sta:vivaldi))
 
 ;; mini frame on otop instead of minibuffer
 ;;(use-package mini-frame

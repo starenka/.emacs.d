@@ -214,25 +214,6 @@
     (cl-letf (((symbol-function 'projectile-project-p) (lambda () nil)))
       (should (null (sta:buffer-path))))))
 
-;;; sta:magit-get-github-web-repo-url
-
-(ert-deftest defuns-test-magit-get-github-web-repo-url-ssh ()
-  (cl-letf (((symbol-function 'magit-get)
-             (lambda (&rest args)
-               (cond
-                ((equal args '("branch" "main" "remote")) "origin")
-                ((equal args '("remote" "origin" "url")) "git@github.com:someuser/somerepo.git")))))
-    (should (equal (sta:magit-get-github-web-repo-url)
-                    "https://github.com/someuser/somerepo"))))
-
-(ert-deftest defuns-test-magit-get-github-web-repo-url-non-github ()
-  (cl-letf (((symbol-function 'magit-get)
-             (lambda (&rest args)
-               (cond
-                ((equal args '("branch" "main" "remote")) "origin")
-                ((equal args '("remote" "origin" "url")) "git@gitlab.com:someuser/somerepo.git")))))
-    (should (null (sta:magit-get-github-web-repo-url)))))
-
 ;;; sta:nuke-stale-elc
 
 (ert-deftest defuns-test-nuke-stale-elc-deletes-elc-files ()
@@ -288,22 +269,6 @@
         (sta:copy-buffer-file-name-as-kill ?x))
       (should (null kill-ring))
       (should (equal msg "Quit")))))
-
-;;; sta:magit-get-github-web-repo-url (https remote - documents current bug)
-
-;; NB: only ssh-style `git@host:user/repo.git' remotes are handled
-;; correctly. For an https:// remote, `(nth 1 (split-string remote-url
-;; ":"))' yields "//github.com/user/repo.git", so the result is a
-;; malformed URL rather than an error - flagged in
-;; .issues/tests-coverage/context.md, not yet fixed.
-(ert-deftest defuns-test-magit-get-github-web-repo-url-https-remote-is-malformed ()
-  (cl-letf (((symbol-function 'magit-get)
-             (lambda (&rest args)
-               (cond
-                ((equal args '("branch" "main" "remote")) "origin")
-                ((equal args '("remote" "origin" "url")) "https://github.com/someuser/somerepo.git")))))
-    (should (equal (sta:magit-get-github-web-repo-url)
-                    "https://github.com///github.com/someuser/somerepo"))))
 
 ;;; sta:find-file-dired
 
@@ -571,45 +536,216 @@
       (when (file-exists-p "/tmp/emacs_http_response.html")
         (delete-file "/tmp/emacs_http_response.html")))))
 
-;;; sta:goto-github-*
+;;; sta:vc-forge-type / sta:vc-web-repo-url / sta:goto-forge-*
+;;
+;; git-link is a real dependency here (not stubbed) - `require'd directly
+;; since these tests exercise git-link's own remote-parsing/host-detection
+;; logic together with the sta: wrappers built on top of it. Only the two
+;; functions that shell out to `git' (git-link--remote / git-link--remote-url)
+;; are mocked, so real parsing/handler-lookup logic still runs.
 
-(ert-deftest defuns-test-goto-github-repo ()
-  (let (cap)
-    (cl-letf (((symbol-function 'sta:magit-get-github-web-repo-url) (lambda (&rest _) "https://github.com/foo/bar"))
-              ((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
-      (sta:goto-github-repo)
-      (should (equal cap "https://github.com/foo/bar")))))
+(require 'git-link)
 
-(ert-deftest defuns-test-goto-github-issues ()
-  (let (cap)
-    (cl-letf (((symbol-function 'sta:magit-get-github-web-repo-url) (lambda (&rest _) "https://github.com/foo/bar"))
-              ((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
-      (sta:goto-github-issues)
-      (should (equal cap "https://github.com/foo/bar/issues")))))
+(defmacro defuns-test--with-remote-url (url &rest body)
+  "Run BODY with the current repo's resolved remote URL mocked to URL."
+  (declare (indent 1))
+  `(cl-letf (((symbol-function 'git-link--remote) (lambda () "origin"))
+             ((symbol-function 'git-link--remote-url) (lambda (&rest _) ,url)))
+     ,@body))
 
-(ert-deftest defuns-test-goto-github-prs ()
-  (let (cap)
-    (cl-letf (((symbol-function 'sta:magit-get-github-web-repo-url) (lambda (&rest _) "https://github.com/foo/bar"))
-              ((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
-      (sta:goto-github-prs)
-      (should (equal cap "https://github.com/foo/bar/pulls")))))
+(ert-deftest defuns-test-vc-forge-type-github-ssh ()
+  (defuns-test--with-remote-url "git@github.com:someuser/somerepo.git"
+    (should (eq (sta:vc-forge-type) 'github))))
 
-(ert-deftest defuns-test-goto-github-org ()
-  (let (cap)
-    (cl-letf (((symbol-function 'sta:magit-get-github-web-repo-url) (lambda (&rest _) "https://github.com/foo/bar"))
-              ((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
-      (sta:goto-github-org)
-      (should (equal cap "https://github.com/foo")))))
+(ert-deftest defuns-test-vc-forge-type-github-https ()
+  (defuns-test--with-remote-url "https://github.com/someuser/somerepo.git"
+    (should (eq (sta:vc-forge-type) 'github))))
 
-(ert-deftest defuns-test-goto-github-file ()
+(ert-deftest defuns-test-vc-forge-type-gitlab ()
+  (defuns-test--with-remote-url "git@gitlab.com:someuser/somerepo.git"
+    (should (eq (sta:vc-forge-type) 'gitlab))))
+
+(ert-deftest defuns-test-vc-forge-type-codeberg-is-gitea-family ()
+  ;; codeberg.org runs Forgejo; git-link (and thus we) treat it as the
+  ;; canonical example of the gitea/forgejo URL scheme
+  (defuns-test--with-remote-url "git@codeberg.org:someuser/somerepo.git"
+    (should (eq (sta:vc-forge-type) 'gitea))))
+
+(ert-deftest defuns-test-vc-forge-type-bitbucket ()
+  (defuns-test--with-remote-url "git@bitbucket.org:someuser/somerepo.git"
+    (should (eq (sta:vc-forge-type) 'bitbucket))))
+
+(ert-deftest defuns-test-vc-forge-type-sourcehut ()
+  (defuns-test--with-remote-url "git@git.sr.ht:~someuser/somerepo"
+    (should (eq (sta:vc-forge-type) 'sourcehut))))
+
+(ert-deftest defuns-test-vc-forge-type-unrecognized-host ()
+  (defuns-test--with-remote-url "git@git.unknown-host.test:someuser/somerepo.git"
+    (should (null (sta:vc-forge-type)))))
+
+(ert-deftest defuns-test-vc-forge-type-self-hosted-registered-via-raw-alist ()
+  ;; advanced/manual fallback: directly registering with git-link's own
+  ;; alists (e.g. for a forge outside sta:vc-forge-alist) still works
+  (let ((git-link-remote-alist (cons '("git\\.mycompany\\.com" git-link-gitea) git-link-remote-alist)))
+    (defuns-test--with-remote-url "git@git.mycompany.com:someteam/somerepo.git"
+      (should (eq (sta:vc-forge-type) 'gitea)))))
+
+;;; sta:forge-type dir-local + sta:vc-forge-alist-driven registration
+;;
+;; This is the primary, documented self-hosted-forge mechanism (see
+;; sta:forge-type's docstring and the .dir-locals.el note in global.el) -
+;; unlike the raw-alist test above, the user only names the forge software;
+;; the hostname is read from the (mocked) git remote automatically.
+
+(ert-deftest defuns-test-vc-forge-type-dir-local-registers-and-resolves ()
+  (let ((sta:forge-type 'gitea))
+    (defuns-test--with-remote-url "git@git.mycompany.com:someteam/somerepo.git"
+      (should (eq (sta:vc-forge-type) 'gitea))
+      (should (equal (sta:vc-web-repo-url) "https://git.mycompany.com/someteam/somerepo")))))
+
+(ert-deftest defuns-test-vc-forge-type-forgejo-alias-normalizes-to-gitea ()
+  (let ((sta:forge-type 'forgejo))
+    (defuns-test--with-remote-url "git@git.mycompany.com:someteam/somerepo.git"
+      (should (eq (sta:vc-forge-type) 'gitea)))))
+
+(ert-deftest defuns-test-vc-forge-type-dir-local-covers-multiple-hosts-independently ()
+  ;; the /www/vitek use case: one sta:forge-type setting, many repos with
+  ;; different hostnames/paths, each resolved from its own actual remote
+  (let ((sta:forge-type 'forgejo))
+    (defuns-test--with-remote-url "git@code.ciw.cz:ciw/agent-skills.git"
+      (should (equal (sta:vc-web-repo-url) "https://code.ciw.cz/ciw/agent-skills")))
+    (defuns-test--with-remote-url "git@code.ciw.cz:yg/infra.git"
+      (should (equal (sta:vc-web-repo-url) "https://code.ciw.cz/yg/infra")))))
+
+(ert-deftest defuns-test-vc-forge-type-unknown-value-errors ()
+  (let ((sta:forge-type 'not-a-real-forge))
+    (defuns-test--with-remote-url "git@git.mycompany.com:someteam/somerepo.git"
+      (should-error (sta:vc-forge-type) :type 'user-error))))
+
+(ert-deftest defuns-test-goto-forge-file-honors-forge-type-dir-local ()
+  (let ((sta:forge-type 'gitea)
+        (git-link-remote-alist nil))
+    (defuns-test--with-remote-url "git@git.mycompany.com:someteam/somerepo.git"
+      (sta:vc--ensure-forge-registered)
+      (should (eq (git-link--handler git-link-remote-alist "git.mycompany.com") 'git-link-gitea)))))
+
+;;; sta:vc-web-repo-url
+
+(ert-deftest defuns-test-vc-web-repo-url-ssh ()
+  (defuns-test--with-remote-url "git@github.com:someuser/somerepo.git"
+    (should (equal (sta:vc-web-repo-url) "https://github.com/someuser/somerepo"))))
+
+(ert-deftest defuns-test-vc-web-repo-url-https ()
+  ;; regression: the old sta:magit-get-github-web-repo-url produced a
+  ;; malformed URL for https remotes - git-link's parser handles both
+  ;; consistently
+  (defuns-test--with-remote-url "https://github.com/someuser/somerepo.git"
+    (should (equal (sta:vc-web-repo-url) "https://github.com/someuser/somerepo"))))
+
+(ert-deftest defuns-test-vc-web-repo-url-gitlab ()
+  (defuns-test--with-remote-url "git@gitlab.com:someuser/somerepo.git"
+    (should (equal (sta:vc-web-repo-url) "https://gitlab.com/someuser/somerepo"))))
+
+(ert-deftest defuns-test-vc-web-repo-url-unrecognized-host-errors ()
+  (defuns-test--with-remote-url "git@git.unknown-host.test:someuser/somerepo.git"
+    (should-error (sta:vc-web-repo-url) :type 'user-error)))
+
+;;; sta:goto-forge-repo / -issues / -prs / -org
+
+(ert-deftest defuns-test-goto-forge-repo ()
   (let (cap)
-    (cl-letf (((symbol-function 'sta:magit-get-github-web-repo-url) (lambda (&rest _) "https://github.com/foo/bar"))
-              ((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url)))
-              ((symbol-function 'magit-get-current-branch) (lambda () "main"))
-              ((symbol-function 'projectile-project-root) (lambda () "/proj/"))
-              (buffer-file-name "/proj/sub/file.py"))
-      (sta:goto-github-file)
-      (should (equal cap "https://github.com/foo/bar/tree/main/sub/file.py#L1:L1")))))
+    (defuns-test--with-remote-url "git@github.com:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-repo)))
+    (should (equal cap "https://github.com/foo/bar"))))
+
+(ert-deftest defuns-test-goto-forge-issues-github ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@github.com:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-issues)))
+    (should (equal cap "https://github.com/foo/bar/issues"))))
+
+(ert-deftest defuns-test-goto-forge-issues-gitlab ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@gitlab.com:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-issues)))
+    (should (equal cap "https://gitlab.com/foo/bar/-/issues"))))
+
+(ert-deftest defuns-test-goto-forge-issues-gitea ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@codeberg.org:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-issues)))
+    (should (equal cap "https://codeberg.org/foo/bar/issues"))))
+
+(ert-deftest defuns-test-goto-forge-issues-bitbucket ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@bitbucket.org:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-issues)))
+    (should (equal cap "https://bitbucket.org/foo/bar/issues"))))
+
+(ert-deftest defuns-test-goto-forge-issues-sourcehut-errors ()
+  (defuns-test--with-remote-url "git@git.sr.ht:~foo/bar"
+    (should-error (sta:goto-forge-issues) :type 'user-error)))
+
+(ert-deftest defuns-test-goto-forge-prs-github ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@github.com:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-prs)))
+    (should (equal cap "https://github.com/foo/bar/pulls"))))
+
+(ert-deftest defuns-test-goto-forge-prs-gitlab ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@gitlab.com:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-prs)))
+    (should (equal cap "https://gitlab.com/foo/bar/-/merge_requests"))))
+
+(ert-deftest defuns-test-goto-forge-prs-gitea ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@codeberg.org:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-prs)))
+    (should (equal cap "https://codeberg.org/foo/bar/pulls"))))
+
+(ert-deftest defuns-test-goto-forge-prs-bitbucket ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@bitbucket.org:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-prs)))
+    (should (equal cap "https://bitbucket.org/foo/bar/pull-requests"))))
+
+(ert-deftest defuns-test-goto-forge-prs-sourcehut-errors ()
+  (defuns-test--with-remote-url "git@git.sr.ht:~foo/bar"
+    (should-error (sta:goto-forge-prs) :type 'user-error)))
+
+(ert-deftest defuns-test-goto-forge-org ()
+  (let (cap)
+    (defuns-test--with-remote-url "git@github.com:foo/bar.git"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-org)))
+    (should (equal cap "https://github.com/foo"))))
+
+(ert-deftest defuns-test-goto-forge-org-sourcehut ()
+  ;; the ~-prefixed sourcehut user segment falls out of plain path
+  ;; truncation with no special-casing needed
+  (let (cap)
+    (defuns-test--with-remote-url "git@git.sr.ht:~foo/bar"
+      (cl-letf (((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap url))))
+        (sta:goto-forge-org)))
+    (should (equal cap "https://git.sr.ht/~foo"))))
+
+;;; sta:goto-forge-file
+
+(ert-deftest defuns-test-goto-forge-file-delegates-to-git-link ()
+  (let (called)
+    (cl-letf (((symbol-function 'git-link) (lambda (&rest _args) (interactive) (setq called t))))
+      (call-interactively #'sta:goto-forge-file))
+    (should called)))
 
 ;;; sta:rae-wotd
 
