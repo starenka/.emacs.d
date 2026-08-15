@@ -5,6 +5,7 @@
 .emacs.desktop*
 .lsp-session*
 .agent-shell/*
+.issues/*
 bookmarks
 custom.el
 devdocs
