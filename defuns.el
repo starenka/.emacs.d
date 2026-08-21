@@ -342,6 +342,20 @@ buffer is not visiting a file."
         (multi-vterm-project)
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
 
+(defun sta:llm-offtopic-agent-shell (dir)
+  "Open an agent-shell in DIR, a scratch run directory under /tmp/fap."
+  (require 'agent-shell)
+  (let ((default-directory (file-name-as-directory dir)))
+    (agent-shell '(4))))
+
+(defun llm-offtopic ()
+  "Open a fresh emacsclient frame and start an agent-shell in a fresh /tmp/fap run directory."
+  (interactive)
+  (call-process "mkdir" nil nil nil "-p" "/tmp/fap")
+  (let ((dir (make-temp-file "/tmp/fap/run-" t)))
+    (start-process "llm-offtopic" nil "emacsclient" "-c" "-e"
+                   (format "%S" `(sta:llm-offtopic-agent-shell ,dir)))))
+
 (defun sta:tree ()
   "Ads and opens current project/dir in treemacs"
   (interactive)

@@ -111,6 +111,7 @@ _M_: minimize
   ("G" . sta:google)
   ("i" . string-inflection-cycle)
   ("k" . ar/quick-kill-process)
+  ("A" . llm-offtopic)
   ("l a" . agent-shell)
   ("l l" . gptel)
   ("l L" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
