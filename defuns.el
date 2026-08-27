@@ -379,6 +379,22 @@ buffer is not visiting a file."
    (deadgrep--buffer-name deadgrep--search-term default-directory) t)
   (deadgrep-restart))
 
+;; Git history / forge helpers
+
+(defun sta:git-history-dwim ()
+  "Show Git history for the active region or the current line.
+This uses Magit's line log, so each matching commit can be opened to
+inspect its diff."
+  (interactive)
+  ;; defuns.el loads before global.el installs/configures Magit.
+  (require 'magit-log)
+  (let ((lines (and (use-region-p)
+                    (magit-file-region-line-numbers))))
+    (unless lines
+      (let ((line (line-number-at-pos nil t)))
+        (setq lines (list line line))))
+    (magit-log-buffer-file nil (car lines) (cadr lines))))
+
 ;; forge-agnostic (github/gitlab/gitea/forgejo/bitbucket/sourcehut/...) repo
 ;; helpers, built on top of git-link (global.el) rather than hand-rolling
 ;; per-forge URL formats. git-link only covers file/commit/homepage links

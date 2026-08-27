@@ -122,7 +122,7 @@ _M_: minimize
   ("e" . sta:go-to-scratch)
   ("t" . sta:snakecase-translit-region)
   ("u" . lsp-find-references)
-  ("v b" . git-timemachine-blame)
+  ("v b" . sta:git-history-dwim)
   ("v f" . sta:goto-forge-file)
   ("v i" . sta:goto-forge-issues)
   ("v l" . magit-log-buffer-file)

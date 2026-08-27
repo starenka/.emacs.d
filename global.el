@@ -360,7 +360,8 @@
   :ensure t
   :after magit)
 
-;; git blame / history navigation simplified (fucked up rn)
+;; browse complete file revisions; line/region history is provided by
+;; `sta:git-history-dwim' through Magit
 (use-package git-timemachine :ensure t)
 
 ;; builds forge-correct (github/gitlab/gitea/forgejo/bitbucket/sourcehut/...)

@@ -545,6 +545,34 @@
 ;; are mocked, so real parsing/handler-lookup logic still runs.
 
 (require 'git-link)
+(require 'magit-log)
+
+;;; sta:git-history-dwim
+
+(ert-deftest defuns-test-git-history-dwim-uses-current-line-without-region ()
+  (with-temp-buffer
+    (insert "one\ntwo\nthree\n")
+    (goto-char (point-min))
+    (forward-line 1)
+    (let (args)
+      (cl-letf (((symbol-function 'magit-log-buffer-file)
+                 (lambda (&rest call-args) (setq args call-args))))
+        (sta:git-history-dwim))
+      (should (equal args '(nil 2 2))))))
+
+(ert-deftest defuns-test-git-history-dwim-uses-selected-lines ()
+  (with-temp-buffer
+    (let ((buffer-file-name "/tmp/example")
+          (transient-mark-mode t))
+      (insert "one\ntwo\nthree\n")
+      (goto-char (point-min))
+      (push-mark (point) t t)
+      (forward-line 2)
+      (let (args)
+        (cl-letf (((symbol-function 'magit-log-buffer-file)
+                   (lambda (&rest call-args) (setq args call-args))))
+          (sta:git-history-dwim))
+        (should (equal args '(nil 1 2)))))))
 
 (defmacro defuns-test--with-remote-url (url &rest body)
   "Run BODY with the current repo's resolved remote URL mocked to URL."
