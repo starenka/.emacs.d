@@ -1,5 +1,7 @@
 ;;(advice-add 'load-theme :before (lambda (&rest _) (sta:disable-themes)))
 
+;; Third-party providers for the themes in `favourite-themes'.  The remaining
+;; themes there (tsdh-light, tsdh-dark, and misterioso) ship with Emacs.
 (use-package monokai-theme :ensure t :pin melpa)
 (use-package twilight-bright-theme :ensure t)
 (use-package doom-themes :ensure t)
@@ -49,7 +51,10 @@
                            hemisu-light
                            doom-old-hope
                            doom-lantern
-                           monokai))
+                           monokai
+                           tsdh-dark
+                           misterioso
+                           ))
 
 (defvar sta:last-theme-file (expand-file-name "last-theme" user-emacs-directory))
 
