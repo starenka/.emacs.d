@@ -395,6 +395,14 @@ inspect its diff."
         (setq lines (list line line))))
     (magit-log-buffer-file nil (car lines) (cadr lines))))
 
+(defun sta:git-browse-revisions ()
+  "Visit the previous revision of the current file using Magit.
+In the resulting historical-file buffer, use `p' and `n' to move
+backward and forward through revisions, and `q' to quit."
+  (interactive)
+  (require 'magit-files)
+  (magit-blob-previous))
+
 ;; forge-agnostic (github/gitlab/gitea/forgejo/bitbucket/sourcehut/...) repo
 ;; helpers, built on top of git-link (global.el) rather than hand-rolling
 ;; per-forge URL formats. git-link only covers file/commit/homepage links

@@ -360,9 +360,13 @@
   :ensure t
   :after magit)
 
-;; browse complete file revisions; line/region history is provided by
-;; `sta:git-history-dwim' through Magit
-(use-package git-timemachine :ensure t)
+(use-package diff-hl
+  :ensure t
+  :after magit
+  :config
+  (global-diff-hl-mode)
+  (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 ;; builds forge-correct (github/gitlab/gitea/forgejo/bitbucket/sourcehut/...)
 ;; URLs from the current git remote - see sta:goto-forge-* in defuns.el for

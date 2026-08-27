@@ -18,7 +18,16 @@ eval-expression
 python-add-import
 shell-command
 shell-command-on-region
-        
+
+#GIT
+magit-blame-addition *inline blame headings; p/n navigate, RET opens, q quits*
+sta:git-history-dwim *history for the selected region or current line*
+magit-diff-buffer-file *current file diff*
+magit-log-trace-definition *history of the definition at point*
+magit-log-buffer-file *whole file history*
+sta:git-browse-revisions *browse revisions with p/n; q quits*
+magit-file-dispatch *all Magit actions for the current file*
+
 #MISC
 ar/quick-kill-process *pgrep/pkill*
 artist-mode *ascii art creating*
@@ -28,7 +37,6 @@ cycle-spacing
 describe-char
 find-dired
 follow-mode
-git-timemachine
 htmlfontify-buffer
 read-only-mode
 revert-buffer-with-coding-system

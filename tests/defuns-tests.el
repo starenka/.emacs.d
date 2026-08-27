@@ -546,6 +546,7 @@
 
 (require 'git-link)
 (require 'magit-log)
+(require 'magit-files)
 
 ;;; sta:git-history-dwim
 
@@ -573,6 +574,15 @@
                    (lambda (&rest call-args) (setq args call-args))))
           (sta:git-history-dwim))
         (should (equal args '(nil 1 2)))))))
+
+;;; sta:git-browse-revisions
+
+(ert-deftest defuns-test-git-browse-revisions-starts-at-previous-blob ()
+  (let (called)
+    (cl-letf (((symbol-function 'magit-blob-previous)
+               (lambda () (setq called t))))
+      (sta:git-browse-revisions))
+    (should called)))
 
 (defmacro defuns-test--with-remote-url (url &rest body)
   "Run BODY with the current repo's resolved remote URL mocked to URL."
