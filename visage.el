@@ -8,6 +8,13 @@
 (use-package alect-themes :ensure t)
 (use-package hemisu-theme :ensure t)
 
+(with-eval-after-load 'ace-window
+  (custom-set-faces
+   '(aw-leading-char-face ((t (:inherit region
+                             :box (:line-width 2)
+                             :height 1.6
+                             :weight bold))))))
+
 (with-eval-after-load "twilight-bright-theme"
   (custom-theme-set-faces
    'twilight-bright
