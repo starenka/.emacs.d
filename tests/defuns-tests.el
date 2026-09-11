@@ -62,16 +62,38 @@
 
 ;;; sta:get-file-python-path
 
+(defmacro defuns-tests--with-python-project (relative-file &rest body)
+  "Create a temp project with a pyproject.toml and RELATIVE-FILE, run BODY.
+BODY sees `root' and `fpath' bound to the project root and the created file."
+  (declare (indent 1))
+  `(let* ((root (make-temp-file "defuns-test-py" t))
+          (fpath (expand-file-name ,relative-file root)))
+     (unwind-protect
+         (progn
+           (make-directory (file-name-directory fpath) t)
+           (with-temp-file (expand-file-name "pyproject.toml" root) (insert ""))
+           (with-temp-file fpath (insert ""))
+           ,@body)
+       (delete-directory root t))))
+
 (ert-deftest defuns-test-get-file-python-path ()
-  (let* ((root (make-temp-file "defuns-test-py" t))
-         (pkg-dir (expand-file-name "pkg/sub" root))
-         (fpath (expand-file-name "mod.py" pkg-dir)))
+  (defuns-tests--with-python-project "pkg/sub/mod.py"
+    (should (equal (sta:get-file-python-path fpath) "pkg.sub.mod"))))
+
+(ert-deftest defuns-test-get-file-python-path-src-layout ()
+  (defuns-tests--with-python-project "src/pkg/mod.py"
+    (should (equal (sta:get-file-python-path fpath) "pkg.mod"))))
+
+(ert-deftest defuns-test-get-file-python-path-src-only-stripped-at-root ()
+  (defuns-tests--with-python-project "pkg/src/mod.py"
+    (should (equal (sta:get-file-python-path fpath) "pkg.src.mod"))))
+
+(ert-deftest defuns-test-get-file-python-path-outside-project ()
+  (let ((root (make-temp-file "defuns-test-nopy" t)))
     (unwind-protect
-        (progn
-          (make-directory pkg-dir t)
-          (with-temp-file (expand-file-name "pyproject.toml" root) (insert ""))
+        (let ((fpath (expand-file-name "mod.py" root)))
           (with-temp-file fpath (insert ""))
-          (should (equal (sta:get-file-python-path fpath) "pkg.sub.mod")))
+          (should (null (sta:get-file-python-path fpath))))
       (delete-directory root t))))
 
 ;;; sta:kill-start-of-line / kill-line-no-kr / delete-line-no-kill
@@ -157,43 +179,45 @@
     (sta:reset-zoom)
     (should (= text-scale-mode-amount 0))))
 
-;;; sta:copy-buffer-file-name-as-kill
+;;; sta:copy-as-kill
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-filename ()
+(ert-deftest defuns-test-copy-as-kill-file-path ()
   (with-temp-buffer
     (let ((buffer-file-name "/tmp/some/path/file.txt")
           (kill-ring nil))
-      (sta:copy-buffer-file-name-as-kill ?f)
+      (sta:copy-as-kill 'file-path)
       (should (equal (current-kill 0) "/tmp/some/path/file.txt")))))
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-name ()
+(ert-deftest defuns-test-copy-as-kill-file-name ()
   (with-temp-buffer
     (let ((buffer-file-name "/tmp/some/path/file.txt")
           (kill-ring nil))
-      (sta:copy-buffer-file-name-as-kill ?n)
+      (sta:copy-as-kill 'file-name)
       (should (equal (current-kill 0) "file.txt")))))
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-directory ()
+(ert-deftest defuns-test-copy-as-kill-directory ()
   (with-temp-buffer
     (let ((buffer-file-name "/tmp/some/path/file.txt")
           (kill-ring nil))
-      (sta:copy-buffer-file-name-as-kill ?d)
+      (sta:copy-as-kill 'directory)
       (should (equal (current-kill 0) "/tmp/some/path/")))))
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-python-path ()
+(ert-deftest defuns-test-copy-as-kill-dired-uses-file-at-point ()
   (with-temp-buffer
-    (let* ((root (make-temp-file "defuns-test-py" t))
-           (fpath (expand-file-name "pkg/mod.py" root))
-           (buffer-file-name fpath)
-           (kill-ring nil))
-      (unwind-protect
-          (progn
-            (make-directory (file-name-directory fpath) t)
-            (with-temp-file (expand-file-name "pyproject.toml" root) (insert ""))
-            (with-temp-file fpath (insert ""))
-            (sta:copy-buffer-file-name-as-kill ?p)
-            (should (equal (current-kill 0) "pkg.mod")))
-        (delete-directory root t)))))
+    (let ((kill-ring nil))
+      (setq major-mode 'dired-mode)
+      (cl-letf (((symbol-function 'dired-get-filename)
+                 (lambda (&rest _) "/tmp/dired/file.txt")))
+        (sta:copy-as-kill 'file-path))
+      (should (equal (current-kill 0) "/tmp/dired/file.txt")))))
+
+(ert-deftest defuns-test-copy-as-kill-python-path ()
+  (defuns-tests--with-python-project "pkg/mod.py"
+    (with-temp-buffer
+      (let ((buffer-file-name fpath)
+            (kill-ring nil))
+        (sta:copy-as-kill 'python-path)
+        (should (equal (current-kill 0) "pkg.mod"))))))
 
 ;;; sta:buffer-path
 
@@ -231,44 +255,108 @@
           (should (file-exists-p el-file)))
       (delete-directory root t))))
 
-;;; sta:copy-buffer-file-name-as-kill (remaining branches)
+;;; sta:file-line-reference
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-python-import ()
+(defmacro defuns-tests--with-project-buffer (file &rest body)
+  "Run BODY in a temp buffer of five lines visiting FILE in project /proj/root/."
+  (declare (indent 1))
+  `(with-temp-buffer
+     (insert "one\ntwo\nthree\nfour\nfive\n")
+     (let ((buffer-file-name ,file))
+       (cl-letf (((symbol-function 'projectile-project-p) (lambda () t))
+                 ((symbol-function 'projectile-project-root) (lambda () "/proj/root/")))
+         ,@body))))
+
+(defun defuns-tests--goto-line (n)
+  (goto-char (point-min))
+  (forward-line (1- n)))
+
+(ert-deftest defuns-test-file-line-reference-current-line ()
+  (defuns-tests--with-project-buffer "/proj/root/sub/file.el"
+    (defuns-tests--goto-line 3)
+    (should (equal (sta:file-line-reference buffer-file-name) "sub/file.el:3"))))
+
+(ert-deftest defuns-test-file-line-reference-region ()
+  (defuns-tests--with-project-buffer "/proj/root/sub/file.el"
+    (defuns-tests--goto-line 2)
+    (set-mark (point))
+    (defuns-tests--goto-line 4)
+    (end-of-line)
+    (activate-mark)
+    (should (equal (sta:file-line-reference buffer-file-name) "sub/file.el:2-4"))))
+
+(ert-deftest defuns-test-file-line-reference-region-ending-at-line-start ()
+  (defuns-tests--with-project-buffer "/proj/root/sub/file.el"
+    (defuns-tests--goto-line 2)
+    (set-mark (point))
+    (defuns-tests--goto-line 5)
+    (activate-mark)
+    (should (equal (sta:file-line-reference buffer-file-name) "sub/file.el:2-4"))))
+
+(ert-deftest defuns-test-file-line-reference-region-within-one-line ()
+  (defuns-tests--with-project-buffer "/proj/root/sub/file.el"
+    (defuns-tests--goto-line 3)
+    (set-mark (point))
+    (end-of-line)
+    (activate-mark)
+    (should (equal (sta:file-line-reference buffer-file-name) "sub/file.el:3"))))
+
+(ert-deftest defuns-test-file-line-reference-outside-project ()
   (with-temp-buffer
-    (let* ((root (make-temp-file "defuns-test-py" t))
-           (fpath (expand-file-name "pkg/mod.py" root))
-           (buffer-file-name fpath)
-           (kill-ring nil))
-      (unwind-protect
-          (progn
-            (make-directory (file-name-directory fpath) t)
-            (with-temp-file (expand-file-name "pyproject.toml" root) (insert ""))
-            (with-temp-file fpath (insert ""))
-            (sta:copy-buffer-file-name-as-kill ?i)
-            (should (equal (current-kill 0) "from pkg.mod import ")))
-        (delete-directory root t)))))
+    (insert "one\ntwo\nthree\n")
+    (let ((buffer-file-name "/tmp/loose/file.el"))
+      (cl-letf (((symbol-function 'projectile-project-p) (lambda () nil)))
+        (defuns-tests--goto-line 2)
+        (should (equal (sta:file-line-reference buffer-file-name)
+                       "/tmp/loose/file.el:2"))))))
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-buffer-name ()
+(ert-deftest defuns-test-copy-as-kill-line-reference ()
+  (defuns-tests--with-project-buffer "/proj/root/sub/file.el"
+    (defuns-tests--goto-line 3)
+    (let ((kill-ring nil))
+      (sta:copy-as-kill 'line-reference)
+      (should (equal (current-kill 0) "sub/file.el:3")))))
+
+;;; sta:copy-as-kill (remaining branches)
+
+(ert-deftest defuns-test-copy-as-kill-python-import ()
+  (defuns-tests--with-python-project "pkg/mod.py"
+    (with-temp-buffer
+      (let ((buffer-file-name fpath)
+            (kill-ring nil))
+        (sta:copy-as-kill 'python-import)
+        (should (equal (current-kill 0) "from pkg.mod import "))))))
+
+(ert-deftest defuns-test-copy-as-kill-buffer-name ()
   (with-temp-buffer
     (rename-buffer "my-special-buffer" t)
     (let ((kill-ring nil))
-      (sta:copy-buffer-file-name-as-kill ?b)
+      (sta:copy-as-kill 'buffer-name)
       (should (equal (current-kill 0) "my-special-buffer")))))
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-major-mode ()
+(ert-deftest defuns-test-copy-as-kill-major-mode ()
   (with-temp-buffer
     (emacs-lisp-mode)
     (let ((kill-ring nil))
-      (sta:copy-buffer-file-name-as-kill ?m)
+      (sta:copy-as-kill 'major-mode)
       (should (equal (current-kill 0) "emacs-lisp-mode")))))
 
-(ert-deftest defuns-test-copy-buffer-file-name-as-kill-unknown-choice-quits ()
+(ert-deftest defuns-test-copy-as-kill-without-file-does-not-kill ()
   (with-temp-buffer
     (let ((kill-ring nil) (msg nil))
-      (cl-letf (((symbol-function 'message) (lambda (fmt &rest args) (setq msg (apply #'format fmt args)))))
-        (sta:copy-buffer-file-name-as-kill ?x))
+      (cl-letf (((symbol-function 'message)
+                 (lambda (fmt &rest args) (setq msg (apply #'format fmt args)))))
+        (sta:copy-as-kill 'file-path))
       (should (null kill-ring))
-      (should (equal msg "Quit")))))
+      (should (equal msg "Nothing to copy")))))
+
+(ert-deftest defuns-test-copy-as-kill-outside-python-project-does-not-kill ()
+  (with-temp-buffer
+    (let ((buffer-file-name "/tmp/not-a-project/mod.py")
+          (kill-ring nil))
+      (cl-letf (((symbol-function 'message) #'ignore))
+        (sta:copy-as-kill 'python-import))
+      (should (null kill-ring)))))
 
 ;;; sta:find-file-dired
 

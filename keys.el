@@ -70,6 +70,28 @@ _M_: minimize
   ("c" nil "cancel"))
 
 
+(defhydra sta:copy-as-kill (:hint nil :color blue)
+  "
+^Python^                ^File^                 ^Buffer^
+──────────────────────────────────────────────────────────────
+[_p_] import path       [_f_] full path        [_b_] buffer name
+[_i_] import statement  [_n_] file name        [_m_] major mode
+^ ^                     [_d_] directory
+^ ^                     [_l_] path:line (region aware)
+
+"
+  ("p" (sta:copy-as-kill 'python-path))
+  ("i" (sta:copy-as-kill 'python-import))
+  ("f" (sta:copy-as-kill 'file-path))
+  ("n" (sta:copy-as-kill 'file-name))
+  ("d" (sta:copy-as-kill 'directory))
+  ("l" (sta:copy-as-kill 'line-reference))
+  ("b" (sta:copy-as-kill 'buffer-name))
+  ("m" (sta:copy-as-kill 'major-mode))
+
+  ("c" nil "cancel"))
+
+
 (defhydra sta:toggles (:hint nil)
   "
 ^Zoom^             ^Toggles^           ^Misc^
@@ -99,7 +121,7 @@ _M_: minimize
 (dolist (kv '(
   ("/" . sta:toggles/body)
   ("\\" . sta:windows/body)
-  ("." . sta:copy-buffer-file-name-as-kill)
+  ("." . sta:copy-as-kill/body)
   ("a" . sta:ascii-translit-region)
   ("b" . sta:show-http-response-in-browser)
   ("c" . quick-calc)
@@ -186,7 +208,7 @@ _M_: minimize
 (global-set-key [?\C-=] 'comment-dwim)
 
 ;; show file name
-(global-set-key [C-f1] 'sta:copy-buffer-file-name-as-kill)
+(global-set-key [C-f1] 'sta:copy-as-kill/body)
 
 ;;multiple cursors
 ;;(global-set-key (kbd "C-q m") 'mc/edit-lines)

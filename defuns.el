@@ -273,38 +273,56 @@ buffer is not visiting a file."
 
 
 (cl-defun sta:get-file-python-path (fpath &optional (dominating-file "pyproject.toml"))
-  "Constructs the Python import path based on the position of the pyproject.toml file."
-  (let ((relative-path (file-name-sans-extension
-                        (string-remove-prefix
-                         (locate-dominating-file fpath dominating-file)
-                         fpath))))
-    (string-join (split-string relative-path "/") ".")))
+  "Python import path of FPATH, relative to the dir holding DOMINATING-FILE.
+Returns nil when FPATH lives outside such a project.  A leading `src'
+component is dropped: in a src-layout project the package root sits under
+src/, which is never part of the import path."
+  (when-let* ((root (locate-dominating-file fpath dominating-file))
+              (relative (file-name-sans-extension (string-remove-prefix root fpath)))
+              (parts (split-string relative "/" t)))
+    (string-join (if (and (cdr parts) (equal (car parts) "src")) (cdr parts) parts) ".")))
 
-(defun sta:copy-buffer-file-name-as-kill (choice)
-  "Copyies the buffer file name/path/python path/directory etc to the kill-ring."
-  (interactive "cKill (p) python path, (i) python import, (f) file path, (n) file name, (d) directory, (b) buffer name, (m) buffer mmode")
-  (let ((new-kill-string)
-        (name (if (eq major-mode 'dired-mode)
-                  (dired-get-filename)
-                (or (buffer-file-name) ""))))
-    (cond ((eq choice ?f)
-           (setq new-kill-string name))
-          ((eq choice ?p)
-           (setq new-kill-string  (sta:get-file-python-path name)))
-          ((eq choice ?i)
-           (setq new-kill-string  (format "from %s import " (sta:get-file-python-path name))))
-          ((eq choice ?d)
-           (setq new-kill-string (file-name-directory name)))
-          ((eq choice ?n)
-           (setq new-kill-string (file-name-nondirectory name)))
-          ((eq choice ?b)
-           (setq new-kill-string (buffer-name)))
-          ((eq choice ?m)
-           (setq new-kill-string (format "%s" major-mode)))
-          (t (message "Quit")))
-    (when new-kill-string
-      (message "\"%s\" killed" new-kill-string)
-      (kill-new new-kill-string))))
+(defun sta:file-line-reference (file)
+  "Return FILE:LINE for FILE, or FILE:FIRST-LAST when a region is active.
+FILE is made relative to the Projectile root when there is one.  A region
+ending at the beginning of a line stops at the previous line, so marking
+whole lines reports the lines actually covered."
+  (let* ((root (and (projectile-project-p) (projectile-project-root)))
+         (path (if root (file-relative-name file root) file))
+         (first (line-number-at-pos (if (use-region-p) (region-beginning) (point))))
+         (last (if (use-region-p)
+                   (save-excursion
+                     (goto-char (region-end))
+                     (if (and (bolp) (> (line-number-at-pos) first))
+                         (1- (line-number-at-pos))
+                       (line-number-at-pos)))
+                 first)))
+    (if (> last first)
+        (format "%s:%d-%d" path first last)
+      (format "%s:%d" path first))))
+
+(defun sta:copy-as-kill (what)
+  "Copy WHAT flavour of the current buffer's identity to the kill ring.
+WHAT is one of `file-path', `file-name', `directory', `line-reference',
+`python-path', `python-import', `buffer-name' or `major-mode'."
+  (let* ((file (if (derived-mode-p 'dired-mode)
+                   (dired-get-filename nil t)
+                 (buffer-file-name)))
+         (text (pcase what
+                 ('file-path file)
+                 ('file-name (and file (file-name-nondirectory file)))
+                 ('directory (and file (file-name-directory file)))
+                 ('line-reference (and file (sta:file-line-reference file)))
+                 ('python-path (and file (sta:get-file-python-path file)))
+                 ('python-import (when-let ((path (and file (sta:get-file-python-path file))))
+                                   (format "from %s import " path)))
+                 ('buffer-name (buffer-name))
+                 ('major-mode (symbol-name major-mode)))))
+    (if text
+        (progn
+          (kill-new text)
+          (message "\"%s\" killed" text))
+      (message "Nothing to copy"))))
 
 (defun sta:zone-choose (pgm)
     "Choose zoneprg for `zone'."

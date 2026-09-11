@@ -32,5 +32,10 @@
       (should (eq (cdr (assoc (car expected) bindings)) (cdr expected))))
     (should-not (rassq 'git-timemachine bindings))))
 
+(ert-deftest keys-test-copy-as-kill-binding ()
+  (let ((bindings (keys-tests--shortcut-bindings)))
+    (should (eq (cdr (assoc "." bindings)) 'sta:copy-as-kill/body))
+    (should-not (rassq 'sta:copy-buffer-file-name-as-kill bindings))))
+
 (provide 'keys-tests)
 ;;; keys-tests.el ends here
