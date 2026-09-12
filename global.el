@@ -410,14 +410,16 @@
   :bind ("s-j" . ace-select-window)
   :init (setq aw-dispatch-always t))
 
-;; Emacs 30.2's X11 daemon segfaults when dimmer is active during frame creation.
+;; Emacs 30.2's X11 daemon segfaults in dimmer's frame-focus watcher.
 (use-package dimmer
   :ensure t
   :pin melpa
   :custom
   (dimmer-fraction .25)
-  :init
-  (dimmer-configure-which-key))
+  (dimmer-watch-frame-focus-events nil)
+  :config
+  (dimmer-configure-which-key)
+  (dimmer-mode 1))
 
 (use-package whitespace-cleanup-mode :ensure t)
 (use-package ascii-table :ensure t)
