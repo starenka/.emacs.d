@@ -410,13 +410,13 @@
   :bind ("s-j" . ace-select-window)
   :init (setq aw-dispatch-always t))
 
-;; Emacs 30.2's X11 daemon segfaults in dimmer's frame-focus watcher.
+;; MELPA's 20260618 snapshot crashes Emacs 30.2 during client-frame creation.
 (use-package dimmer
   :ensure t
-  :pin melpa
+  :pin melpa-stable
+  :load-path "~/.emacs.d/elpa/dimmer-0.4.3"
   :custom
   (dimmer-fraction .25)
-  (dimmer-watch-frame-focus-events nil)
   :config
   (dimmer-configure-which-key)
   (dimmer-mode 1))
