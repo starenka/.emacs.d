@@ -416,7 +416,7 @@
   :pin melpa-stable
   :load-path "~/.emacs.d/elpa/dimmer-0.4.3"
   :custom
-  (dimmer-fraction .25)
+  (dimmer-fraction .4)
   :config
   (dimmer-configure-which-key)
   (dimmer-mode 1))
