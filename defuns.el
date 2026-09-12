@@ -675,7 +675,7 @@ selection, etc.) - kept as a stable, sta:-namespaced entry point. Honors
      (t
       (user-error "Could not determine how to restart this Emacs daemon")))))
 
-(defun package-upgrade-all ()
+(defun sta:package-upgrade-all ()
   "Upgrade all packages automatically without showing *Packages* buffer."
   (interactive)
   (package-refresh-contents)
