@@ -52,11 +52,12 @@
 (setq-default cursor-type '(box . 4))
 
 ;; https://pawelbx.github.io/emacs-theme-gallery/
-(defvar favourite-themes '(twilight-bright
-                           tsdh-light
-                           alect-light
+(defvar favourite-themes '(
                            hemisu-light
                            doom-old-hope
+                           twilight-bright
+                           tsdh-light
+                           alect-light
                            doom-lantern
                            monokai
                            tsdh-dark
