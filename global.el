@@ -712,13 +712,14 @@
   (setq chatgpt-shell-google-key
         (lambda () (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))))
 
-;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex
+;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex @github/copilot
 (use-package agent-shell
   :ensure t
   :config
   (setq agent-shell-agent-configs
         (list #'agent-shell-anthropic-make-claude-code-config
-              #'agent-shell-openai-make-codex-config)
+              #'agent-shell-openai-make-codex-config
+              #'agent-shell-github-make-copilot-config)
         agent-shell-chat-mode-enabled nil))
 
 ;; (use-package eca
