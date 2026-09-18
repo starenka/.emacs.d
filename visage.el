@@ -55,13 +55,13 @@
 (defvar favourite-themes '(
                            hemisu-light
                            doom-old-hope
-                           twilight-bright
-                           tsdh-light
-                           alect-light
-                           doom-lantern
-                           monokai
-                           tsdh-dark
-                           misterioso
+                           ;;twilight-bright
+                           ;;tsdh-light
+                           ;;alect-light
+                           ;;doom-lantern
+                           ;;monokai
+                           ;;tsdh-dark
+                           ;;misterioso
                            ))
 
 (defvar sta:last-theme-file (expand-file-name "last-theme" user-emacs-directory))
