@@ -599,6 +599,31 @@
   :config
   (add-hook 'js-mode-hook #'js-auto-format-mode))
 
+;; typescript/tsx/js via built-in tree-sitter modes
+(use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist '(tsx typescript js))
+  (global-treesit-auto-mode))
+
+(use-package svelte-mode
+  :ensure t
+  :defer
+  :mode ("\\.svelte\\'" . svelte-mode))
+
+;; format-on-save via prettier, kept separate from lsp (same split as
+;; pylsp/ruff above)
+(use-package apheleia
+  :ensure t
+  :config
+  (setf (alist-get 'prettier apheleia-formatters)
+        '("prettier" "--stdin-filepath" filepath))
+  (dolist (mode '(js-ts-mode typescript-ts-mode tsx-ts-mode svelte-mode))
+    (setf (alist-get mode apheleia-mode-alist) '(prettier)))
+  (apheleia-global-mode +1))
+
 (use-package sqlite-mode-extras
   :bind (:map
          sqlite-mode-map

@@ -8,6 +8,11 @@
          (clojure-mode . lsp-deferred) ;; lsp-install-server ...
          (java-mode . lsp-deferred)
          (rust-mode . lsp-deferred) ;; $ rustup component add rust-analyzer
+         ;; bun add -g typescript typescript-language-server (installs into ~/.bun/bin, needs to be on PATH)
+         (typescript-ts-mode . lsp-deferred)
+         (tsx-ts-mode . lsp-deferred)
+         (js-ts-mode . lsp-deferred)
+         (svelte-mode . lsp-deferred) ;; bun add -g svelte-language-server
          (lsp-mode . lsp-enable-which-key-integration))
   :config
   (setq
