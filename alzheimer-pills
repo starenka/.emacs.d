@@ -12,6 +12,7 @@ tabify
 untabify
 zap-to-char
 zap-up-to-char
+revert-buffer-quick
 
 #PYTHON/SHELL
 eval-expression
