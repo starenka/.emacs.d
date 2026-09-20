@@ -8,7 +8,11 @@
          (clojure-mode . lsp-deferred) ;; lsp-install-server ...
          (java-mode . lsp-deferred)
          (rust-mode . lsp-deferred) ;; $ rustup component add rust-analyzer
-         ;; bun add -g typescript typescript-language-server (installs into ~/.bun/bin, needs to be on PATH)
+         ;; bun add -g typescript@6.0.3 typescript-language-server (installs into ~/.bun/bin, needs to be on PATH)
+         ;; pin typescript to a 6.x release: unpinned `latest` resolves to the
+         ;; typescript@7 native/Go rewrite, which drops the classic CommonJS
+         ;; API (ts.sys etc.) that typescript-language-server and
+         ;; svelte-language-server both still require, crashing them on start
          (typescript-ts-mode . lsp-deferred)
          (tsx-ts-mode . lsp-deferred)
          (js-ts-mode . lsp-deferred)
