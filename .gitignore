@@ -21,6 +21,7 @@ projectile.cache
 straight/*
 transient/*
 tramp*
+tree-sitter/*
 url/*
 var/*
 xkcd/*
