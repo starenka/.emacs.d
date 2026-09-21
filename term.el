@@ -5,6 +5,15 @@
    vterm-max-scrollback 30000)
 )
 
+;; No X frame means `x-select-enable-clipboard' is a no-op (e.g. Emacs run
+;; `-nw' by kitty's `eless' scrollback pager), so shell out to xclip/xsel to
+;; still reach the system clipboard.
+(use-package xclip
+  :ensure t
+  :if (not (display-graphic-p))
+  :config
+  (xclip-mode 1))
+
 (use-package multi-vterm
   :ensure t
   :config
