@@ -683,22 +683,11 @@
 ;; screensaver
 (use-package zone
   :ensure t
-  :custom
-  (zone-programs [zone-pgm-putz-with-case
-                  zone-pgm-drip-fretfully
-                  zone-pgm-random-life
-                  zone-pgm-drip
-  ;;                      zone-pgm-jitter
-  ;;                      zone-pgm-whack-chars
-  ;;                      zone-pgm-rotate
-  ;;                      zone-pgm-rotate-LR-lockstep
-  ;;                      zone-pgm-rotate-RL-lockstep
-  ;;                      zone-pgm-rotate-LR-variable
-  ;;                      zone-pgm-rotate-RL-variable
-  ;;                      zone-pgm-five-oclock-swan-dive
-  ;;                      zone-pgm-rat-race
-  ;;                      zone-pgm-paragraph-spaz
-                       ])
+  :init
+  (setq zone-programs [zone-pgm-putz-with-case
+                       zone-pgm-drip-fretfully
+                       zone-pgm-random-life
+                       zone-pgm-drip])
   :config
   (zone-when-idle 300))
 
