@@ -4,16 +4,16 @@
 ;; themes there (tsdh-light, tsdh-dark, and misterioso) ship with Emacs.
 (use-package monokai-theme :ensure t :pin melpa)
 (use-package twilight-bright-theme :ensure t)
-(use-package doom-themes :ensure t)
 (use-package alect-themes :ensure t)
 (use-package hemisu-theme :ensure t)
+(use-package adwaita-dark :ensure t)
 
 (with-eval-after-load 'ace-window
   (custom-set-faces
    '(aw-leading-char-face ((t (:inherit region
-                             :box (:line-width 2)
-                             :height 1.6
-                             :weight bold))))))
+                                        :box (:line-width 2)
+                                        :height 1.6
+                                        :weight bold))))))
 
 (with-eval-after-load "twilight-bright-theme"
   (custom-theme-set-faces
@@ -54,14 +54,13 @@
 ;; https://pawelbx.github.io/emacs-theme-gallery/
 (defvar favourite-themes '(
                            hemisu-light
-                           doom-old-hope
-                           ;;twilight-bright
-                           ;;tsdh-light
-                           ;;alect-light
-                           ;;doom-lantern
-                           ;;monokai
-                           ;;tsdh-dark
-                           ;;misterioso
+                           adwaita-dark
+                           ;; twilight-bright
+                           ;; tsdh-light
+                           ;; alect-light
+                           ;; monokai
+                           ;; tsdh-dark
+                           ;; misterioso
                            ))
 
 (defvar sta:last-theme-file (expand-file-name "last-theme" user-emacs-directory))
