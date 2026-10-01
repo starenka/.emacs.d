@@ -6,7 +6,7 @@
 (use-package twilight-bright-theme :ensure t)
 (use-package alect-themes :ensure t)
 (use-package hemisu-theme :ensure t)
-(use-package adwaita-dark :ensure t)
+(use-package adwaita-dark-theme :ensure t)
 
 (with-eval-after-load 'ace-window
   (custom-set-faces
