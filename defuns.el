@@ -794,3 +794,14 @@ selection, etc.) - kept as a stable, sta:-namespaced entry point. Honors
                 (text-scale-adjust 7))
             (message "No HTML file returned from the script.")))
       (message "Failed to execute Python script. Output:\n%s" output))))
+
+;; Treemacs keeps a per-buffer DOM; with several clients a process callback can
+;; hit a buffer whose DOM no longer has the node. The resulting "error in
+;; process sentinel" message grabs the echo area and eats keyboard input.
+(defun sta:treemacs-ignore-stale-dom (orig-fn &rest args)
+  "Advice: call ORIG-FN with ARGS, ignoring stale treemacs DOM node errors."
+  (condition-case err
+      (apply orig-fn args)
+    (wrong-type-argument
+     (unless (eq (cadr err) 'treemacs-dom-node)
+       (signal (car err) (cdr err))))))

@@ -983,5 +983,17 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
             ((symbol-function 'file-executable-p) (lambda (_p) nil)))
     (should-error (sta:restart-emacs-daemon) :type 'user-error)))
 
+;;; sta:treemacs-ignore-stale-dom
+
+(ert-deftest defuns-test-treemacs-ignore-stale-dom-swallows-dom-error ()
+  (should-not (sta:treemacs-ignore-stale-dom
+               (lambda (&rest _) (signal 'wrong-type-argument '(treemacs-dom-node nil))))))
+
+(ert-deftest defuns-test-treemacs-ignore-stale-dom-passes-result-and-args ()
+  (should (equal '(1 2) (sta:treemacs-ignore-stale-dom #'list 1 2))))
+
+(ert-deftest defuns-test-treemacs-ignore-stale-dom-keeps-other-errors ()
+  (should-error (sta:treemacs-ignore-stale-dom (lambda (&rest _) (error "boom")))))
+
 (provide 'defuns-tests)
 ;;; defuns-tests.el ends here

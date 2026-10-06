@@ -174,6 +174,13 @@
     (or (string-equal filename "__pycache__")
         (string-prefix-p "/HOLD/MY/BEER/" absolute-path)))
   (add-to-list 'treemacs-ignored-file-predicates #'my-hidden-stuff)
+  (dolist (fn '(treemacs-do-delete-single-node
+                treemacs-do-insert-single-node
+                treemacs--recursive-refresh-descent
+                treemacs-update-single-file-git-state
+                treemacs-find-visible-node
+                treemacs-apply-single-annotation))
+    (advice-add fn :around #'sta:treemacs-ignore-stale-dom))
   (progn
     (setq treemacs-buffer-name-function            #'treemacs-default-buffer-name
           treemacs-buffer-name-prefix              " *Treemacs-Buffer-"
@@ -235,9 +242,6 @@
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode 'always)
-
-    (when treemacs-python-executable
-      (treemacs-git-commit-diff-mode t))
 
     (pcase (cons (not (null (executable-find "git")))
                  (not (null treemacs-python-executable)))
