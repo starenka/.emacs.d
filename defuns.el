@@ -58,6 +58,15 @@
   (interactive (list (read-string "URL: " "https://")))
   (sta:awesome-run (format "firefox --new-tab %s > /dev/null" (shell-quote-argument url)) 3))
 
+(defun sta:browse-url-choose (url &optional _new-window)
+  "ask which browser should open URL: w3m (RET), vivaldi or firefox"
+  ;; internal w3m is the default, but most links need a full browser
+  (pcase (read-char-choice (format "Open %s in [w]3m/[v]ivaldi/[f]irefox: " url)
+                           '(?w ?v ?f ?\r))
+    (?v (sta:vivaldi url))
+    (?f (sta:firefox url))
+    (_ (w3m-browse-url url))))
+
 (defun sta:google (string)
   "googles phrase and switches to coresponding awesome tag"
   (interactive "sGoogle for: ")

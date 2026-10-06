@@ -654,7 +654,7 @@
   :ensure t
   :defer
   :custom
-  (browse-url-browser-function 'w3m-browse-url)
+  (browse-url-browser-function #'sta:browse-url-choose)
   :config
   (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t))
 

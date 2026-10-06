@@ -995,5 +995,29 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
 (ert-deftest defuns-test-treemacs-ignore-stale-dom-keeps-other-errors ()
   (should-error (sta:treemacs-ignore-stale-dom (lambda (&rest _) (error "boom")))))
 
+;;; sta:browse-url-choose
+
+(defun defuns-tests--browse-choice (char)
+  "Return (BROWSER . URL) after answering the chooser prompt with CHAR."
+  (let (cap)
+    (cl-letf (((symbol-function 'read-char-choice) (lambda (&rest _) char))
+              ((symbol-function 'w3m-browse-url) (lambda (url &rest _) (setq cap (cons 'w3m url))))
+              ((symbol-function 'sta:vivaldi) (lambda (url &rest _) (setq cap (cons 'vivaldi url))))
+              ((symbol-function 'sta:firefox) (lambda (url &rest _) (setq cap (cons 'firefox url)))))
+      (sta:browse-url-choose "https://z.com")
+      cap)))
+
+(ert-deftest defuns-test-browse-url-choose-w3m ()
+  (should (equal (defuns-tests--browse-choice ?w) '(w3m . "https://z.com"))))
+
+(ert-deftest defuns-test-browse-url-choose-ret-is-internal ()
+  (should (equal (defuns-tests--browse-choice ?\r) '(w3m . "https://z.com"))))
+
+(ert-deftest defuns-test-browse-url-choose-vivaldi ()
+  (should (equal (defuns-tests--browse-choice ?v) '(vivaldi . "https://z.com"))))
+
+(ert-deftest defuns-test-browse-url-choose-firefox ()
+  (should (equal (defuns-tests--browse-choice ?f) '(firefox . "https://z.com"))))
+
 (provide 'defuns-tests)
 ;;; defuns-tests.el ends here
