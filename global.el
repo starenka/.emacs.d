@@ -475,7 +475,9 @@
       (apply orig args)))
   (advice-add 'markdown-preview :around #'sta:markdown-preview-advice)
   :custom
-  (markdown-command "pandoc -f markdown -t html5 --standalone --highlight-style=tango")) ;; apt install pandoc
+  ;; pandoc's built-in stylesheet hardcodes body max-width: 36em (not a template
+  ;; variable), so override it via header-includes, which lands after it.
+  (markdown-command "pandoc -f markdown -t html5 --standalone --highlight-style=tango -V header-includes='<style>body{max-width:80%}</style>'")) ;; apt install pandoc
 
 ;; rst support
 (use-package rst
