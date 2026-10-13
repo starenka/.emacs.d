@@ -87,6 +87,7 @@
   :init
   (delight '((abbrev-mode nil "abbrev")
             (eldoc-mode nil "eldoc")
+            (apheleia-mode nil)
             (dot-mode nil)
             ;;(super-save-mode nil "super-save")
             (overwrite-mode " Ov" t))))
@@ -564,21 +565,6 @@
   :ensure t
   :mode ("\\(?:[Jj]ustfile\\|\\.just\\)\\'" . just-mode))
 
-(use-package reformatter
-  :hook
-  (python-mode . ruff-format-on-save-mode)
-  (python-ts-mode . ruff-format-on-save-mode)
-  (yaml-mode . prettier-yaml-format-on-save-mode)
-  :config
-  (reformatter-define ruff-format
-    :program "ruff"
-    :args `("format" "--stdin-filename" ,input-file "-"))
-
-  (reformatter-define prettier-yaml-format
-    :program "prettier"
-    :args '("--parser" "yaml"))
-  )
-
 (use-package csv-mode :ensure t)
 
 ;; epub
@@ -619,16 +605,26 @@
   :defer
   :mode ("\\.svelte\\'" . svelte-mode))
 
-;; format-on-save via prettier, kept separate from lsp (same split as
-;; pylsp/ruff above)
+;; the one format-on-save mechanism (ruff, prettier), kept separate from lsp
+;; (same split as pylsp/ruff above)
 (use-package apheleia
   :ensure t
   :config
   (setf (alist-get 'prettier apheleia-formatters)
         '("prettier" "--stdin-filepath" filepath))
+  ;; stock `ruff' adds --line-length from fill-column, overriding pyproject.toml
+  (setf (alist-get 'ruff-pyproject apheleia-formatters)
+        '("ruff" "format" "--silent" "--stdin-filename" filepath "-"))
+  (dolist (mode '(python-mode python-ts-mode))
+    (setf (alist-get mode apheleia-mode-alist) '(ruff-pyproject)))
   (dolist (mode '(js-ts-mode typescript-ts-mode tsx-ts-mode svelte-mode))
     (setf (alist-get mode apheleia-mode-alist) '(prettier)))
-  (apheleia-global-mode +1))
+  ;; not apheleia-global-mode: that turns it on in every buffer (agent-shell,
+  ;; magit...). Only editing buffers, and no lisp reindent-on-save.
+  (dolist (mode '(emacs-lisp-mode lisp-mode lisp-interaction-mode))
+    (setf (alist-get mode apheleia-mode-alist nil 'remove) nil))
+  (dolist (hook '(prog-mode-hook yaml-mode-hook yaml-ts-mode-hook svelte-mode-hook))
+    (add-hook hook #'apheleia-mode)))
 
 (use-package sqlite-mode-extras
   :bind (:map
