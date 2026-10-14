@@ -378,17 +378,25 @@ WHAT is one of `file-path', `file-name', `directory', `line-reference',
 (defvar sta:llm-offtopic-root "/prac/llm-offtopic/"
   "Directory holding one persistent run directory per llm-offtopic session.")
 
-(defun sta:llm-offtopic-session-dir (&optional time root)
-  "Create and return a fresh timestamp-named session dir under ROOT.
-Names sort chronologically; a same-second collision gets a -N suffix."
+(defun sta:llm-offtopic-stamp (&optional time)
+  "Chronologically sortable name for TIME (default now)."
+  (format-time-string "%Y-%m-%d_%H%M%S" time))
+
+(defun sta:llm-offtopic-session-dir (&optional name root)
+  "Create and return a session dir called NAME under ROOT.
+A blank NAME falls back to the timestamp; slashes and leading dots are
+neutralised so NAME can't escape ROOT, and a taken name gets a -N suffix."
   (let* ((root (file-name-as-directory (or root sta:llm-offtopic-root)))
-         (stamp (format-time-string "%Y-%m-%d_%H%M%S" time))
-         (dir (expand-file-name (concat stamp "/") root))
+         (clean (thread-last (string-trim (or name ""))
+                             (replace-regexp-in-string "/" "-")
+                             (replace-regexp-in-string "\\`\\.+" "")))
+         (base (if (string-empty-p clean) (sta:llm-offtopic-stamp) clean))
+         (dir (expand-file-name (concat base "/") root))
          (n 1))
     (make-directory root t)
     (while (file-exists-p dir)
       (setq n (1+ n)
-            dir (expand-file-name (format "%s-%d/" stamp n) root)))
+            dir (expand-file-name (format "%s-%d/" base n) root)))
     (make-directory dir)
     dir))
 
@@ -406,10 +414,28 @@ Names sort chronologically; a same-second collision gets a -N suffix."
   (make-directory sta:llm-offtopic-tmp-root t)
   (sta:llm-offtopic-launch (make-temp-file sta:llm-offtopic-tmp-root t)))
 
-(defun llm-offtopic-persistent ()
-  "Start an agent-shell in a fresh frame, in a new timestamped dir that is kept."
-  (interactive)
-  (sta:llm-offtopic-launch (sta:llm-offtopic-session-dir)))
+(defun sta:read-string-preselected--clear ()
+  "One-shot `pre-command-hook': typing over the preselected initial input replaces it."
+  (remove-hook 'pre-command-hook #'sta:read-string-preselected--clear t)
+  (when (eq this-command 'self-insert-command)
+    (delete-region (minibuffer-prompt-end) (point-max))))
+
+(defun sta:read-string-preselected (prompt initial)
+  "Like `read-string' with INITIAL, but INITIAL is selected.
+Typing replaces it; any other command keeps it for editing. Done by hand
+rather than via `delete-selection-mode', which would change every buffer."
+  (minibuffer-with-setup-hook
+      (lambda ()
+        (goto-char (minibuffer-prompt-end))
+        (push-mark (point-max) t t)
+        (add-hook 'pre-command-hook #'sta:read-string-preselected--clear nil t))
+    (read-string prompt initial)))
+
+(defun llm-offtopic-persistent (name)
+  "Start an agent-shell in a fresh frame, in a kept dir called NAME.
+The prompt is prefilled with a timestamp, so accepting it as is works too."
+  (interactive (list (sta:read-string-preselected "Session name: " (sta:llm-offtopic-stamp))))
+  (sta:llm-offtopic-launch (sta:llm-offtopic-session-dir name)))
 
 (defun sta:tree ()
   "Ads and opens current project/dir in treemacs"

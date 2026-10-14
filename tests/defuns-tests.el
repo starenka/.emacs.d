@@ -1032,21 +1032,41 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
      (unwind-protect (progn ,@body)
        (delete-directory base t))))
 
-(ert-deftest defuns-test-llm-offtopic-session-dir-timestamped ()
+;;; sta:llm-offtopic-stamp
+
+(ert-deftest defuns-test-llm-offtopic-stamp-format ()
+  (should (equal (sta:llm-offtopic-stamp (encode-time 5 4 3 14 10 2026))
+                 "2026-10-14_030405")))
+
+;;; sta:llm-offtopic-session-dir
+
+(ert-deftest defuns-test-llm-offtopic-session-dir-named ()
   (defuns-tests--with-llm-root root
-    (let ((dir (sta:llm-offtopic-session-dir (encode-time 5 4 3 14 10 2026) root)))
-      (should (equal dir (expand-file-name "2026-10-14_030405/" root)))
+    (let ((dir (sta:llm-offtopic-session-dir "tramp hang" root)))
+      (should (equal dir (expand-file-name "tramp hang/" root)))
       (should (file-directory-p dir)))))
+
+(ert-deftest defuns-test-llm-offtopic-session-dir-defaults-to-stamp ()
+  (defuns-tests--with-llm-root root
+    (dolist (blank '(nil "" "   "))
+      (let ((dir (sta:llm-offtopic-session-dir blank root)))
+        (should (string-match-p "/[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}_[0-9]\\{6\\}\\(-[0-9]+\\)?/\\'" dir))))))
+
+(ert-deftest defuns-test-llm-offtopic-session-dir-sanitizes-name ()
+  (defuns-tests--with-llm-root root
+    (should (equal (sta:llm-offtopic-session-dir " a/b/../c " root)
+                   (expand-file-name "a-b-..-c/" root)))
+    (should (equal (sta:llm-offtopic-session-dir ".hidden" root)
+                   (expand-file-name "hidden/" root)))))
 
 (ert-deftest defuns-test-llm-offtopic-session-dir-avoids-collision ()
   (defuns-tests--with-llm-root root
-    (let* ((time (encode-time 5 4 3 14 10 2026))
-           (a (sta:llm-offtopic-session-dir time root))
-           (b (sta:llm-offtopic-session-dir time root))
-           (c (sta:llm-offtopic-session-dir time root)))
-      (should (equal b (expand-file-name "2026-10-14_030405-2/" root)))
-      (should (equal c (expand-file-name "2026-10-14_030405-3/" root)))
-      (should (file-directory-p a))
+    (let ((a (sta:llm-offtopic-session-dir "x" root))
+          (b (sta:llm-offtopic-session-dir "x" root))
+          (c (sta:llm-offtopic-session-dir "x" root)))
+      (should (equal a (expand-file-name "x/" root)))
+      (should (equal b (expand-file-name "x-2/" root)))
+      (should (equal c (expand-file-name "x-3/" root)))
       (should (file-directory-p b)))))
 
 ;;; llm-offtopic
@@ -1061,13 +1081,44 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
         (should (= 1 (length (directory-files root nil directory-files-no-dot-files-regexp))))
         (should-not (car (directory-files root nil "\\`[0-9]\\{4\\}-")))))))
 
+;;; sta:read-string-preselected
+
+(defun defuns-tests--preselected-after (command)
+  "Run `sta:read-string-preselected' with a fake minibuffer; return its text after COMMAND."
+  (with-temp-buffer
+    (setq-local transient-mark-mode t) ; off by default in batch
+    (cl-letf (((symbol-function 'read-string)
+               (lambda (_prompt initial &rest _)
+                 (insert initial)
+                 (run-hooks 'minibuffer-setup-hook)
+                 (should (use-region-p))
+                 (let ((this-command command))
+                   (run-hooks 'pre-command-hook))
+                 (buffer-string))))
+      (sta:read-string-preselected "p: " "STAMP"))))
+
+(ert-deftest defuns-test-read-string-preselected-typing-replaces-initial ()
+  (should (equal (defuns-tests--preselected-after 'self-insert-command) "")))
+
+(ert-deftest defuns-test-read-string-preselected-motion-keeps-initial ()
+  (should (equal (defuns-tests--preselected-after 'forward-char) "STAMP")))
+
 ;;; llm-offtopic-persistent
 
-(ert-deftest defuns-test-llm-offtopic-persistent-uses-stamped-dir ()
+(ert-deftest defuns-test-llm-offtopic-persistent-uses-given-name ()
   (defuns-tests--with-llm-root root
     (let ((sta:llm-offtopic-root root) args)
       (cl-letf (((symbol-function 'start-process)
                  (lambda (&rest a) (setq args a))))
-        (llm-offtopic-persistent)
-        (should (string-search root (car (last args))))
-        (should (car (directory-files root nil "\\`[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}_[0-9]\\{6\\}\\'")))))))
+        (llm-offtopic-persistent "my chat")
+        (should (string-search (expand-file-name "my chat/" root) (car (last args))))
+        (should (file-directory-p (expand-file-name "my chat" root)))))))
+
+(ert-deftest defuns-test-llm-offtopic-persistent-prompt-prefilled-with-stamp ()
+  (let (initial)
+    (cl-letf (((symbol-function 'sta:read-string-preselected)
+               (lambda (_prompt init) (setq initial init) "x"))
+              ((symbol-function 'sta:llm-offtopic-stamp) (lambda (&rest _) "STAMP")))
+      (should (equal (eval (cadr (interactive-form 'llm-offtopic-persistent)) t)
+                     '("x")))
+      (should (equal initial "STAMP")))))
