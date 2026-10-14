@@ -706,8 +706,8 @@
   :config
   (setq agent-shell-agent-configs
         (list #'agent-shell-anthropic-make-claude-code-config
-              #'agent-shell-openai-make-codex-config
-              #'agent-shell-github-make-copilot-config)
+              #'agent-shell-github-make-copilot-config
+              #'agent-shell-openai-make-codex-config)
         agent-shell-chat-mode-enabled nil))
 
 ;; (use-package eca
