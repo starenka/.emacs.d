@@ -370,16 +370,32 @@ WHAT is one of `file-path', `file-name', `directory', `line-reference',
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
 
 (defun sta:llm-offtopic-agent-shell (dir)
-  "Open an agent-shell in DIR, a scratch run directory under /tmp/fap."
+  "Open an agent-shell in DIR, a persistent session directory."
   (require 'agent-shell)
   (let ((default-directory (file-name-as-directory dir)))
     (agent-shell '(4))))
 
+(defvar sta:llm-offtopic-root "/prac/llm-offtopic/"
+  "Directory holding one persistent run directory per llm-offtopic session.")
+
+(defun sta:llm-offtopic-session-dir (&optional time root)
+  "Create and return a fresh timestamp-named session dir under ROOT.
+Names sort chronologically; a same-second collision gets a -N suffix."
+  (let* ((root (file-name-as-directory (or root sta:llm-offtopic-root)))
+         (stamp (format-time-string "%Y-%m-%d_%H%M%S" time))
+         (dir (expand-file-name (concat stamp "/") root))
+         (n 1))
+    (make-directory root t)
+    (while (file-exists-p dir)
+      (setq n (1+ n)
+            dir (expand-file-name (format "%s-%d/" stamp n) root)))
+    (make-directory dir)
+    dir))
+
 (defun llm-offtopic ()
-  "Open a fresh emacsclient frame and start an agent-shell in a fresh /tmp/fap run directory."
+  "Open a fresh emacsclient frame and start an agent-shell in a new persistent session directory."
   (interactive)
-  (call-process "mkdir" nil nil nil "-p" "/tmp/fap")
-  (let ((dir (make-temp-file "/tmp/fap/run-" t)))
+  (let ((dir (sta:llm-offtopic-session-dir)))
     (start-process "llm-offtopic" nil "emacsclient" "-c" "-e"
                    (format "%S" `(sta:llm-offtopic-agent-shell ,dir)))))
 

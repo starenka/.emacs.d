@@ -1021,3 +1021,41 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
 
 (provide 'defuns-tests)
 ;;; defuns-tests.el ends here
+
+;;; sta:llm-offtopic-session-dir
+
+(defmacro defuns-tests--with-llm-root (var &rest body)
+  "Run BODY with VAR bound to a not-yet-existing session root."
+  (declare (indent 1))
+  `(let* ((base (make-temp-file "llm-root-" t))
+          (,var (expand-file-name "sessions/" base)))
+     (unwind-protect (progn ,@body)
+       (delete-directory base t))))
+
+(ert-deftest defuns-test-llm-offtopic-session-dir-timestamped ()
+  (defuns-tests--with-llm-root root
+    (let ((dir (sta:llm-offtopic-session-dir (encode-time 5 4 3 14 10 2026) root)))
+      (should (equal dir (expand-file-name "2026-10-14_030405/" root)))
+      (should (file-directory-p dir)))))
+
+(ert-deftest defuns-test-llm-offtopic-session-dir-avoids-collision ()
+  (defuns-tests--with-llm-root root
+    (let* ((time (encode-time 5 4 3 14 10 2026))
+           (a (sta:llm-offtopic-session-dir time root))
+           (b (sta:llm-offtopic-session-dir time root))
+           (c (sta:llm-offtopic-session-dir time root)))
+      (should (equal b (expand-file-name "2026-10-14_030405-2/" root)))
+      (should (equal c (expand-file-name "2026-10-14_030405-3/" root)))
+      (should (file-directory-p a))
+      (should (file-directory-p b)))))
+
+;;; llm-offtopic
+
+(ert-deftest defuns-test-llm-offtopic-uses-persistent-session-dir ()
+  (defuns-tests--with-llm-root root
+    (let ((sta:llm-offtopic-root root) args)
+      (cl-letf (((symbol-function 'start-process)
+                 (lambda (&rest a) (setq args a))))
+        (llm-offtopic)
+        (should (string-search root (car (last args))))
+        (should (car (directory-files root nil "\\`[0-9]")))))))
