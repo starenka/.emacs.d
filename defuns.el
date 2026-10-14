@@ -370,18 +370,46 @@ WHAT is one of `file-path', `file-name', `directory', `line-reference',
         (sta:activate-venv-in-project-vterm pyvenv-virtual-env-name))))
 
 (defun sta:llm-offtopic-agent-shell (dir)
-  "Open an agent-shell in DIR, a scratch run directory under /tmp/fap."
+  "Open an agent-shell in DIR, a persistent session directory."
   (require 'agent-shell)
   (let ((default-directory (file-name-as-directory dir)))
     (agent-shell '(4))))
 
+(defvar sta:llm-offtopic-root "/prac/llm-offtopic/"
+  "Directory holding one persistent run directory per llm-offtopic session.")
+
+(defun sta:llm-offtopic-session-dir (&optional time root)
+  "Create and return a fresh timestamp-named session dir under ROOT.
+Names sort chronologically; a same-second collision gets a -N suffix."
+  (let* ((root (file-name-as-directory (or root sta:llm-offtopic-root)))
+         (stamp (format-time-string "%Y-%m-%d_%H%M%S" time))
+         (dir (expand-file-name (concat stamp "/") root))
+         (n 1))
+    (make-directory root t)
+    (while (file-exists-p dir)
+      (setq n (1+ n)
+            dir (expand-file-name (format "%s-%d/" stamp n) root)))
+    (make-directory dir)
+    dir))
+
+(defvar sta:llm-offtopic-tmp-root "/tmp/llm-offtopic/"
+  "Directory holding throwaway llm-offtopic run directories.")
+
+(defun sta:llm-offtopic-launch (dir)
+  "Open a fresh emacsclient frame running an agent-shell in DIR."
+  (start-process "llm-offtopic" nil "emacsclient" "-c" "-e"
+                 (format "%S" `(sta:llm-offtopic-agent-shell ,dir))))
+
 (defun llm-offtopic ()
-  "Open a fresh emacsclient frame and start an agent-shell in a fresh /tmp/fap run directory."
+  "Start an agent-shell in a fresh frame, in a throwaway random dir under /tmp."
   (interactive)
-  (call-process "mkdir" nil nil nil "-p" "/tmp/fap")
-  (let ((dir (make-temp-file "/tmp/fap/run-" t)))
-    (start-process "llm-offtopic" nil "emacsclient" "-c" "-e"
-                   (format "%S" `(sta:llm-offtopic-agent-shell ,dir)))))
+  (make-directory sta:llm-offtopic-tmp-root t)
+  (sta:llm-offtopic-launch (make-temp-file sta:llm-offtopic-tmp-root t)))
+
+(defun llm-offtopic-persistent ()
+  "Start an agent-shell in a fresh frame, in a new timestamped dir that is kept."
+  (interactive)
+  (sta:llm-offtopic-launch (sta:llm-offtopic-session-dir)))
 
 (defun sta:tree ()
   "Ads and opens current project/dir in treemacs"
