@@ -135,9 +135,6 @@ _M_: minimize
   ("k" . ar/quick-kill-process)
   ("l A" . llm-offtopic)
   ("l a" . agent-shell)
-  ("l l" . gptel)
-  ("l L" . gptel-menu) ;; https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-transient-menu-options-to-be-saved-so-i-only-need-to-set-them-once
-  ("l s" . gptel-send)
   ("p" . sta:package-upgrade-all)
   ("r" . sta:region-to-browser)
   ("s" . sta:go-to-text-scratch)

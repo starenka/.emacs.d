@@ -700,34 +700,6 @@
   (esup-depth 0)) ;; https://github.com/jschaf/esup/issues/85#issuecomment-1130110196
 
 
-(use-package gptel
-  :straight t
-  :defer t
-  :config
-  (require 'gptel-openai-oauth)
-  (require 'gptel-gh)
-
-  (defun starenka/gptel-oauth-use-real-browser (orig-fn &rest args)
-    "Force OAuth browser prompts to use the system browser, not w3m."
-    (let ((browse-url-browser-function #'browse-url-default-browser))
-      (apply orig-fn args)))
-
-  (advice-add 'gptel-oauth--device-auth-prompt :around
-              #'starenka/gptel-oauth-use-real-browser)
-
-  (setq gptel-model 'gpt-5.4-mini
-        gptel-backend (gptel-make-openai-oauth "ChatGPT"))
-
-  (gptel-make-gh-copilot "GitHub Copilot"
-                         :host "api.individual.githubcopilot.com"))
-
-(use-package chatgpt-shell
-  :ensure t
-  :defer t
-  :config
-  (setq chatgpt-shell-google-key
-        (lambda () (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))))
-
 ;; bun install -g @agentclientprotocol/claude-agent-acp @zed-industries/codex-acp @openai/codex @github/copilot
 (use-package agent-shell
   :ensure t

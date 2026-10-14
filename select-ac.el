@@ -26,7 +26,6 @@
   (define-key corfu-map (kbd "C-g") 'corfu-quit)      ;; C-g to close the popup
   (define-key corfu-map (kbd "<escape>") 'corfu-quit)  ;; ESC to close the popup
   (define-key corfu-map (kbd "S-<return>") 'corfu-quit) ;; Shift + Enter to close the popup
-  (add-hook 'gptkeysel-mode-hook (lambda () (corfu-mode -1))) ;; Disable Corfu in gptel
   :init
   (global-corfu-mode))
 
