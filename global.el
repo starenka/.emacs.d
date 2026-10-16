@@ -472,13 +472,35 @@
   ;; Named function (not lambda) so reloading replaces the advice instead of
   ;; stacking a new anonymous one on top of the old.
   (defun sta:markdown-preview-advice (orig &rest args)
-    (cl-letf (((default-value 'browse-url-browser-function) 'sta:firefox))
-      (apply orig args)))
+    ;; pandoc --standalone warns and emits an empty <title> without one.
+    (let ((markdown-command (append markdown-command
+                                    (list "--metadata"
+                                          (concat "pagetitle="
+                                                  (or (save-excursion
+                                                        (goto-char (point-min))
+                                                        (when (re-search-forward "^#[ \t]+\\(.+?\\)[ \t#]*$" nil t)
+                                                          (match-string-no-properties 1)))
+                                                      (file-name-base (buffer-name)))
+                                                  " (" (format-time-string "%F %R") ")")))))
+      (cl-letf (((default-value 'browse-url-browser-function) 'sta:firefox))
+        (apply orig args))))
   (advice-add 'markdown-preview :around #'sta:markdown-preview-advice)
   :custom
   ;; pandoc's built-in stylesheet hardcodes body max-width: 36em (not a template
   ;; variable), so override it via header-includes, which lands after it.
-  (markdown-command "pandoc -f markdown -t html5 --standalone --highlight-style=tango -V header-includes='<style>body{max-width:80%}</style>'")) ;; apt install pandoc
+  ;; Tables are children of body, so body's max-width can't be exceeded by
+  ;; plain widths; they're sized to their content and centred on the viewport
+  ;; (left:50% + translateX) so they can break out of the column up to 95vw.
+  ;; pandoc makes them display:block;width:100%, hence the display reset.
+  ;; A list, not a string: markdown-mode splits strings on whitespace without
+  ;; a shell, so shell-style quotes would end up literally in the HTML.
+  (markdown-command
+   (list "pandoc" "-f" "markdown" "-t" "html5" "--standalone" "--highlight-style=tango"
+         "-V" (concat "header-includes=<style>"
+                      "body{max-width:50em}"
+                      "table{display:table;width:max-content;min-width:100%;max-width:95vw;"
+                      "position:relative;left:50%;transform:translateX(-50%)}"
+                      "</style>"))))  ;; apt install pandoc
 
 ;; rst support
 (use-package rst
