@@ -858,13 +858,16 @@ selection, etc.) - kept as a stable, sta:-namespaced entry point. Honors
             (message "No HTML file returned from the script.")))
       (message "Failed to execute Python script. Output:\n%s" output))))
 
-;; Treemacs keeps a per-buffer DOM; with several clients a process callback can
-;; hit a buffer whose DOM no longer has the node. The resulting "error in
-;; process sentinel" message grabs the echo area and eats keyboard input.
+;; Treemacs keeps a per-buffer DOM and workspace; with several frames a process
+;; callback (filewatch, git) can hit a buffer whose DOM lacks the node or whose
+;; workspace lacks the project. The resulting "error in process sentinel" /
+;; "if: Wrong type argument" messages grab the echo area and eat keyboard input.
 (defun sta:treemacs-ignore-stale-dom (orig-fn &rest args)
-  "Advice: call ORIG-FN with ARGS, ignoring stale treemacs DOM node errors."
+  "Advice: call ORIG-FN with ARGS, ignoring stale treemacs DOM/project errors."
   (condition-case err
       (apply orig-fn args)
     (wrong-type-argument
-     (unless (eq (cadr err) 'treemacs-dom-node)
+     ;; Only a nil datum means "stale/missing"; anything else is a real bug.
+     (unless (and (memq (cadr err) '(treemacs-dom-node treemacs-project))
+                  (null (nth 2 err)))
        (signal (car err) (cdr err))))))

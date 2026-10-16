@@ -175,11 +175,16 @@
     (or (string-equal filename "__pycache__")
         (string-prefix-p "/HOLD/MY/BEER/" absolute-path)))
   (add-to-list 'treemacs-ignored-file-predicates #'my-hidden-stuff)
+  ;; treemacs-find-file-node is where a frame without the changed file's
+  ;; project blows up (project is nil); the timer is the other place such
+  ;; refreshes surface ("Error running timer").
   (dolist (fn '(treemacs-do-delete-single-node
                 treemacs-do-insert-single-node
                 treemacs--recursive-refresh-descent
                 treemacs-update-single-file-git-state
                 treemacs-find-visible-node
+                treemacs-find-file-node
+                treemacs--process-file-events
                 treemacs-apply-single-annotation))
     (advice-add fn :around #'sta:treemacs-ignore-stale-dom))
   (progn

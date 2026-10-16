@@ -992,8 +992,19 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
 (ert-deftest defuns-test-treemacs-ignore-stale-dom-passes-result-and-args ()
   (should (equal '(1 2) (sta:treemacs-ignore-stale-dom #'list 1 2))))
 
+(ert-deftest defuns-test-treemacs-ignore-stale-dom-swallows-project-error ()
+  (should-not (sta:treemacs-ignore-stale-dom
+               (lambda (&rest _) (signal 'wrong-type-argument '(treemacs-project nil))))))
+
 (ert-deftest defuns-test-treemacs-ignore-stale-dom-keeps-other-errors ()
-  (should-error (sta:treemacs-ignore-stale-dom (lambda (&rest _) (error "boom")))))
+  (should-error (sta:treemacs-ignore-stale-dom (lambda (&rest _) (error "boom"))))
+  (should-error (sta:treemacs-ignore-stale-dom
+                 (lambda (&rest _) (signal 'wrong-type-argument '(stringp 1))))
+                :type 'wrong-type-argument)
+  ;; a real (non-nil) wrong value is a bug, not a stale buffer
+  (should-error (sta:treemacs-ignore-stale-dom
+                 (lambda (&rest _) (signal 'wrong-type-argument '(treemacs-project 42))))
+                :type 'wrong-type-argument))
 
 ;;; sta:browse-url-choose
 
