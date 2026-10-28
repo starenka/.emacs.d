@@ -13,6 +13,7 @@ untabify
 zap-to-char
 zap-up-to-char
 revert-buffer-quick
+mark-paragraph
 
 #PYTHON/SHELL
 eval-expression
