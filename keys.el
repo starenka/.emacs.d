@@ -247,3 +247,7 @@ _M_: minimize
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 
 (global-set-key (kbd "C-c t") 'sta:cycle-themes)
+
+;; `kill -USR1 <daemon pid>' dumps a diagnostic report even when emacsclient
+;; can't get through (handled whenever Lisp next polls for input).
+(define-key special-event-map [sigusr1] #'sta:diagnose)

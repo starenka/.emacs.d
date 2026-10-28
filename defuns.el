@@ -871,3 +871,60 @@ selection, etc.) - kept as a stable, sta:-namespaced entry point. Honors
      (unless (and (memq (cadr err) '(treemacs-dom-node treemacs-project))
                   (null (nth 2 err)))
        (signal (car err) (cdr err))))))
+
+;; For hangs and "Creating pipe: Too many open files": snapshot what the daemon
+;; is holding.  Run `emacsclient -e '(sta:diagnose)'`, or send SIGUSR1 when
+;; emacsclient itself can't get through (see the special-event-map binding).
+(defun sta:diagnose-fd-summary ()
+  "Return an alist (TYPE . COUNT) of this process's open fds, most common first."
+  (let (counts)
+    (dolist (fd (directory-files "/proc/self/fd" t "\\`[0-9]+\\'"))
+      (when-let* ((target (ignore-errors (file-symlink-p fd))))
+        (let ((type (cond ((string-match "\\`anon_inode:\\[?\\([^]]*\\)" target) (match-string 1 target))
+                          ((string-match "\\`\\([a-z_]+\\):" target) (match-string 1 target))
+                          (t "file"))))
+          (cl-incf (alist-get type counts 0 nil #'equal)))))
+    (sort counts (lambda (a b) (> (cdr a) (cdr b))))))
+
+(defun sta:diagnose-report ()
+  "Return a text snapshot of fds, processes, timers, backtrace and recent messages."
+  (let ((limit (string-trim
+                (or (ignore-errors
+                      (with-temp-buffer
+                        (insert-file-contents "/proc/self/limits")
+                        (when (re-search-forward "^Max open files +\\([0-9]+\\)" nil t)
+                          (match-string 1))))
+                    "?"))))
+    (with-temp-buffer
+      (insert (format "emacs pid %d, %s\n" (emacs-pid) (format-time-string "%F %T")))
+      (let ((fds (sta:diagnose-fd-summary)))
+        (insert (format "\n== fds: %d open, soft limit %s\n" (apply #'+ (mapcar #'cdr fds)) limit))
+        (dolist (e fds) (insert (format "  %5d  %s\n" (cdr e) (car e)))))
+      (insert (format "\n== processes: %d\n" (length (process-list))))
+      (dolist (p (process-list))
+        (insert (format "  %-30s %-8s %s  buf=%s\n" (process-name p) (process-status p)
+                        (or (ignore-errors (mapconcat #'identity (process-command p) " ")) "-")
+                        (and (process-buffer p) (buffer-name (process-buffer p))))))
+      (insert (format "\n== timers: %d active, %d idle\n" (length timer-list) (length timer-idle-list)))
+      (dolist (tm (append timer-list timer-idle-list))
+        (insert (format "  %S\n" (timer--function tm))))
+      (insert (format "\n== frames: %d, buffers: %d\n" (length (frame-list)) (length (buffer-list))))
+      (insert "\n== backtrace\n")
+      (insert (with-output-to-string (backtrace)))
+      (insert "\n== messages (last 40 lines)\n")
+      (when-let* ((buf (get-buffer "*Messages*")))
+        (insert (with-current-buffer buf
+                  (save-excursion
+                    (goto-char (point-max))
+                    (forward-line -40)
+                    (buffer-substring-no-properties (point) (point-max))))))
+      (buffer-string))))
+
+(defun sta:diagnose (&optional file)
+  "Write `sta:diagnose-report' to FILE (default: a fresh temp file) and return its path."
+  (interactive)
+  (let ((file (or file (make-temp-file "emacs-diagnose-" nil ".txt")))
+        (report (sta:diagnose-report)))
+    (write-region report nil file nil 'silent)
+    (message "sta:diagnose: wrote %s" file)
+    file))

@@ -1133,3 +1133,42 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
       (should (equal (eval (cadr (interactive-form 'llm-offtopic-persistent)) t)
                      '("x")))
       (should (equal initial "STAMP")))))
+
+;;; sta:diagnose
+
+(ert-deftest defuns-test-diagnose-fd-summary-groups-by-type ()
+  (let* ((proc (make-pipe-process :name "diag-pipe" :noquery t))
+         (summary (unwind-protect (sta:diagnose-fd-summary)
+                    (delete-process proc))))
+    (should (> (alist-get "pipe" summary nil nil #'equal) 0))
+    (should (> (apply #'+ (mapcar #'cdr summary)) 2))))
+
+(ert-deftest defuns-test-diagnose-report-has-all-sections ()
+  (let* ((proc (start-process "diag-cat" nil "cat"))
+         (report (unwind-protect (sta:diagnose-report)
+                   (delete-process proc))))
+    (dolist (s '("== fds" "== processes" "== timers" "== backtrace" "== messages"))
+      (should (string-match-p (regexp-quote s) report)))
+    (should (string-match-p "diag-cat" report))
+    (should (string-match-p "soft limit" report))))
+
+(ert-deftest defuns-test-diagnose-writes-report-and-returns-path ()
+  (let* ((file (make-temp-file "diag-test-"))
+         (path (unwind-protect (sta:diagnose file)
+                 nil)))
+    (unwind-protect
+        (progn
+          (should (equal path file))
+          (with-temp-buffer
+            (insert-file-contents file)
+            (should (string-match-p "== fds" (buffer-string)))))
+      (delete-file file))))
+
+(ert-deftest defuns-test-diagnose-default-path-is-under-temporary-directory ()
+  (let ((path (sta:diagnose)))
+    (unwind-protect
+        (progn
+          (should (file-exists-p path))
+          (should (string-prefix-p (file-name-as-directory temporary-file-directory)
+                                   (file-name-directory path))))
+      (ignore-errors (delete-file path)))))
