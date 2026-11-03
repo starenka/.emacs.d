@@ -738,6 +738,35 @@ selection, etc.) - kept as a stable, sta:-namespaced entry point. Honors
      (t
       (user-error "Could not determine how to restart this Emacs daemon")))))
 
+(defvar comp-files-queue)
+(defvar comp-async-compilations)
+(defvar native-comp-async-all-done-hook)
+
+(defun sta:native-comp-busy-p ()
+  "Non-nil while async native compilation has queued or running jobs."
+  (or (and (boundp 'comp-files-queue) comp-files-queue)
+      (and (boundp 'comp-async-compilations)
+           (hash-table-p comp-async-compilations)
+           (> (hash-table-count comp-async-compilations) 0))))
+
+(defvar sta:native-comp-pending nil
+  "Callbacks waiting for async native compilation to finish.")
+
+(defun sta:native-comp-flush-pending ()
+  "Run and clear `sta:native-comp-pending'."
+  (remove-hook 'native-comp-async-all-done-hook #'sta:native-comp-flush-pending)
+  (let ((fns (nreverse sta:native-comp-pending)))
+    (setq sta:native-comp-pending nil)
+    (mapc #'funcall fns)))
+
+;; defuns.el is dynamically bound, hence a named hook rather than a closure.
+(defun sta:after-native-comp (fn)
+  "Call FN once async native compilation is idle (now if it already is)."
+  (if (not (sta:native-comp-busy-p))
+      (funcall fn)
+    (push fn sta:native-comp-pending)
+    (add-hook 'native-comp-async-all-done-hook #'sta:native-comp-flush-pending)))
+
 (defun sta:package-upgrade-all ()
   "Upgrade all packages automatically without showing *Packages* buffer."
   (interactive)
@@ -767,10 +796,13 @@ selection, etc.) - kept as a stable, sta:-namespaced entry point. Honors
                 (package-install package-desc)
                 (package-delete  old-package))))
           (sta:nuke-stale-elc)
-          (if (daemonp)
-              (when (yes-or-no-p "Packages upgraded. Restart the Emacs daemon now? ")
-                (sta:restart-emacs-daemon))
-            (message "Packages upgraded. Restart Emacs to load the new code.")))
+          ;; Restarting mid-compile throws the native-comp work away.
+          (sta:after-native-comp
+           (lambda ()
+             (if (daemonp)
+                 (when (yes-or-no-p "Packages upgraded. Restart the Emacs daemon now? ")
+                   (sta:restart-emacs-daemon))
+               (message "Packages upgraded. Restart Emacs to load the new code.")))))
       (message "All packages are up to date"))))
 
 

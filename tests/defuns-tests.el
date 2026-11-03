@@ -255,6 +255,43 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
           (should (file-exists-p el-file)))
       (delete-directory root t))))
 
+;;; sta:native-comp-busy-p / sta:after-native-comp
+
+(defvar comp-files-queue)
+(defvar comp-async-compilations)
+(defvar native-comp-async-all-done-hook)
+
+(ert-deftest defuns-test-native-comp-busy-p-reflects-queue-and-jobs ()
+  (let ((comp-files-queue nil)
+        (comp-async-compilations (make-hash-table :test 'equal)))
+    (should-not (sta:native-comp-busy-p))
+    (let ((comp-files-queue '("foo.el")))
+      (should (sta:native-comp-busy-p)))
+    (puthash "foo.el" 'proc comp-async-compilations)
+    (should (sta:native-comp-busy-p))))
+
+(ert-deftest defuns-test-after-native-comp-runs-now-when-idle ()
+  (let ((comp-files-queue nil)
+        (comp-async-compilations (make-hash-table :test 'equal))
+        (native-comp-async-all-done-hook nil)
+        ran)
+    (sta:after-native-comp (lambda () (setq ran t)))
+    (should ran)
+    (should-not native-comp-async-all-done-hook)))
+
+(ert-deftest defuns-test-after-native-comp-defers-once-when-busy ()
+  (let ((comp-files-queue '("foo.el"))
+        (comp-async-compilations (make-hash-table :test 'equal))
+        (native-comp-async-all-done-hook nil)
+        (count 0))
+    (sta:after-native-comp (lambda () (cl-incf count)))
+    (should (= count 0))
+    (should (= (length native-comp-async-all-done-hook) 1))
+    (run-hooks 'native-comp-async-all-done-hook)
+    (run-hooks 'native-comp-async-all-done-hook)
+    (should (= count 1))
+    (should-not native-comp-async-all-done-hook)))
+
 ;;; sta:file-line-reference
 
 (defmacro defuns-tests--with-project-buffer (file &rest body)
