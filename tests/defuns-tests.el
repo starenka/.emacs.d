@@ -1209,3 +1209,28 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
           (should (string-prefix-p (file-name-as-directory temporary-file-directory)
                                    (file-name-directory path))))
       (ignore-errors (delete-file path)))))
+
+;;; sta:new-project
+
+(ert-deftest defuns-test-new-project-creates-repo-registers-and-switches ()
+  (let* ((root (make-temp-file "newproj" t))
+         (dir (expand-file-name "prac/dino" root))
+         (added nil) (switched nil))
+    (unwind-protect
+        (cl-letf (((symbol-function 'projectile-add-known-project) (lambda (d) (push d added)))
+                  ((symbol-function 'projectile-switch-project-by-name) (lambda (d &rest _) (push d switched))))
+          (sta:new-project dir)
+          (should (file-directory-p (expand-file-name ".git" dir)))
+          (should (equal added (list (file-name-as-directory dir))))
+          (should (equal switched (list (file-name-as-directory dir)))))
+      (delete-directory root t))))
+
+(ert-deftest defuns-test-new-project-existing-repo-is-not-an-error ()
+  (let* ((root (make-temp-file "newproj" t)))
+    (unwind-protect
+        (cl-letf (((symbol-function 'projectile-add-known-project) #'ignore)
+                  ((symbol-function 'projectile-switch-project-by-name) #'ignore))
+          (sta:new-project root)
+          (sta:new-project root)
+          (should (file-directory-p (expand-file-name ".git" root))))
+      (delete-directory root t))))

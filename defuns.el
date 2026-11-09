@@ -159,6 +159,18 @@ none exists, or if the current buffer is already a term."
                              (concat (projectile-project-name) "/") nil (thing-at-point 'name))))
   (bookmark-set name))
 
+(defun sta:new-project (dir)
+  "Create DIR (with parents), `git init' it, register it with projectile and switch to it."
+  (interactive (list (read-directory-name "New project: " "~/")))
+  (let ((dir (file-name-as-directory (expand-file-name dir))))
+    (make-directory dir t)
+    ;; git init on an existing repo is harmless (reinitializes)
+    (let ((default-directory dir))
+      (unless (zerop (call-process "git" nil nil nil "init"))
+        (user-error "git init failed in %s" dir)))
+    (projectile-add-known-project dir)
+    (projectile-switch-project-by-name dir)))
+
 (defun sta:sudo-edit (&optional arg)
   "Edit currently visited file as root.
 

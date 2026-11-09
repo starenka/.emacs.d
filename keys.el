@@ -137,6 +137,7 @@ _M_: minimize
   ("l o" . llm-offtopic)
   ("l p" . llm-offtopic-persistent)
   ("p" . sta:package-upgrade-all)
+  ("P" . sta:new-project)
   ("r" . sta:region-to-browser)
   ("s" . sta:go-to-text-scratch)
   ("e" . sta:go-to-scratch)
