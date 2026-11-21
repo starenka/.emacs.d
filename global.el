@@ -463,6 +463,9 @@
 (use-package lsp-java :ensure t :defer)
 (use-package gradle-mode :ensure t :defer)
 
+;; kotlin
+(use-package kotlin-mode :ensure t :mode ("\\.kts?\\'" . kotlin-mode))
+
 ;; markdown support
 (use-package markdown-mode
   :ensure t
