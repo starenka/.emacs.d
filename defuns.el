@@ -449,6 +449,14 @@ The prompt is prefilled with a timestamp, so accepting it as is works too."
   (interactive (list (sta:read-string-preselected "Session name: " (sta:llm-offtopic-stamp))))
   (sta:llm-offtopic-launch (sta:llm-offtopic-session-dir name)))
 
+(defun sta:dimmer-skip-unresolved-face (orig-fn face frac)
+  "Around advice for `dimmer-face-color': skip FACE when its colors don't resolve.
+Forge faces set :foreground to the symbol `reset', which dimmer passes to
+`color-defined-p' and errors after every command."
+  (condition-case nil
+      (funcall orig-fn face frac)
+    (wrong-type-argument nil)))
+
 (defun sta:tree ()
   "Ads and opens current project/dir in treemacs"
   (interactive)

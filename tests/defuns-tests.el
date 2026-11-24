@@ -1068,6 +1068,18 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
   (should (equal (defuns-tests--browse-choice ?f) '(firefox . "https://z.com"))))
 
 (provide 'defuns-tests)
+;;; sta:dimmer-skip-unresolved-face
+
+(ert-deftest defuns-test-dimmer-skip-unresolved-face-swallows-symbol-colors ()
+  ;; forge faces use :foreground reset, which dimmer feeds to `color-defined-p'.
+  (let ((orig (lambda (_face _frac) (color-defined-p 'reset))))
+    (should-not (sta:dimmer-skip-unresolved-face orig 'some-face 0.4))))
+
+(ert-deftest defuns-test-dimmer-skip-unresolved-face-passes-result-through ()
+  (let ((orig (lambda (face frac) (list face frac))))
+    (should (equal '(some-face 0.4)
+                   (sta:dimmer-skip-unresolved-face orig 'some-face 0.4)))))
+
 ;;; defuns-tests.el ends here
 
 ;;; sta:llm-offtopic-session-dir

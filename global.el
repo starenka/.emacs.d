@@ -431,6 +431,7 @@
   (dimmer-fraction .4)
   :config
   (dimmer-configure-which-key)
+  (advice-add 'dimmer-face-color :around #'sta:dimmer-skip-unresolved-face)
   (dimmer-mode 1))
 
 (use-package whitespace-cleanup-mode :ensure t)
