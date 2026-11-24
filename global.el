@@ -366,7 +366,9 @@
   ;;(magit-diff-auto-show 't) ; dont show diffs on comit and such
   :bind ("C-x c" . magit-status))
 
-(use-package magit-pre-commit
+;; `N` (or `'`) in magit buffers opens the forge dispatch. Needs a token in
+;; ~/.authinfo: machine api.github.com login USER^forge password TOKEN
+(use-package forge
   :ensure t
   :after magit)
 
