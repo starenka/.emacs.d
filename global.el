@@ -469,6 +469,9 @@
 ;; kotlin
 (use-package kotlin-mode :ensure t :mode ("\\.kts?\\'" . kotlin-mode))
 
+;; godot
+(use-package gdscript-mode :ensure t :mode ("\\.gd\\'" . gdscript-mode))
+
 ;; markdown support
 (use-package markdown-mode
   :ensure t
