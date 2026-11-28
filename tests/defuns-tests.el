@@ -1080,6 +1080,59 @@ BODY sees `root' and `fpath' bound to the project root and the created file."
     (should (equal '(some-face 0.4)
                    (sta:dimmer-skip-unresolved-face orig 'some-face 0.4)))))
 
+;;; sta:zone-allowed-p
+
+(ert-deftest defuns-test-zone-allowed-p-no-client-frames ()
+  (cl-letf (((symbol-function 'frame-list) (lambda () '(f1)))
+            ((symbol-function 'frame-terminal) (lambda (_f) 'initial))
+            ((symbol-function 'terminal-name)
+             (lambda (_t) "initial_terminal"))
+            ((symbol-function 'frame-visible-p) (lambda (_f) t)))
+    (should-not (sta:zone-allowed-p))))
+
+(ert-deftest defuns-test-zone-allowed-p-visible-client-frame ()
+  (cl-letf (((symbol-function 'frame-list) (lambda () '(f1 f2)))
+            ((symbol-function 'frame-terminal) (lambda (f) f))
+            ((symbol-function 'terminal-name)
+             (lambda (f) (if (eq f 'f1) "initial_terminal" "/dev/pts/3")))
+            ((symbol-function 'frame-visible-p) (lambda (_f) t)))
+    (should (sta:zone-allowed-p))))
+
+(ert-deftest defuns-test-zone-allowed-p-hidden-client-frame ()
+  (cl-letf (((symbol-function 'frame-list) (lambda () '(f1 f2)))
+            ((symbol-function 'frame-terminal) (lambda (f) f))
+            ((symbol-function 'terminal-name)
+             (lambda (f) (if (eq f 'f1) "initial_terminal" "/dev/pts/3")))
+            ((symbol-function 'frame-visible-p)
+             (lambda (f) (eq f 'f1))))
+    (should-not (sta:zone-allowed-p))))
+
+;;; sta:zone-when-idle
+
+(require 'zone)
+
+(ert-deftest defuns-test-zone-when-idle-skips-without-frames ()
+  (let (zoned timer-fn)
+    (cl-letf (((symbol-function 'run-with-idle-timer)
+               (lambda (_secs _repeat fn) (setq timer-fn fn) 'timer))
+              ((symbol-function 'sta:zone-allowed-p) (lambda () nil))
+              ((symbol-function 'zone) (lambda () (setq zoned t))))
+      (let ((zone-timer nil))
+        (sta:zone-when-idle 300)
+        (funcall timer-fn)
+        (should-not zoned)))))
+
+(ert-deftest defuns-test-zone-when-idle-zones-with-frame ()
+  (let (zoned timer-fn)
+    (cl-letf (((symbol-function 'run-with-idle-timer)
+               (lambda (_secs _repeat fn) (setq timer-fn fn) 'timer))
+              ((symbol-function 'sta:zone-allowed-p) (lambda () t))
+              ((symbol-function 'zone) (lambda () (setq zoned t))))
+      (let ((zone-timer nil))
+        (sta:zone-when-idle 300)
+        (funcall timer-fn)
+        (should zoned)))))
+
 ;;; defuns-tests.el ends here
 
 ;;; sta:llm-offtopic-session-dir

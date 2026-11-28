@@ -355,6 +355,25 @@ WHAT is one of `file-path', `file-name', `directory', `line-reference',
     (let ((zone-programs (list (intern pgm))))
       (zone)))
 
+;; The daemon's initial frame is always "visible", so only count client frames.
+;; Zoning with nobody watching hijacks the daemon and a later emacsclient
+;; command (e.g. projectile) hangs on top of it.
+(defun sta:zone-allowed-p ()
+  "Non-nil when a visible client frame exists to zone on."
+  (seq-some (lambda (f)
+              (and (frame-visible-p f)
+                   (not (equal (terminal-name (frame-terminal f))
+                               "initial_terminal"))))
+            (frame-list)))
+
+(defun sta:zone-when-idle (secs)
+  "Like `zone-when-idle', but only zones when `sta:zone-allowed-p'."
+  (when (timerp zone-timer) (cancel-timer zone-timer))
+  (setq zone-timer
+        (run-with-idle-timer secs t
+                             (lambda ()
+                               (when (sta:zone-allowed-p) (zone))))))
+
 ;; https://emacsredux.com/blog/2013/06/25/boost-performance-by-leveraging-byte-compilation/
 (defun er-byte-compile-init-dir ()
   "Byte-compile all your dotfiles."

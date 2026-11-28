@@ -727,7 +727,7 @@
                        zone-pgm-random-life
                        zone-pgm-drip])
   :config
-  (zone-when-idle 300))
+  (sta:zone-when-idle 300))
 
 ;; startup time profiler
 (use-package esup
